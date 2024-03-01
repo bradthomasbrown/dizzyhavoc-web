@@ -51,8 +51,8 @@ export default function Home() {
         </div>
       </div>
       <div className="w-full h-full absolute z-[-10]">
-  <img className="absolute top-0 right-0" style={{ width: "45%" }} src="/dizzyhavoc_eye_3.png" alt="dizzyhavoc eye"></img>
-</div>
+        <img className="absolute top-0 right-0" style={{ width: "45%" }} src="/dizzyhavoc_eye_3.png" alt="dizzyhavoc eye"></img>
+      </div>
       
     </div>
   );
