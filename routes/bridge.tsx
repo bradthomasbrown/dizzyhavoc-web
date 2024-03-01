@@ -1,5 +1,10 @@
 import Button from '../islands/Button.tsx'
 import Web3Input from '../islands/Web3Input.tsx'
+import { Partial } from '$fresh/runtime.ts' // https://fresh.deno.dev/docs/concepts/partials - Partials allow areas of the page to be updated with new content by the server without causing the browser to reload the page
+import Connector from '../islands/Connector.tsx'
+import BridgeUI from '../islands/BridgeUI.tsx'
+import { connected } from '../utils/connected.ts'
+import { addrs } from '../utils/addrs.ts'
 
 export default function Home() {
   return (
@@ -9,22 +14,8 @@ export default function Home() {
           <image class="h-[600px] lg:h-auto" src="/dizzyhavoc_eye_3.jpeg"/>
         </div>
         <h1 class="text-4xl font-bold font-mono mb-8">dizzyhavoc-bridge</h1>
-        <div class="flex flex-col items-center gap-1">
-        
-            <input list="chains" placeholder={'destination'}></input>
-            <input placeholder={'address'}></input>
-            <Web3Input placeholder="amount" maxVal={1000000000000000000000000n} decimals={18n}></Web3Input>
-            <Button>bridge</Button>
-            
-            <datalist id="chains">
-              <option value="ETH"></option>
-              <option value="AVAX"></option>
-              <option value="BASE"></option>
-              <option value="ARB"></option>
-              <option value="BSC"></option>
-            </datalist>
-            
-        </div>
+        <Connector/>
+        <BridgeUI/>
       </div>
     </div>
   );
