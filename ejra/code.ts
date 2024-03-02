@@ -8,5 +8,5 @@ export default function ({ address, tag='latest' }:Opts) {
     const params = [address, tag] as const
     const method = 'eth_getCode' as const
     const ejrrq = { method, params, schema }
-    return { ejrrq, call: (url:string) => ejrc({ url, ejrrq }) }
+    return { ejrrq, call: ({ url, rlbBypass }:{ url:string, rlbBypass?:boolean }) => ejrc({ url, ejrrq, rlbBypass }) }
 }
