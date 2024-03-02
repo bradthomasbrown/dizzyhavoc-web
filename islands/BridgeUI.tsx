@@ -1,8 +1,8 @@
 import Button from '../islands/Button.tsx'
 import Web3Input from '../islands/Web3Input.tsx'
 import { JSX } from 'preact'
-import { addresses, bridge, connected, destination, state } from '../utils/mod.ts'
-import { recipient } from "../utils/mod.ts";
+import { bridge, connected, destination, state } from '../utils/mod.ts'
+import { recipient } from "../utils/mod.ts"
 
 function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
     const name = e.currentTarget.value
@@ -41,7 +41,7 @@ export default function Foo(
                 </datalist>
                 
                 <datalist id="addrs">
-                    {addresses.value.map(address => (<option value={address}></option>))}
+                    {state.value.addresses.map(address => (<option value={address}></option>))}
                 </datalist>
                 
             </div>)}
