@@ -1,0 +1,1 @@
+export { metamaskProvider } from './metamaskProvider.ts'
