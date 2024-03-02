@@ -1,10 +1,6 @@
-import Button from '../islands/Button.tsx'
-import Web3Input from '../islands/Web3Input.tsx'
 import { Partial } from '$fresh/runtime.ts' // https://fresh.deno.dev/docs/concepts/partials - Partials allow areas of the page to be updated with new content by the server without causing the browser to reload the page
 import Connector from '../islands/Connector.tsx'
 import BridgeUI from '../islands/BridgeUI.tsx'
-import { connected } from '../utils/connected.ts'
-import { addrs } from '../utils/addrs.ts'
 
 export default function Home() {
   return (
