@@ -1,6 +1,7 @@
 import { JSX } from "preact";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useSignal } from '@preact/signals'
+import { amount } from '../utils/mod.ts'
 
 export default function Web3Input(
   props:{ decimals:bigint, maxVal:bigint }&JSX.HTMLAttributes<HTMLInputElement>,
@@ -19,12 +20,12 @@ export default function Web3Input(
         const zeros = Array(Math.max(decimals - fracs, 0)).fill('0').join('')
         if (fracs > decimals) tmp = tmp.slice(0, decimals - fracs)
         tmp = tmp.replace(/\./, '')
-        value.value = BigInt(`${tmp}${zeros}`)
+        amount.value = value.value = BigInt(`${tmp}${zeros}`)
         rangeValue.value = value.value * 100n / max
     }
     function onRangeInput(e:JSX.TargetedEvent<HTMLInputElement>) {
         rangeValue.value = BigInt(e.currentTarget.value)
-        value.value = BigInt(rangeValue.value) * max / 100n
+        amount.value = value.value = BigInt(rangeValue.value) * max / 100n
         let tmp = `${value}`.padStart(decimals, '0')
         if (tmp.length == decimals) tmp = `0.${tmp}`
         else tmp = `${tmp.slice(0, tmp.length - decimals)}.${
