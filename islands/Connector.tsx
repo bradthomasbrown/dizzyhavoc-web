@@ -7,6 +7,7 @@ import { addresses, connected, provider, state } from '../utils/mod.ts'
 import * as schemas from '../schemas/mod.ts'
 import * as e from '../ejra/mod.ts'
 import { signal } from '@preact/signals'
+import { rlb } from '../../../llc/rlb/mod.ts'
 
 type SignalT<S extends Signal<unknown>> = S extends Signal<infer T> ? T : unknown;
 
@@ -43,9 +44,11 @@ async function connect() {
 }
 
 async function init() {
-    // console.log('init')
+    console.log('init')
     const tmp = { provider: gwe.ethereum, ...state.value }
     updateProvider(tmp)
+    const prevDelay = rlb.delay
+    rlb.delay = 100
     await requestAddresses(tmp)
     await Promise.all([
         updateChainId(tmp),
@@ -56,6 +59,7 @@ async function init() {
             updateNativeBalance(tmp)
         ]))
     ])
+    rlb.delay = prevDelay
     pollId = setTimeout(poll, 1000)
     state.value = { ...tmp }
 }
@@ -99,7 +103,7 @@ async function onAccountsChanged() {
 }
 
 async function poll() {
-    // console.log('poll')
+    console.log('poll')
     let { nonce, chainId, addresses, provider, height } = state.value
     let tmp = { nonce, chainId, addresses, provider, height }
     const h = await e.height().call({ url: 'https://eth.llamarpc.com' })
@@ -136,25 +140,25 @@ async function updateAddresses(tmp:SignalT<typeof state>) {
 
 function updateProvider(tmp:SignalT<typeof state>) {
     tmp.provider = gwe.ethereum
-    // console.log('updateProvider', tmp)
+    console.log('updateProvider', tmp)
 }
 
 async function updateHeight(tmp:SignalT<typeof state>) {
     tmp.height = await e.height().call({ url: 'https://eth.llamarpc.com' })
-    // console.log('updateHeight', tmp)
+    console.log('updateHeight', tmp)
 }
 
 async function updateNativeBalance(tmp:SignalT<typeof state>) {
     const address = tmp.addresses?.at(0)
     if (!address) return
     tmp.balance = BigInt(await e.balance({ address }).call({ url: 'https://eth.llamarpc.com' }))
-    // console.log('updateNativeBalance', tmp)
+    console.log('updateNativeBalance', tmp)
 }
 
 async function updateDzhv(tmp:SignalT<typeof state>) {
     const code = await e.code({ address: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' }).call({ url: 'https://eth.llamarpc.com' })
     tmp.dzhv = { address: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' }
-    // console.log('updateDzhv', tmp)
+    console.log('updateDzhv', tmp)
 }
 
 async function updateDzhvBalance(tmp:SignalT<typeof state>) {
@@ -162,7 +166,7 @@ async function updateDzhvBalance(tmp:SignalT<typeof state>) {
     if (!address) return
     const input = `0x70a08231${address.substring(2).padStart(64, '0')}`
     tmp.dzhvBalance = BigInt(await e.call({ tx: { input, to: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' } }).call({ url: 'https://eth.llamarpc.com' }))
-    // console.log('updateDzhvBalance', tmp)
+    console.log('updateDzhvBalance', tmp)
 }
 
 export default function Foo(
