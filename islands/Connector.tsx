@@ -18,9 +18,8 @@ const globalWithEthereum = globalThis as typeof globalThis & {
 // }
 
 async function connect() {
-    const { ethereum } = gwe
-    if (!ethereum) { alert('Metamask not detected!'); return }
-    provider.value = ethereum
+    provider.value = gwe.ethereum
+    if (!provider.value) { alert('Metamask not detected!'); return }
     await provider.value.request({ method: 'eth_requestAccounts', params: [] }).then((as:string[]) => addresses.value = as)
     connected.value = true
     provider.value.on('accountsChanged', (as:string[]) => { connected.value = !!as.length; addresses.value = as })
