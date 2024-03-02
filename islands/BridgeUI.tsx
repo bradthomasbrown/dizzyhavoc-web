@@ -1,7 +1,7 @@
 import Button from '../islands/Button.tsx'
 import Web3Input from '../islands/Web3Input.tsx'
 import { JSX } from 'preact'
-import { addresses, bridge, connected, destination } from '../utils/mod.ts'
+import { addresses, bridge, connected, destination, state } from '../utils/mod.ts'
 import { recipient } from "../utils/mod.ts";
 
 function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
@@ -24,7 +24,7 @@ export default function Foo(
     return (
         <div>
         
-            {connected.value && (<div class="flex flex-col items-center gap-1">
+            {state.value.addresses?.at(0) && (<div class="flex flex-col items-center gap-1">
              
                 {/* TODO - add "from" field that can be used to prompt switching of chains */}
                 <input onInput={onDestinationInput} list="chains" placeholder={'destination'}></input>
