@@ -3,13 +3,26 @@ import { signal } from '@preact/signals'
 import * as schemas from '../schemas/mod.ts'
 const foo = schemas.metamaskProvider.optional()
 
-export const state = signal<{
-    provider?:z.infer<typeof foo>,
-    chainId?:bigint,
-    addresses?:string[],
-    height?:bigint
-    balance?:bigint,
-    dzhv?:{ address:string },
-    dzhvBalance?:bigint
-    nonce:bigint
-}>({ nonce: 0n })
+type DAppState = {
+    provider:undefined|z.infer<typeof foo>|null,
+    chainId:undefined|bigint|null,
+    addresses:undefined|string[]|null,
+    height:undefined|bigint|null
+    balance:undefined|bigint|null,
+    dzhv:undefined|{ address:string }|null,
+    dzhvBalance:undefined|bigint|null,
+    rpc:undefined|string|null
+    nonce:undefined|bigint|null
+}
+
+export const state = signal<DAppState>({
+    provider: undefined,
+    chainId: undefined,
+    addresses: undefined,
+    height: undefined,
+    balance: undefined,
+    dzhv: undefined,
+    dzhvBalance: undefined,
+    rpc: undefined,
+    nonce: undefined
+})
