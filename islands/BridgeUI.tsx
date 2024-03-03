@@ -1,7 +1,7 @@
 import Button from '../islands/Button.tsx'
 import Web3Input from '../islands/Web3Input.tsx'
 import { JSX } from 'preact'
-import { bridge, connected, destination, state } from '../utils/mod.ts'
+import { bridge, rpc, destination, state } from '../utils/mod.ts'
 import { recipient } from "../utils/mod.ts"
 
 function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
@@ -29,7 +29,7 @@ export default function Foo(
                 {/* TODO - add "from" field that can be used to prompt switching of chains */}
                 <input onInput={onDestinationInput} list="chains" placeholder={'destination'}></input>
                 <input onInput={e => recipient.value = e.currentTarget.value} list="addrs" placeholder={'address'}></input>
-                <Web3Input placeholder="amount" maxVal={1000000000000000000000000n} decimals={18n}></Web3Input>
+                <Web3Input placeholder="amount" maxVal={state.value.dzhvBalance} decimals={18n}></Web3Input>
                 <Button onClick={bridge}>bridge</Button>
                 
                 <datalist id="chains">
