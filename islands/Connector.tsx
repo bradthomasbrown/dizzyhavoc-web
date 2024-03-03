@@ -3,7 +3,7 @@ import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts'
 import { Signal } from '@preact/signals'
 import { IS_BROWSER } from '$fresh/runtime.ts'
 import Button from '../islands/Button.tsx'
-import { addresses, connected, provider, state } from '../utils/mod.ts'
+import { addresses, connected, provider, state, rpc } from '../utils/mod.ts'
 import * as schemas from '../schemas/mod.ts'
 import * as e from '../ejra/mod.ts'
 import { signal } from '@preact/signals'
@@ -27,146 +27,186 @@ const globalWithEthereum = globalThis as typeof globalThis & {
 let pollId:number
 const status:Signal<'Connect'|'Loading...'> = signal('Connect')
 
-async function connect() {
-    // provider.value = gwe.ethereum
-    // if (!provider.value) { alert('Metamask not detected!'); return }
-    // await provider.value.request({ method: 'eth_requestAccounts', params: [] }).then((as:string[]) => addresses.value = as)
-    // connected.value = true
-    // provider.value.on('accountsChanged', (as:string[]) => { connected.value = !!as.length; addresses.value = as })
-    // init()
+function connect() {
     const { ethereum } = gwe
     if (IS_BROWSER && ethereum) {
-        ethereum.on('chainChanged', onChainChanged)
-        ethereum.on('accountsChanged', onAccountsChanged)
+        // ethereum.on('chainChanged', onChainChanged)
+        // ethereum.on('accountsChanged', onAccountsChanged)
         status.value = 'Loading...'
-        await init()
+        init()
     }
 }
 
+// ### state change flows
+
+// initializing state change flow
+// happens when user clicks connect button
 async function init() {
     console.log('init')
-    const tmp = { provider: gwe.ethereum, ...state.value }
-    updateProvider(tmp)
-    const prevDelay = rlb.delay
-    rlb.delay = 100
-    await requestAddresses(tmp)
-    await Promise.all([
-        updateChainId(tmp),
-        updateHeight(tmp),
-        updateDzhv(tmp)
-        .then(() => Promise.all([
-            updateDzhvBalance(tmp),
-            updateNativeBalance(tmp)
-        ]))
-    ])
-    rlb.delay = prevDelay
-    pollId = setTimeout(poll, 1000)
-    state.value = { ...tmp }
-}
-
-async function onChainChanged() {
-    // console.log('onChainChanged')
-    let { provider, nonce, addresses } = state.value
-    const tmp = { provider, addresses, nonce }
-    updateProvider(tmp)
-    await Promise.all([
-        updateChainId(tmp),
-        updateHeight(tmp),
-        updateNativeBalance(tmp),
-        updateDzhv(tmp)
-        .then(() => updateDzhvBalance(tmp))
-    ])
-    state.value = { ...tmp, nonce: ++nonce }
-}
-
-async function onAccountsChanged() {
-    console.log('onAccountsChanged')
-    let { provider, nonce, chainId, addresses } = state.value
-    const tmp = { provider, chainId, nonce, addresses }
-    updateProvider(tmp)
-    await updateAddresses(tmp)
-    if (!tmp.addresses?.length) {
-        if (!tmp.addresses?.length) status.value = 'Connect'
-        state.value = { ...tmp, nonce: ++nonce }
-        return
+    // speed up rlb for this flow
+    const prevDelay = rlb.delay; rlb.delay = 100
+    // create a new temporary state
+    const tmp:DAppState = {
+        provider: undefined,
+        chainId: undefined,
+        addresses: undefined,
+        height: undefined,
+        balance: undefined,
+        dzhv: undefined,
+        dzhvBalance: undefined,
+        rpc: undefined,
+        nonce: 0n
     }
-    await Promise.all([
-        updateHeight(tmp),
-        updateDzhv(tmp)
-        .then(() => Promise.all([
-            updateNativeBalance(tmp),
+    // try to get all dApp state properties until none are undefined 
+    while (Object.values(tmp).includes(undefined)) {
+        await Promise.all([
+            updateProvider(tmp),
+            requestAddresses(tmp),
+            updateChainId(tmp),
+            updateRpc(tmp),
+            updateHeight(tmp),
+            updateBalance(tmp),
+            updateDzhv(tmp),
             updateDzhvBalance(tmp)
-        ]))
-    ])
-    console.log(tmp.addresses)
-    state.value = { ...tmp, nonce: ++nonce }
+        ])
+    }
+    // slow down rlb after this flow
+    rlb.delay = prevDelay
+    // start polling loop
+    // poll()
+    // set user-facing state value (above while loop prevents undefined properties from existing, so casting is okay)
+    state.value = { ...tmp } as typeof state.value
 }
 
-async function poll() {
-    console.log('poll')
-    let { nonce, chainId, addresses, provider, height } = state.value
-    let tmp = { nonce, chainId, addresses, provider, height }
-    const h = await e.height().call({ url: 'https://eth.llamarpc.com' })
-    if (h === height || h === undefined) { pollId = setTimeout(poll, 1000); return }
-    tmp = { ...tmp, height: h }
-    await Promise.all([
-        updateNativeBalance(tmp),
-        updateDzhvBalance(tmp)
-    ]).catch(() => { pollId = setTimeout(poll, 1000); return })
-    if (nonce != state.value.nonce) { pollId = setTimeout(poll, 1000); return }
-    pollId = setTimeout(poll, 0)
-    state.value = { ...tmp, nonce: ++nonce }
-}
+// async function onChainChanged() {
+//     // console.log('onChainChanged')
+//     let { provider, nonce, addresses, chainId } = state.value
+//     const tmp = { provider, addresses, nonce, chainId }
+//     updateProvider(tmp)
+//     const prevDelay = rlb.delay; rlb.delay = 100
+//     await Promise.all([
+//         updateChainId(tmp),
+//         updateHeight(tmp),
+//         updateNativeBalance(tmp),
+//         updateDzhv(tmp)
+//         .then(() => updateDzhvBalance(tmp))
+//     ])
+//     rlb.delay = prevDelay
+//     state.value = { ...tmp, nonce: ++nonce }
+// }
 
-async function updateChainId(tmp:SignalT<typeof state>) {
-    tmp.chainId = await e.chainId().call({ url: 'https://eth.llamarpc.com' })
-    // console.log('updateChainId', tmp)
-}
+// async function onAccountsChanged() {
+//     console.log('onAccountsChanged')
+//     let { provider, nonce, chainId, addresses } = state.value
+//     const tmp = { provider, chainId, nonce, addresses }
+//     updateProvider(tmp)
+//     await updateAddresses(tmp)
+//     if (!tmp.addresses?.length) {
+//         if (!tmp.addresses?.length) status.value = 'Connect'
+//         state.value = { ...tmp, nonce: ++nonce }
+//         return
+//     }
+//     const prevDelay = rlb.delay; rlb.delay = 100
+//     await Promise.all([
+//         updateHeight(tmp),
+//         updateDzhv(tmp)
+//         .then(() => Promise.all([
+//             updateNativeBalance(tmp),
+//             updateDzhvBalance(tmp)
+//         ]))
+//     ])
+//     rlb.delay = prevDelay
+//     console.log(tmp.addresses)
+//     state.value = { ...tmp, nonce: ++nonce }
+// }
 
-async function requestAddresses(tmp:SignalT<typeof state>) {
-    console.log('requestAddresses start', tmp)
-    const { provider } = tmp
-    if (!provider) return
-    tmp.addresses = await provider.request({ method: 'eth_requestAccounts', params: [] })
-    console.log('requestAddresses end', tmp)
-}
+// async function poll() {
+//     console.log('poll')
+//     if (!rpc.value) return
+//     let { nonce, chainId, addresses, provider, height } = state.value
+//     let tmp = { nonce, chainId, addresses, provider, height }
+//     const h = await e.height().call({ url: rpc.value })
+//     if (h === height || h === undefined) { pollId = setTimeout(poll, 1000); return }
+//     tmp = { ...tmp, height: h }
+//     await Promise.all([
+//         updateNativeBalance(tmp),
+//         updateDzhvBalance(tmp)
+//     ]).catch(() => { pollId = setTimeout(poll, 1000); return })
+//     if (nonce != state.value.nonce) { pollId = setTimeout(poll, 1000); return }
+//     pollId = setTimeout(poll, 0)
+//     state.value = { ...tmp, nonce: ++nonce }
+// }
 
-async function updateAddresses(tmp:SignalT<typeof state>) {
-    console.log('updateAddresses', tmp)
-    const { provider } = tmp
-    if (!provider) return
-    tmp.addresses = await provider.request({ method: 'eth_accounts', params: [] })
-}
+// ### state change functions
 
-function updateProvider(tmp:SignalT<typeof state>) {
+function updateProvider(tmp:DAppState) {
+    if (!gwe.ethereum) { tmp.provider = null; return }
+    if (tmp.provider !== undefined) return
     tmp.provider = gwe.ethereum
-    console.log('updateProvider', tmp)
 }
 
-async function updateHeight(tmp:SignalT<typeof state>) {
-    tmp.height = await e.height().call({ url: 'https://eth.llamarpc.com' })
-    console.log('updateHeight', tmp)
+async function requestAddresses(tmp:DAppState) {
+    if (tmp.provider === null) { tmp.addresses = null; return }
+    if (tmp.provider === undefined || tmp.addresses !== undefined) return
+    const result = await tmp.provider.request({ method: 'eth_requestAccounts', params: [] }).catch(() => null)
+    tmp.addresses = await z.string().array().parseAsync(result).catch(() => null)
 }
 
-async function updateNativeBalance(tmp:SignalT<typeof state>) {
+async function updateAddresses(tmp:DAppState) {
+    if (tmp.provider === null) { tmp.addresses = null; return }
+    if (tmp.provider === undefined || tmp.addresses !== undefined) return
+    const result = await tmp.provider.request({ method: 'eth_accounts', params: [] }).catch(() => null)
+    tmp.addresses = await z.string().array().parseAsync(result).catch(() => null)
+}
+
+async function updateChainId(tmp:DAppState) {
+    if (tmp.provider === null) { tmp.chainId = null; return }
+    if (tmp.provider === undefined || tmp.chainId !== undefined) return
+    const result = await tmp.provider.request({ method: 'eth_chainId', params: [] }).catch(() => null)
+    tmp.chainId = await z.string().transform(BigInt).parseAsync(result).catch(() => null)
+}
+
+function updateRpc(tmp:DAppState) {
+    if (tmp.chainId === undefined || tmp.rpc !== undefined) return
+    switch (tmp.chainId) {
+        case 1n: tmp.rpc = 'https://eth.llamarpc.com'; break
+        case 56n: tmp.rpc = 'https://binance.llamarpc.com'; break
+        case 8453n: tmp.rpc = 'https://base.llamarpc.com'; break
+        case 42161n: tmp.rpc = 'https://arbitrum.llamarpc.com'; break
+        case 43114n: tmp.rpc = 'https://avalanche.drpc.org'; break
+        default: tmp.rpc = null
+    }
+}
+
+async function updateHeight(tmp:DAppState) {
+    if (tmp.rpc === null) { tmp.height = null; return }
+    if (tmp.rpc === undefined || tmp.height !== undefined) return
+    tmp.height = await e.height().call({ url: tmp.rpc }).catch(() => null)
+}
+
+async function updateBalance(tmp:DAppState) {
+    if (tmp.rpc === null || tmp.addresses === null || tmp.height === null) { tmp.balance = null; return }
     const address = tmp.addresses?.at(0)
-    if (!address) return
-    tmp.balance = BigInt(await e.balance({ address }).call({ url: 'https://eth.llamarpc.com' }))
-    console.log('updateNativeBalance', tmp)
+    if (address === undefined || tmp.rpc === undefined || tmp.height === undefined || tmp.balance !== undefined) return
+    tmp.balance = await e.balance({ address, tag: tmp.height }).call({ url: tmp.rpc }).catch(() => null)
 }
 
-async function updateDzhv(tmp:SignalT<typeof state>) {
-    const code = await e.code({ address: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' }).call({ url: 'https://eth.llamarpc.com' })
+async function updateDzhv(tmp:DAppState) {
+    if (tmp.rpc === null || tmp.height === null) { tmp.dzhv = null; return }
+    if (tmp.rpc === undefined || tmp.height === undefined || tmp.dzhv !== undefined) return
+    const code = await e.code({ address: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' }).call({ url: tmp.rpc }).catch(() => null)
+    if (code === '0x' || code === null) { tmp.dzhv = null; return }
     tmp.dzhv = { address: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' }
-    console.log('updateDzhv', tmp)
 }
 
-async function updateDzhvBalance(tmp:SignalT<typeof state>) {
+async function updateDzhvBalance(tmp:DAppState) {
+    if (tmp.rpc === null || tmp.addresses === null || tmp.height === null || tmp.dzhv === null) { tmp.dzhvBalance = null; return }
     const address = tmp.addresses?.at(0)
-    if (!address) return
+    if (address === undefined || tmp.rpc === undefined || tmp.height === undefined || tmp.dzhv === undefined || tmp.dzhvBalance !== undefined) return
     const input = `0x70a08231${address.substring(2).padStart(64, '0')}`
-    tmp.dzhvBalance = BigInt(await e.call({ tx: { input, to: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' } }).call({ url: 'https://eth.llamarpc.com' }))
-    console.log('updateDzhvBalance', tmp)
+    const maybeBalanceStr = await e.call({ tx: { input, to: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' }, tag: tmp.height }).call({ url: tmp.rpc }).catch(() => null)
+    if (maybeBalanceStr === null) { tmp.dzhvBalance = null; return }
+    tmp.dzhvBalance = await z.string().transform(BigInt).parseAsync(maybeBalanceStr).catch(() => null)
 }
 
 export default function Foo(
