@@ -42,7 +42,6 @@ function connect() {
 // initializing state change flow
 // happens when user clicks connect button
 async function init() {
-    console.log('init')
     // speed up rlb for this flow
     const prevDelay = rlb.delay; rlb.delay = 100
     // create a new temporary state
@@ -57,26 +56,71 @@ async function init() {
         rpc: undefined,
         nonce: 0n
     }
+    const table:Array<DAppState&{ step:string }> = [{ step: 'init', ...tmp }]
     // try to get all dApp state properties until none are undefined 
     while (Object.values(tmp).includes(undefined)) {
         await Promise.all([
-            updateProvider(tmp),
-            requestAddresses(tmp),
-            updateChainId(tmp),
-            updateRpc(tmp),
-            updateHeight(tmp),
-            updateBalance(tmp),
-            updateDzhv(tmp),
-            updateDzhvBalance(tmp)
+            updateProvider({ tmp, table }),
+            requestAddresses({ tmp, table }),
+            updateChainId({ tmp, table }),
+            updateRpc({ tmp, table }),
+            updateHeight({ tmp, table }),
+            updateBalance({ tmp, table }),
+            updateDzhv({ tmp, table }),
+            updateDzhvBalance({ tmp, table })
         ])
     }
     // slow down rlb after this flow
     rlb.delay = prevDelay
     // start polling loop
-    // poll()
-    // set user-facing state value (above while loop prevents undefined properties from existing, so casting is okay)
-    state.value = { ...tmp } as typeof state.value
+    poll()
+    // check if temp state has errors, then log which data is in error. only commit state if n o errors
+    if (Object.values(tmp).includes(null)) console.error('null data', Object.entries(tmp).filter(([_k,v]) => v === null).map(([k,_v]) => k))
+    else {
+        console.table(table)
+        state.value = { ...tmp } as typeof state.value
+    }
 }
+
+async function poll() {
+    while (true) {
+        const tmp:DAppState = { ...state.value, balance: undefined, dzhvBalance: undefined }
+        const table:Array<DAppState&{ step:string }> = [{ step: 'poll', ...tmp }]
+        // need a timeout here since we can't rely on RLB to stop us from infinite looping with no delay
+        if (!tmp.rpc) { await new Promise(r => setTimeout(r, 1000)); continue }
+        const height = await e.height().call({ url: tmp.rpc }).catch(() => null)
+        if (height === tmp.height || height === null) continue
+        tmp.height = height
+        while (Object.values(tmp).includes(undefined)) {
+            await Promise.all([
+                updateBalance({ tmp, table }),
+                updateDzhvBalance({ tmp, table })
+            ])
+        }
+        if (tmp.nonce != state.value.nonce) continue
+        if (Object.values(tmp).includes(null)) console.error('null data', Object.entries(tmp).filter(([_k,v]) => v === null).map(([k,_v]) => k))
+        else {
+            console.table(table, ['step', 'height', 'balance', 'dzhvBalance'])
+            state.value = { ...tmp, nonce: (tmp.nonce as bigint) + 1n }
+        }
+    }
+}
+
+// async function poll() {
+//     if (!rpc.value) return
+//     let { nonce, chainId, addresses, provider, height } = state.value
+//     // let tmp = { nonce, chainId, addresses, provider, height }
+//     const h = await e.height().call({ url: rpc.value }).catch(() => null)
+//     if (h === height || h === undefined) { pollId = setTimeout(poll, 1000); return }
+//     tmp = { ...tmp, height: h }
+//     await Promise.all([
+//         updateNativeBalance(tmp),
+//         updateDzhvBalance(tmp)
+//     ]).catch(() => { pollId = setTimeout(poll, 1000); return })
+//     if (nonce != state.value.nonce) { pollId = setTimeout(poll, 1000); return }
+//     pollId = setTimeout(poll, 0)
+//     state.value = { ...tmp, nonce: ++nonce }
+// }
 
 // async function onChainChanged() {
 //     // console.log('onChainChanged')
@@ -120,53 +164,40 @@ async function init() {
 //     state.value = { ...tmp, nonce: ++nonce }
 // }
 
-// async function poll() {
-//     console.log('poll')
-//     if (!rpc.value) return
-//     let { nonce, chainId, addresses, provider, height } = state.value
-//     let tmp = { nonce, chainId, addresses, provider, height }
-//     const h = await e.height().call({ url: rpc.value })
-//     if (h === height || h === undefined) { pollId = setTimeout(poll, 1000); return }
-//     tmp = { ...tmp, height: h }
-//     await Promise.all([
-//         updateNativeBalance(tmp),
-//         updateDzhvBalance(tmp)
-//     ]).catch(() => { pollId = setTimeout(poll, 1000); return })
-//     if (nonce != state.value.nonce) { pollId = setTimeout(poll, 1000); return }
-//     pollId = setTimeout(poll, 0)
-//     state.value = { ...tmp, nonce: ++nonce }
-// }
-
 // ### state change functions
 
-function updateProvider(tmp:DAppState) {
+function updateProvider({ tmp, table }:{ tmp:DAppState, table:Array<DAppState&{ step:string }> }) {
     if (!gwe.ethereum) { tmp.provider = null; return }
     if (tmp.provider !== undefined) return
     tmp.provider = gwe.ethereum
+    table.push({ step: 'updateProvider', ...tmp })
 }
 
-async function requestAddresses(tmp:DAppState) {
+async function requestAddresses({ tmp, table }:{ tmp:DAppState, table:Array<DAppState&{ step:string }> }) {
     if (tmp.provider === null) { tmp.addresses = null; return }
     if (tmp.provider === undefined || tmp.addresses !== undefined) return
     const result = await tmp.provider.request({ method: 'eth_requestAccounts', params: [] }).catch(() => null)
     tmp.addresses = await z.string().array().parseAsync(result).catch(() => null)
+    table.push({ step: 'requestAddresses', ...tmp })
 }
 
-async function updateAddresses(tmp:DAppState) {
+async function updateAddresses({ tmp, table }:{ tmp:DAppState, table:Array<DAppState&{ step:string }> }) {
     if (tmp.provider === null) { tmp.addresses = null; return }
     if (tmp.provider === undefined || tmp.addresses !== undefined) return
     const result = await tmp.provider.request({ method: 'eth_accounts', params: [] }).catch(() => null)
     tmp.addresses = await z.string().array().parseAsync(result).catch(() => null)
+    table.push({ step: 'updateAddresses', ...tmp })
 }
 
-async function updateChainId(tmp:DAppState) {
+async function updateChainId({ tmp, table }:{ tmp:DAppState, table:Array<DAppState&{ step:string }> }) {
     if (tmp.provider === null) { tmp.chainId = null; return }
     if (tmp.provider === undefined || tmp.chainId !== undefined) return
     const result = await tmp.provider.request({ method: 'eth_chainId', params: [] }).catch(() => null)
     tmp.chainId = await z.string().transform(BigInt).parseAsync(result).catch(() => null)
+    table.push({ step: 'updateChainId', ...tmp })
 }
 
-function updateRpc(tmp:DAppState) {
+function updateRpc({ tmp, table }:{ tmp:DAppState, table:Array<DAppState&{ step:string }> }) {
     if (tmp.chainId === undefined || tmp.rpc !== undefined) return
     switch (tmp.chainId) {
         case 1n: tmp.rpc = 'https://eth.llamarpc.com'; break
@@ -176,30 +207,34 @@ function updateRpc(tmp:DAppState) {
         case 43114n: tmp.rpc = 'https://avalanche.drpc.org'; break
         default: tmp.rpc = null
     }
+    table.push({ step: 'updateRpc', ...tmp })
 }
 
-async function updateHeight(tmp:DAppState) {
+async function updateHeight({ tmp, table }:{ tmp:DAppState, table:Array<DAppState&{ step:string }> }) {
     if (tmp.rpc === null) { tmp.height = null; return }
     if (tmp.rpc === undefined || tmp.height !== undefined) return
     tmp.height = await e.height().call({ url: tmp.rpc }).catch(() => null)
+    table.push({ step: 'updateHeight', ...tmp })
 }
 
-async function updateBalance(tmp:DAppState) {
+async function updateBalance({ tmp, table }:{ tmp:DAppState, table:Array<DAppState&{ step:string }> }) {
     if (tmp.rpc === null || tmp.addresses === null || tmp.height === null) { tmp.balance = null; return }
     const address = tmp.addresses?.at(0)
     if (address === undefined || tmp.rpc === undefined || tmp.height === undefined || tmp.balance !== undefined) return
     tmp.balance = await e.balance({ address, tag: tmp.height }).call({ url: tmp.rpc }).catch(() => null)
+    table.push({ step: 'updateBalance', ...tmp })
 }
 
-async function updateDzhv(tmp:DAppState) {
+async function updateDzhv({ tmp, table }:{ tmp:DAppState, table:Array<DAppState&{ step:string }> }) {
     if (tmp.rpc === null || tmp.height === null) { tmp.dzhv = null; return }
     if (tmp.rpc === undefined || tmp.height === undefined || tmp.dzhv !== undefined) return
     const code = await e.code({ address: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' }).call({ url: tmp.rpc }).catch(() => null)
     if (code === '0x' || code === null) { tmp.dzhv = null; return }
     tmp.dzhv = { address: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' }
+    table.push({ step: 'updateDzhv', ...tmp })
 }
 
-async function updateDzhvBalance(tmp:DAppState) {
+async function updateDzhvBalance({ tmp, table }:{ tmp:DAppState, table:Array<DAppState&{ step:string }> }) {
     if (tmp.rpc === null || tmp.addresses === null || tmp.height === null || tmp.dzhv === null) { tmp.dzhvBalance = null; return }
     const address = tmp.addresses?.at(0)
     if (address === undefined || tmp.rpc === undefined || tmp.height === undefined || tmp.dzhv === undefined || tmp.dzhvBalance !== undefined) return
@@ -207,6 +242,7 @@ async function updateDzhvBalance(tmp:DAppState) {
     const maybeBalanceStr = await e.call({ tx: { input, to: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' }, tag: tmp.height }).call({ url: tmp.rpc }).catch(() => null)
     if (maybeBalanceStr === null) { tmp.dzhvBalance = null; return }
     tmp.dzhvBalance = await z.string().transform(BigInt).parseAsync(maybeBalanceStr).catch(() => null)
+    table.push({ step: 'updateDzhvBalance', ...tmp })
 }
 
 export default function Foo(
