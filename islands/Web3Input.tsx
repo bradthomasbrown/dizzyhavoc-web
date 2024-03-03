@@ -4,13 +4,15 @@ import { useSignal } from '@preact/signals'
 import { amount } from '../utils/mod.ts'
 
 export default function Web3Input(
-  props:{ decimals:bigint, maxVal:bigint }&JSX.HTMLAttributes<HTMLInputElement>,
+  props:{ decimals:bigint, maxVal:bigint|null|undefined }&JSX.HTMLAttributes<HTMLInputElement>,
 ) {
-    const decimals = 18, max = 2000000000000000000n
+    const decimals = 18
     const value = useSignal(0n)
     const numValue = useSignal('0')
     const rangeValue = useSignal(0n)
     function onTextInput(e:JSX.TargetedEvent<HTMLInputElement>) {
+        const { maxVal } = props
+        if (maxVal === undefined || maxVal === null) return
         numValue.value = e.currentTarget.value
         let tmp = `${numValue}`
         if (tmp.match(/[^\d\.]|\..*\.|^\.?$/))
@@ -21,11 +23,13 @@ export default function Web3Input(
         if (fracs > decimals) tmp = tmp.slice(0, decimals - fracs)
         tmp = tmp.replace(/\./, '')
         amount.value = value.value = BigInt(`${tmp}${zeros}`)
-        rangeValue.value = value.value * 100n / max
+        rangeValue.value = value.value * 100n / maxVal
     }
     function onRangeInput(e:JSX.TargetedEvent<HTMLInputElement>) {
+        const { maxVal } = props
+        if (maxVal === undefined || maxVal === null) return
         rangeValue.value = BigInt(e.currentTarget.value)
-        amount.value = value.value = BigInt(rangeValue.value) * max / 100n
+        amount.value = value.value = BigInt(rangeValue.value) * maxVal / 100n
         let tmp = `${value}`.padStart(decimals, '0')
         if (tmp.length == decimals) tmp = `0.${tmp}`
         else tmp = `${tmp.slice(0, tmp.length - decimals)}.${
