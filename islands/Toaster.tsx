@@ -1,9 +1,8 @@
 import { JSX } from 'preact'
 import Toast from './Toast.tsx'
-import { Signal } from '@preact/signals'
 import { IS_BROWSER } from '$fresh/runtime.ts'
+import { toasts } from '../utils/mod.ts'
 
-const toasts = new Signal<{ component:ReturnType<typeof Toast>, id:symbol }[]>([])
 if (IS_BROWSER) (async () => {
     for (let i = 0; i < 3; i++)
         await new Promise<void>(r => setTimeout(() => {
