@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+::-webkit-scrollbar {
+    width: 6px;               /* width of the entire scrollbar */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #17182C;        /* color of the tracking area */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color:   #e0e0e0;    /* color of the scroll thumb */
+    border-radius: 12px;       /* roundness of the scroll thumb */
+    border: 1px solid #313131;  /* creates padding around scroll thumb */
+  }
+
+  .bg-blur {
+  -webkit-backdrop-filter: blur(4px); 
+  backdrop-filter: blur(4px); 
+  background: #6969691f 0 0 no-repeat padding-box; 
+  }
+  .bg-blur2 {
+    -webkit-backdrop-filter: blur(4px); 
+    backdrop-filter: blur(4px); 
+    background: #d4d4d4b0 0 0 no-repeat padding-box; 
+    }
