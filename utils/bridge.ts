@@ -1,4 +1,5 @@
-import { addresses, amount, destination, recipient, provider, state } from '../utils/mod.ts'
+import z from "https://deno.land/x/zod@v3.22.4/index.ts";
+import { amount, destination, recipient, state, toasts, createToast } from '../utils/mod.ts'
 
 export function bridge() {
     if (!state.value.provider) { alert('provider undefined'); return }
@@ -13,4 +14,6 @@ export function bridge() {
     const params = [{ to: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe', data, from: state.value.addresses.at(0) }]
     console.log(`bridge params: ${JSON.stringify(params)} (amount: ${amount.value})`)
     state.value.provider.request({ method: 'eth_sendTransaction', params })
+    .then(z.string().parseAsync)
+    .then(hash => createToast({ hash, explorer: 'https://fooscan.com/' }))
 }

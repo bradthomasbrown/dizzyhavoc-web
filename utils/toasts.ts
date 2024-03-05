@@ -1,5 +1,6 @@
 import { Signal } from "@preact/signals";
 import Toast from "../islands/Toast.tsx";
+
 function createToast({ hash, explorer }:{ hash:string, explorer:string }) {
     const id = Symbol()
     const onClose = () => { toasts.value = toasts.value.filter(toast => toast.id !== id); }
@@ -7,4 +8,7 @@ function createToast({ hash, explorer }:{ hash:string, explorer:string }) {
     const toast = { component, id }
     toasts.value = [toast, ...toasts.value]
 }
-export const toasts = new Signal<{ component:ReturnType<typeof Toast>, id:symbol }[]>([])
+
+const toasts = new Signal<{ component:ReturnType<typeof Toast>, id:symbol }[]>([])
+
+export { toasts, createToast }
