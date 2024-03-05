@@ -2,7 +2,8 @@ import Button from '../islands/Button.tsx'
 import Web3Input from '../islands/Web3Input.tsx'
 import { JSX } from 'preact'
 import { bridge, w3LabelConv, destination, state } from '../utils/mod.ts'
-import { recipient } from "../utils/mod.ts"
+import { recipient } from '../utils/mod.ts'
+import Toaster from "./Toaster.tsx";
 
 function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
     const name = e.currentTarget.value
@@ -18,11 +19,13 @@ function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
     destination.value = chainId
 }
 
-export default function Foo(
+export default function BridgeUI(
     props: JSX.HTMLAttributes<HTMLButtonElement>
 ) {
     return (
         <div>
+
+            <Toaster/>
         
             {state.value.addresses?.at(0) && (<div class="flex flex-col items-center gap-1">
              

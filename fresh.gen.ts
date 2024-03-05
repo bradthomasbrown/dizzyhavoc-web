@@ -12,6 +12,8 @@ import * as $BridgeUI from "./islands/BridgeUI.tsx";
 import * as $Button from "./islands/Button.tsx";
 import * as $Connector from "./islands/Connector.tsx";
 import * as $Counter from "./islands/Counter.tsx";
+import * as $Toast from "./islands/Toast.tsx";
+import * as $Toaster from "./islands/Toaster.tsx";
 import * as $Web3Input from "./islands/Web3Input.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -29,6 +31,8 @@ const manifest = {
     "./islands/Button.tsx": $Button,
     "./islands/Connector.tsx": $Connector,
     "./islands/Counter.tsx": $Counter,
+    "./islands/Toast.tsx": $Toast,
+    "./islands/Toaster.tsx": $Toaster,
     "./islands/Web3Input.tsx": $Web3Input,
   },
   baseUrl: import.meta.url,
