@@ -23,7 +23,7 @@ export default function ({ hash }:Opts) {
             data: z.string(),
             topics: z.string().array()
         }).array(),
-        status: z.unknown()
+        status: z.literal('0x1').or(z.literal('0x0'))
     }).nullable()
     const params = [hash] as const
     const method = 'eth_getTransactionReceipt' as const
