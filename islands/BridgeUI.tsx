@@ -4,6 +4,7 @@ import { JSX } from 'preact'
 import { bridge, w3LabelConv, destination, state } from '../utils/mod.ts'
 import { recipient } from '../utils/mod.ts'
 import Toaster from "./Toaster.tsx";
+import { Signal } from "@preact/signals";
 
 function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
     const name = e.currentTarget.value
@@ -14,7 +15,7 @@ function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
         case 'BASE': chainId = 8453n; break;
         case 'ARB': chainId = 42161n; break;
         case 'BSC': chainId = 56n; break;
-        default: alert('invalid chain'); return
+        default: alert(`invalid chain ${name}`); return
     }
     destination.value = chainId
 }
@@ -22,6 +23,11 @@ function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
 export default function BridgeUI(
     props: JSX.HTMLAttributes<HTMLButtonElement>
 ) {
+    const foo = new Signal()
+    state.subscribe(({ dzhvBalance }) => {
+        if (dzhvBalance === null || dzhvBalance === undefined) return
+        foo.value = <div>{dzhvBalance ? w3LabelConv({ big: dzhvBalance, dec: 18, sym: 'DZHV', tarLen: 16, maxExt: Infinity }) : '...'}</div>
+    })
     return (
         <div>
 
@@ -30,7 +36,7 @@ export default function BridgeUI(
             {state.value.addresses?.at(0) && (<div class="flex flex-col items-center gap-1">
              
                 {/* TODO - add "from" field that can be used to prompt switching of chains */}
-                <div>{state.value.dzhvBalance ? w3LabelConv({ big: state.value.dzhvBalance, dec: 18, sym: 'DZHV', tarLen: 16, maxExt: Infinity }) : '...'}</div>
+                { foo }
                 <input onInput={onDestinationInput} list="chains" placeholder={'destination'}></input>
                 <input onInput={e => recipient.value = e.currentTarget.value} list="addrs" placeholder={'address'}></input>
                 <Web3Input placeholder="amount" maxVal={state.value.dzhvBalance} decimals={18n}></Web3Input>
