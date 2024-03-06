@@ -1,13 +1,14 @@
 import { JSX } from 'preact'
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts'
-import { Signal } from '@preact/signals'
+import { Signal, batch } from '@preact/signals'
 import { IS_BROWSER } from '$fresh/runtime.ts'
 import Button from '../islands/Button.tsx'
-import { addresses, connected, provider, state, rpc, DAppState } from '../utils/mod.ts'
+import { addresses, connected, provider, state, statuses, DAppState } from '../utils/mod.ts'
 import * as schemas from '../schemas/mod.ts'
 import * as e from '../ejra/mod.ts'
 import { signal } from '@preact/signals'
 import { rlb } from '../../../llc/rlb/mod.ts'
+const bar = e.receipt({ hash: '' }).ejrrq.schema
 
 type SignalT<S extends Signal<unknown>> = S extends Signal<infer T> ? T : unknown;
 
@@ -45,17 +46,19 @@ async function init() {
     // speed up rlb for this flow
     const prevDelay = rlb.delay; rlb.delay = 100
     // create a new temporary state
-    const tmp:DAppState = {
-        provider: undefined,
-        chainId: undefined,
-        addresses: undefined,
-        height: undefined,
-        balance: undefined,
-        dzhv: undefined,
-        dzhvBalance: undefined,
-        rpc: undefined,
-        nonce: 0n
-    }
+    const tmp = { ...state.value }
+    // const tmp:DAppState = {
+    //     provider: undefined,
+    //     chainId: undefined,
+    //     addresses: undefined,
+    //     height: undefined,
+    //     balance: undefined,
+    //     dzhv: undefined,
+    //     dzhvBalance: undefined,
+    //     rpc: undefined,
+    //     receipts: new Map(state.value.receipts.entries()),
+    //     nonce: 0n
+    // }
     const table:Array<DAppState&{ step:string }> = [{ step: 'init', ...tmp }]
     // try to get all dApp state properties until none are undefined 
     while (Object.values(tmp).includes(undefined)) {
@@ -97,11 +100,22 @@ async function poll() {
                 updateDzhvBalance({ tmp, table })
             ])
         }
+        const hashesWhereStatusNull = [...statuses.entries()].filter(([_, status]) => !status.value).map(([hash]) => hash) 
+        const receipts:z.infer<typeof bar>[] = []
+        for (const hash of hashesWhereStatusNull) receipts.push(await e.receipt({ hash }).call({ url: tmp.rpc }).catch(() => null))
         if (tmp.nonce != state.value.nonce) continue
         if (Object.values(tmp).includes(null)) console.error('null data', Object.entries(tmp).filter(([_k,v]) => v === null).map(([k,_v]) => k))
         else {
             console.table(table, ['step', 'height', 'balance', 'dzhvBalance'])
-            state.value = { ...tmp, nonce: (tmp.nonce as bigint) + 1n }
+            batch(() => {
+                state.value = { ...tmp, nonce: (tmp.nonce as bigint) + 1n }
+                for (const receipt of receipts.filter(receipt => receipt && receipt.blockNumber <= height)) {
+                    if (!receipt) continue
+                    const status = statuses.get(receipt.transactionHash)
+                    if (!status) continue
+                    status.value = receipt.status
+                }
+            })
         }
     }
 }
@@ -173,6 +187,7 @@ function updateRpc({ tmp, table }:{ tmp:DAppState, table:Array<DAppState&{ step:
         case 42161n: tmp.rpc = 'https://arbitrum.llamarpc.com'; break
         case 43114n: tmp.rpc = 'https://avalanche.drpc.org'; break
         case 84532n: tmp.rpc = 'https://sepolia.base.org'; break
+        case 8545n: tmp.rpc = 'http://localhost:8545'; break
         default: { tmp.rpc = null; console.error(`unknown chainId ${tmp.chainId}`) }
     }
     table.push({ step: 'updateRpc', ...tmp })
@@ -212,6 +227,12 @@ async function updateDzhvBalance({ tmp, table }:{ tmp:DAppState, table:Array<DAp
     tmp.dzhvBalance = await z.string().transform(BigInt).parseAsync(maybeBalanceStr).catch(() => null)
     table.push({ step: 'updateDzhvBalance', ...tmp })
 }
+
+// async function updateReceipts({ tmp, table }:{ tmp:DAppState, table:Array<DAppState&{ step:string }> }) {
+//     if (!tmp.rpc) return
+//     
+//     table.push({ step: 'updateReceipts', ...tmp })
+// }
 
 export default function Foo(
     props: JSX.HTMLAttributes<HTMLButtonElement>
