@@ -1,7 +1,9 @@
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts'
-import { signal } from '@preact/signals'
+import { Signal, signal } from '@preact/signals'
 import * as schemas from '../schemas/mod.ts'
+import * as e from '../ejra/mod.ts'
 const foo = schemas.metamaskProvider.optional()
+const bar = e.receipt({ hash: '' }).ejrrq.schema
 
 type DAppState = {
     provider:undefined|z.infer<typeof foo>|null,
@@ -24,8 +26,10 @@ const state = signal<DAppState>({
     dzhv: undefined,
     dzhvBalance: undefined,
     rpc: undefined,
-    nonce: undefined
+    nonce: 0n,
 })
 
-export { state }
+const statuses = new Map<string,Signal<"0x0"|"0x1"|null>>()
+
+export { state, statuses }
 export type { DAppState }
