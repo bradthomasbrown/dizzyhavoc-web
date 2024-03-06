@@ -1,19 +1,32 @@
 import z from "https://deno.land/x/zod@v3.22.4/index.ts";
-import { amount, destination, recipient, state, toasts, createToast } from '../utils/mod.ts'
+import * as e from '../ejra/mod.ts'
+import { amount, destination, recipient, state, statuses, createToast } from '../utils/mod.ts'
+import { rlb } from "../../../llc/rlb/RLB.ts";
+import { Signal } from "@preact/signals";
+const bar = e.receipt({ hash: '' }).ejrrq.schema
 
-export function bridge() {
+export async function bridge() {
     if (!state.value.provider) { alert('provider undefined'); return }
     if (!state.value.addresses || !state.value.addresses.length) { alert('no connected addresses'); return }
     if (!destination.value) { alert('destination undefined'); return }
     if (!recipient.value) { alert('recipient undefined'); return }
     if (!amount.value) { alert('amount undefined'); return }
+    if (!state.value.rpc) { alert('rpc undefined'); return }
+    const { rpc } = state.value
     const data = `0x9eea5f66${
         destination.value.toString(16).padStart(64, '0')}${
         recipient.value.substring(2).padStart(64, '0')}${
         amount.value.toString(16).padStart(64, '0')}`
-    const params = [{ to: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe', data, from: state.value.addresses.at(0) }]
-    console.log(`bridge params: ${JSON.stringify(params)} (amount: ${amount.value})`)
-    state.value.provider.request({ method: 'eth_sendTransaction', params })
+    const input = data
+    const from = state.value.addresses.at(0)
+    const to = '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe'
+    const call = { to, data, input, from }
+    console.log(`bridge params: ${JSON.stringify(call)} (amount: ${amount.value})`)
+    state.value.provider.request({ method: 'eth_sendTransaction', params: [{ ...call, input: undefined, data: input }] })
     .then(z.string().parseAsync)
-    .then(hash => createToast({ hash, explorer: 'https://fooscan.com/' }))
+    .then(async hash => {
+        const status:Signal<"0x1"|"0x0"|null> = new Signal(null)
+        statuses.set(hash, status)
+        createToast({ hash, explorer: { name: 'Fooscan', url: 'https://fooscan.com/' }, status })
+    })
 }
