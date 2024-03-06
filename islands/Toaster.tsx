@@ -2,19 +2,10 @@ import { JSX } from 'preact'
 import Toast from './Toast.tsx'
 import { IS_BROWSER } from '$fresh/runtime.ts'
 import { toasts } from '../utils/mod.ts'
-
-if (IS_BROWSER) (async () => {
-    for (let i = 0; i < 3; i++)
-        await new Promise<void>(r => setTimeout(() => {
-            const hash = `0x${[...crypto.getRandomValues(new Uint8Array(32))].map(x => x.toString(16).padStart(2, '0')).join('')}`
-            const id = Symbol()
-            const onClose = () => { toasts.value = toasts.value.filter(toast => toast.id !== id); }
-            const component = Toast({ hash, onClose })
-            const toast = { component, id }
-            toasts.value = [toast, ...toasts.value]
-            r()
-        }, 1000))
-})()
+import z from "https://deno.land/x/zod@v3.22.4/index.ts";
+import { Signal } from "@preact/signals";
+import * as e from '../ejra/mod.ts'
+const bar = e.receipt({ hash: '' }).ejrrq.schema
 
 export default function Toaster(props: JSX.HTMLAttributes<HTMLButtonElement>) {
     return (
