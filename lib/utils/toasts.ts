@@ -1,6 +1,6 @@
 import { Signal } from '@preact/signals'
-import Toast from '../islands/Toast.tsx'
-import { state } from '../utils/mod.ts'
+import Toast from '../../islands/Toast.tsx'
+import { state } from './mod.ts'
 import * as e from '../ejra/mod.ts'
 import z from "https://deno.land/x/zod@v3.22.4/index.ts";
 const bar = e.receipt({ hash: '' }).ejrrq.schema

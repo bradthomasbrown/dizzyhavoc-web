@@ -1,7 +1,7 @@
 import z from "https://deno.land/x/zod@v3.22.4/index.ts";
 import * as e from '../ejra/mod.ts'
-import { amount, destination, recipient, state, statuses, createToast } from '../utils/mod.ts'
-import { rlb } from "../../../llc/rlb/RLB.ts";
+import { amount, destination, recipient, state, statuses, createToast } from './mod.ts'
+import { rlb } from "../../../../llc/rlb/RLB.ts";
 import { Signal } from "@preact/signals";
 const bar = e.receipt({ hash: '' }).ejrrq.schema
 
