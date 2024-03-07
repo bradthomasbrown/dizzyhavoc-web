@@ -42,14 +42,14 @@ export default function Web3Input(
       <input type="text"
           {...props}
           disabled={!IS_BROWSER||props.disabled}
-          class="h-[9mm] text-xl bg-transparent border-solid border-b-2 border-[#416390] rounded-sm caret-[#416390] text-[#416390] font-[monospace]"
+          class="h-[9mm] py-2 px-3 text-xl bg-transparent border-solid border-b-2 border-[#8d8d8d] rounded-sm caret-[#000000] text-[#161616] font-[monospace]"
           value={numValue}
           onInput={onTextInput}
       />
       <input type="range"
           {...props}
           disabled={!IS_BROWSER||props.disabled}
-          class="h-[9mm] text-xl accent-[#416390]"
+          class="h-[9mm] text-xl accent-[#222222]"
           value={rangeValue.value.toString()}
           onInput={onRangeInput}
       />

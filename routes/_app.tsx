@@ -12,7 +12,6 @@ export default function App({ Component }: PageProps) {
       </head>
       <body class="bg-[#E6E6E6]">
         <Component />
-        <Footer/>
       </body>
     </html>
   );

@@ -25,14 +25,14 @@ const globalWithEthereum = globalThis as typeof globalThis & {
 // }
 
 let pollId:number
-const status:Signal<'Connect'|'Loading...'> = signal('Connect')
+const status:Signal<'Connect'|'Loading'> = signal('Connect')
 
 function connect() {
     const { ethereum } = gwe
     if (IS_BROWSER && ethereum) {
         // ethereum.on('chainChanged', onChainChanged)
         // ethereum.on('accountsChanged', onAccountsChanged)
-        status.value = 'Loading...'
+        status.value = 'Loading'
         init()
     }
 }
@@ -213,13 +213,14 @@ async function updateDzhvBalance({ tmp, table }:{ tmp:DAppState, table:Array<DAp
     table.push({ step: 'updateDzhvBalance', ...tmp })
 }
 
-export default function Foo(
-    props: JSX.HTMLAttributes<HTMLButtonElement>
-) {
+export default function Foo() {
     return (
         <div>
             {!state.value.addresses?.at(0) && (<div>
-                <Button onClick={connect}>{status.value}</Button>
+                <div className="text-2xl text-[#3d3d3d] shadow-xl font-[monospace] rounded-lg py-1 px-4 hover:scale-[105%] cursor-pointer bg-[#c5c5c5]" onClick={connect}>{status.value}</div>
+            </div>)}
+            {state.value.addresses?.at(0) && (<div>
+                <div className="text-2xl text-[#3d3d3d] shadow-xl font-[monospace] rounded-lg py-1 px-4 hover:scale-[105%] cursor-pointer bg-[#c5c5c5]">Connected</div>
             </div>)}
         </div>
     );

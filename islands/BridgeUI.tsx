@@ -27,15 +27,16 @@ export default function BridgeUI(
 
             <Toaster/>
         
-            {state.value.addresses?.at(0) && (<div class="flex flex-col items-center gap-1">
-             
-                {/* TODO - add "from" field that can be used to prompt switching of chains */}
-                <div>{state.value.dzhvBalance ? w3LabelConv({ big: state.value.dzhvBalance, dec: 18, sym: 'DZHV', tarLen: 16, maxExt: Infinity }) : '...'}</div>
-                <input onInput={onDestinationInput} list="chains" placeholder={'destination'}></input>
-                <input onInput={e => recipient.value = e.currentTarget.value} list="addrs" placeholder={'address'}></input>
-                <Web3Input placeholder="amount" maxVal={state.value.dzhvBalance} decimals={18n}></Web3Input>
-                <Button onClick={bridge}>bridge</Button>
+            {state.value.addresses?.at(0) && (
                 
+                <div class="flex flex-col items-center gap-1">
+                {/* TODO - add "from" field that can be used to prompt switching of chains */}
+                <div>{state.value.dzhvBalance ? 'Balance: ' + w3LabelConv({ big: state.value.dzhvBalance, dec: 18, sym: 'DZHV', tarLen: 16, maxExt: Infinity }) : 'No balance'}</div>
+                <input class="py-2 rounded-lg text-center" onInput={onDestinationInput} list="chains" placeholder={'destination'}></input>
+                <input class="py-2 rounded-lg text-center" onInput={e => recipient.value = e.currentTarget.value} list="addrs" placeholder={'receiving address'}></input>
+                <Web3Input placeholder="amount" maxVal={state.value.dzhvBalance} decimals={18n}></Web3Input>
+                <div className="text-2xl text-white font-[monospace] rounded-lg py-1 px-4 hover:scale-[101%] cursor-pointer bg-[#757575] border-solid border-2 border-[#2e2e2e]" onClick={bridge}>bridge</div>
+
                 <datalist id="chains">
                     <option value="ETH"></option>
                     <option value="AVAX"></option>
