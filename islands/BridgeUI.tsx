@@ -35,7 +35,7 @@ export default function BridgeUI(
                 <input class="py-2 rounded-lg text-center" onInput={onDestinationInput} list="chains" placeholder={'destination'}></input>
                 <input class="py-2 rounded-lg text-center" onInput={e => recipient.value = e.currentTarget.value} list="addrs" placeholder={'receiving address'}></input>
                 <Web3Input placeholder="amount" maxVal={state.value.dzhvBalance} decimals={18n}></Web3Input>
-                <div className="text-2xl text-white font-[monospace] rounded-lg py-1 px-4 hover:scale-[101%] cursor-pointer bg-[#757575] border-solid border-2 border-[#2e2e2e]" onClick={bridge}>bridge</div>
+                <div className="text-2xl text-[#3d3d3d] shadow-lg font-[Poppins] rounded-lg py-1 px-4 hover:scale-[105%] border border-[#e9e9e9] cursor-pointer bg-[#f1f1f1]" onClick={bridge}>bridge</div>
 
                 <datalist id="chains">
                     <option value="ETH"></option>

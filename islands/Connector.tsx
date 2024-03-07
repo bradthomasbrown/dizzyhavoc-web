@@ -217,10 +217,10 @@ export default function Foo() {
     return (
         <div>
             {!state.value.addresses?.at(0) && (<div>
-                <div className="text-2xl text-[#3d3d3d] shadow-xl font-[monospace] rounded-lg py-1 px-4 hover:scale-[105%] cursor-pointer bg-[#c5c5c5]" onClick={connect}>{status.value}</div>
+                <div className="text-2xl text-[#3d3d3d] shadow-xl font-[Poppins] rounded-lg py-1 px-4 hover:scale-[105%] border border-[#e9e9e9] cursor-pointer bg-[#f1f1f1]" onClick={connect}>{status.value}</div>
             </div>)}
             {state.value.addresses?.at(0) && (<div>
-                <div className="text-2xl text-[#3d3d3d] shadow-xl font-[monospace] rounded-lg py-1 px-4 hover:scale-[105%] cursor-pointer bg-[#c5c5c5]">Connected</div>
+                <div className="text-2xl text-[#3d3d3d] shadow-xl font-[Poppins] rounded-lg py-1 px-4 hover:scale-[105%] border border-[#e9e9e9] cursor-pointer bg-[#f1f1f1]">Connected</div>
             </div>)}
         </div>
     );
