@@ -17,7 +17,7 @@ export default function LegalsPopup() {
      // the useEffect to trigger on first render and check if in the localStorage we already have data about user seen and closed the pop-up
   useEffect(() => {
     // getting value of "seenPopUp" key from localStorage
-    let returningUser = localStorage.getItem("seenPopUp");
+    const returningUser = localStorage.getItem("seenPopUp");
     // if it's not there, for a new user, it will be null
     // if it's there it will be boolean true
     // setting the opposite to state, false for returning user, true for a new user
