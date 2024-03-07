@@ -1,14 +1,13 @@
-import More from "../components/More.tsx";
 import Info from "../components/Info.tsx";
 import Roadmap from "../components/Roadmap.tsx";
 import Buy from "../components/Buy.tsx";
-import Secret from "../components/Secret.tsx";
+import Footer from "../components/Footer.tsx";
 export default function Home() {
   return (
     <>
       <div class="w-full h-full flex justify-center">
         <div class="flex w-full flex-col items-center mb-[5rem]">
-          <h1 class="lg:text-[8rem] text-[3rem] mt-[5rem] underline font-Poppins text-[#2f2f2f]">
+          <h1 class="xl:text-[8rem] text-[3rem] mt-[5rem] underline font-Poppins text-[#2f2f2f]">
             DizzyHavoc
           </h1>
           <p class="font-medium italic text-[1.3rem] text-center w-full text-[#000000] shadow-lg sm:w-[50%] mt-[0.5rem] bg-blur2 rounded-xl px-2 mb-[1rem]">
@@ -45,6 +44,7 @@ export default function Home() {
       <div class="flex flex-col gap-3 px-3 xl:flex-row">
         <Buy />
       </div>
+      <Footer/>
     </>
   );
 }
