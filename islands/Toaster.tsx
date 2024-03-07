@@ -18,7 +18,7 @@ if (IS_BROWSER) (async () => {
 
 export default function Toaster(props: JSX.HTMLAttributes<HTMLButtonElement>) {
     return (
-        <div class="fixed flex flex-col gap-2 bottom-5 right-5">
+        <div class="fixed flex flex-col gap-2 sm:bottom-5 bottom-2 right-0 sm:right-5">
             {toasts.value.map(({ component }) => component)}
         </div>
     )

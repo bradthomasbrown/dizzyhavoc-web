@@ -3,7 +3,7 @@ import { JSX } from 'preact'
 
 export default function Toast(props: { hash:string, onClose:()=>void }&JSX.HTMLAttributes<HTMLButtonElement>) {
     return (
-        <div class="flex items-center shadow-lg justify-between w-full max-w-sm min-w-96 p-4 text-[#212121] bg-white rounded-lg dark:text-white dark:bg-[#212121]" role="alert">
+        <div class="flex items-center shadow-lg sm:mx-auto mx-0 justify-between w-full max-w-sm min-w-80 p-4 text-[#212121] bg-white rounded-lg dark:text-white dark:bg-[#212121]" role="alert">
             <div class="inline-flex items-center flex-shrink-0 w-8 h-8 text-[#212121] bg-white rounded-lg dark:bg-[#212121] dark:text-white">
                 {/* from https://github.com/SamHerbert/SVG-Loaders */}
                 <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" class="dark:stroke-white stroke-[#212121]">

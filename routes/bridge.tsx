@@ -2,28 +2,29 @@ import { Partial } from '$fresh/runtime.ts' // https://fresh.deno.dev/docs/conce
 import Connector from '../islands/Connector.tsx'
 import BridgeUI from '../islands/BridgeUI.tsx'
 import Footer from '../components/Footer.tsx'
-
+import LegalsPopup from '../islands/LegalsPopup.tsx';
 export default function Home() {
   return (
     <>
-      <div class="h-[80px] items-center px-4 shadow-xl  flex bg-gradient-to-b from-[#dddddd] bg-[#cccccc]">
+      <LegalsPopup />
+      <div class="sm:min-h-[4rem] min-h-[6.5rem] w-full sm:w-[40rem] justify-center mx-auto items-center px-4 flex bg-gradient-to-b border-e-transparent border-s-transparent border-t-transparent border-[#dbdbdb] border border-1 bg-[#f3f3f3]">
         <div class="justify-start w-full flex">
-          <img class="h-[80px] saturate-0" src="/dzhv.png "></img>
+        <div class="lg:text-[1.8rem] my-auto justify-center text-[1.5rem] font-[Poppins] font-medium font-Poppins text-[#3d3d3d]">DizzyHavoc - Bridge</div>
         </div>
         <div class="justify-end w-full flex">
-          <Connector />
+        <Connector/>
         </div>
       </div>
       <div class="w-full h-screen flex justify-center">
+  
         <div class="flex w-full flex-col items-center mb-[5rem]">
-          <h1 class="lg:text-[5rem] text-[2.5rem] mt-[3rem] underline font-Poppins text-[#3d3d3d]">
-            DizzyHavoc - Bridge
-          </h1>
-          <p class="font-medium italic text-[1.8rem] text-center w-full text-[#545454] sm:w-[50%] mt-[0.5rem] rounded-xl px-2 mb-[1rem]">
-            Faster, smarter, more robust & secure.
+          <p class="italic sm:text-[1.6rem] text-[1.2rem] text-center w-full text-[#545454] sm:w-[50%] mt-[2.5rem] rounded-xl px-2 mb-[1rem]">
+            Cheaper, faster, more robust & secure.
           </p>
-          <div className="min-w-[300px] sm:min-w-[500px] bg-[#d1d1d1]  shadow-xl rounded-xl flex h-[45%] mt-[5rem] items-center justify-center">
-            <div class="flex flex-col gap-3 px-3 lg:flex-row">
+          <div className="min-w-[390px] sm:min-w-[500px] bg-[#d1d1d1] shadow-xl rounded-xl flex min-h-[25rem] sm:mt-[10rem] mt-[1rem] items-center justify-center">
+          <div class="border absolute min-w-full -z-10 sm:min-w-[70rem] border-t-transparent border-b-transparent h-full border border-[#EAEAEA] ">
+          </div>
+            <div class="flex flex-col gap-3 px-3 lg:flex-row  ">
               <BridgeUI />
             </div>
           </div>

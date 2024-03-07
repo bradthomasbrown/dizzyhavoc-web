@@ -9,6 +9,7 @@ import * as $index from "./routes/index.tsx";
 import * as $BridgeUI from "./islands/BridgeUI.tsx";
 import * as $Button from "./islands/Button.tsx";
 import * as $Connector from "./islands/Connector.tsx";
+import * as $LegalsPopup from "./islands/LegalsPopup.tsx";
 import * as $Toast from "./islands/Toast.tsx";
 import * as $Toaster from "./islands/Toaster.tsx";
 import * as $Web3Input from "./islands/Web3Input.tsx";
@@ -26,6 +27,7 @@ const manifest = {
     "./islands/BridgeUI.tsx": $BridgeUI,
     "./islands/Button.tsx": $Button,
     "./islands/Connector.tsx": $Connector,
+    "./islands/LegalsPopup.tsx": $LegalsPopup,
     "./islands/Toast.tsx": $Toast,
     "./islands/Toaster.tsx": $Toaster,
     "./islands/Web3Input.tsx": $Web3Input,
