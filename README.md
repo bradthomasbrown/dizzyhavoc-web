@@ -19,6 +19,7 @@ This project uses Deno Fresh. To setup:
 
 - `components/` non-interactive components
 - `lib/`
+    - `internal.ts`: helpful file to manage module load order, [described here](https://stackoverflow.com/a/76717884)
     - `ejra/`: [Ethereum JSON RPC API bindings for typescript](https://ethereum.org/en/developers/docs/apis/json-rpc/)
     - `schemas/`: [Zod](https://zod.dev/) schemas for validating and normalizing common EVM and EJRA objects, like blocks, transactions, or injected Web3 providers
     - `state/` dApp state [Preact signals](https://preactjs.com/guide/v10/signals/)
