@@ -19,7 +19,7 @@ function connect() {
         ethereum.on('chainChanged', onChainChanged)
         ethereum.on('accountsChanged', onAccountsChanged)
         status.value = 'Loading'
-        init().then(() => { status.value = 'Connected'; poll() })
+        init().then(() => { status.value = 'Connected' })
     }
 }
 
