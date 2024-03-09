@@ -1,13 +1,18 @@
-import { rlb } from "../../../../llc/rlb/mod.ts";
 import { DAppState, TState } from "../internal.ts";
 
-export async function updateTState(
+export async function updateTState({
+    tstate, updaters, abortController
+}:{
     tstate:TState,
-    updaters:((state:DAppState)=>Promise<void>)[]
-) {
-    const prevDelay = rlb.delay
-    rlb.delay = 333
-    while (Object.values(tstate).includes(undefined))
-        await Promise.all(updaters.map(updater => updater(tstate)))
-    rlb.delay = prevDelay
+    updaters:Array<
+        ({ tstate, abortController }:{
+            tstate:DAppState, abortController:AbortController
+        }) => Promise<void>
+    >
+    abortController:AbortController
+}) {
+    while (Object.values(tstate).includes(undefined)) {
+        await Promise.all(updaters.map(updater => updater({
+            tstate, abortController })))
+    }
 } 
