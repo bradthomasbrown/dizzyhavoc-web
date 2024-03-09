@@ -6,14 +6,17 @@ import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $bridge from "./routes/bridge.tsx";
 import * as $index from "./routes/index.tsx";
-import * as $BridgeUI from "./islands/BridgeUI.tsx";
-import * as $Button from "./islands/Button.tsx";
-import * as $Connector from "./islands/Connector.tsx";
-import * as $LegalsPopup from "./islands/LegalsPopup.tsx";
-import * as $Toast from "./islands/Toast.tsx";
-import * as $Toaster from "./islands/Toaster.tsx";
-import * as $Web3Input from "./islands/Web3Input.tsx";
-import * as $tokendata from "./islands/tokendata.tsx";
+import * as $bridge_Form from "./islands/bridge/Form.tsx";
+import * as $bridge_LegalsPopup from "./islands/bridge/LegalsPopup.tsx";
+import * as $bridge_Toast from "./islands/bridge/Toast.tsx";
+import * as $bridge_Toaster from "./islands/bridge/Toaster.tsx";
+import * as $common_Balance from "./islands/common/Balance.tsx";
+import * as $common_Connector from "./islands/common/Connector.tsx";
+import * as $common_ListInput from "./islands/common/ListInput.tsx";
+import * as $common_Receiver from "./islands/common/Receiver.tsx";
+import * as $common_Web3Input from "./islands/common/Web3Input.tsx";
+import * as $index_TokenData from "./islands/index/TokenData.tsx";
+import * as $index_mod from "./islands/index/mod.ts";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -24,14 +27,17 @@ const manifest = {
     "./routes/index.tsx": $index,
   },
   islands: {
-    "./islands/BridgeUI.tsx": $BridgeUI,
-    "./islands/Button.tsx": $Button,
-    "./islands/Connector.tsx": $Connector,
-    "./islands/LegalsPopup.tsx": $LegalsPopup,
-    "./islands/Toast.tsx": $Toast,
-    "./islands/Toaster.tsx": $Toaster,
-    "./islands/Web3Input.tsx": $Web3Input,
-    "./islands/tokendata.tsx": $tokendata,
+    "./islands/bridge/Form.tsx": $bridge_Form,
+    "./islands/bridge/LegalsPopup.tsx": $bridge_LegalsPopup,
+    "./islands/bridge/Toast.tsx": $bridge_Toast,
+    "./islands/bridge/Toaster.tsx": $bridge_Toaster,
+    "./islands/common/Balance.tsx": $common_Balance,
+    "./islands/common/Connector.tsx": $common_Connector,
+    "./islands/common/ListInput.tsx": $common_ListInput,
+    "./islands/common/Receiver.tsx": $common_Receiver,
+    "./islands/common/Web3Input.tsx": $common_Web3Input,
+    "./islands/index/TokenData.tsx": $index_TokenData,
+    "./islands/index/mod.ts": $index_mod,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;
