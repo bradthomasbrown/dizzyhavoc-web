@@ -1,18 +1,18 @@
-import z from "https://deno.land/x/zod@v3.22.4/index.ts";
 import { signal } from '@preact/signals'
-import { schemas, DAppState } from '../internal.ts'
+import { InjectedProvider, DAppState } from '../internal.ts'
 
 const globalWithEthereum = globalThis as typeof globalThis & {
-    ethereum: z.infer<typeof schemas.metamaskProvider> | undefined
+    ethereum?: InjectedProvider
 }, gwe = globalWithEthereum
 
-const provider = signal<undefined|z.infer<typeof schemas.metamaskProvider>|null>(undefined)
+const provider = signal<undefined|InjectedProvider|null>(undefined)
 
-function updateProvider(state:DAppState) {
+async function updateProvider(state:DAppState) {
     // only assign once
     if (state.provider) return
-    // if ethereum is not part of the globalThis, there's no injected provider
-    state.provider = gwe.ethereum ?? null
+    // if ethereum is not part of the globalThis
+    // there's no injected provider
+    await Promise.resolve(state.provider = gwe.ethereum ?? null)
 }
 
 export { provider, updateProvider }
