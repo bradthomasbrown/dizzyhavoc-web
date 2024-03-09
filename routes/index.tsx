@@ -1,7 +1,7 @@
-import Info from "../components/Info.tsx";
-import Roadmap from "../components/Roadmap.tsx";
-import Buy from "../components/Buy.tsx";
-import Footer from "../components/Footer.tsx";
+import {
+  Footer,
+  Info, Roadmap, Buy
+} from '../lib/internal.ts'
 export default function Home() {
   return (
     <>
