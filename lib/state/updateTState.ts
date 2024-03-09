@@ -6,7 +6,7 @@ export async function updateTState(
     updaters:((state:DAppState)=>Promise<void>)[]
 ) {
     const prevDelay = rlb.delay
-    rlb.delay = prevDelay / 3
+    rlb.delay = 333
     while (Object.values(tstate).includes(undefined))
         await Promise.all(updaters.map(updater => updater(tstate)))
     rlb.delay = prevDelay
