@@ -1,35 +1,50 @@
 import { signal } from '@preact/signals'
 import z from "https://deno.land/x/zod@v3.22.4/index.ts";
-import { DAppState } from "../internal.ts";
+import { UpdaterOpts } from "../internal.ts";
 
 const addresses = signal<undefined|string[]|null>(undefined)
 
-async function updateAddresses(state:DAppState) {
-    // if we already updated the state, skip
-    if (state.addresses !== null && state.addresses !== undefined) return 
-    // if there's no provider, there's no selected addresses
-    if (state.provider === null) { state.addresses = null; return }
-    // if we don't know if there's a provider, we don't know if there's selected addresses
-    if (state.provider ===  undefined) return
-    // request accounts via provider
-    const method = 'eth_accounts'
-    const result = await state.provider.request({ method, params: [] }).catch(() => null)
-    // verify that the result is at least an array of strings, then return 
-    state.addresses = await z.string().array().parseAsync(result).catch(() => null)
+async function updateAddresses({ tstate, signal }:UpdaterOpts) {
+
+    // pre-check
+    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+
+    // logic
+    if (tstate.addresses !== null && tstate.addresses !== undefined) return 
+    if (tstate.provider === null) { tstate.addresses = null; return }
+    if (tstate.provider ===  undefined) return
+
+    // get and parse
+    const addresses = await tstate.provider.request({ method: 'eth_accounts', params: [] })
+        .then(z.string().array().parseAsync).catch(() => null)
+
+    // post-check
+    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+
+    // commit
+    tstate.addresses = addresses
+
 }
 
-async function requestAddresses(state:DAppState) {
-    // if we already updated the state, skip
-    if (state.addresses !== null && state.addresses !== undefined) return 
-    // if there's no provider, there's no selected addresses
-    if (state.provider === null) { state.addresses = null; return }
-    // if we don't know if there's a provider, we don't know if there's selected addresses
-    if (state.provider ===  undefined) return
-    // request accounts via provider
-    const method = 'eth_requestAccounts'
-    const result = await state.provider.request({ method, params: [] }).catch(() => null)
-    // verify that the result is at least an array of strings, then return 
-    state.addresses = await z.string().array().parseAsync(result).catch(() => null)
+async function requestAddresses({ tstate, signal }:UpdaterOpts) {
+
+    // pre-check
+    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+
+    // logic
+    if (tstate.addresses !== null && tstate.addresses !== undefined) return 
+    if (tstate.provider === null) { tstate.addresses = null; return }
+    if (tstate.provider ===  undefined) return
+
+    // get and parse
+    const addresses = await tstate.provider.request({ method: 'eth_requestAccounts', params: [] })
+        .then(z.string().array().parseAsync).catch(() => null)
+
+    // post-check
+    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+    
+    // commit
+    tstate.addresses = addresses
 }
 
 export { addresses, updateAddresses, requestAddresses }

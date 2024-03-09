@@ -1,21 +1,31 @@
 import { signal } from '@preact/signals'
-import { DAppState, e } from "../internal.ts";
+import { UpdaterOpts, e } from "../internal.ts";
 
 const balance = signal<undefined|bigint|null>(undefined)
 
-async function updateBalance(state:DAppState) {
-    // if we already updated the state, skip
-    if (state.balance !== null && state.balance !== undefined) return 
-    // require an rpc, height, and the connected address list to derive balance
-    if (state.rpc === null || state.height === null || state.addresses === null) { state.balance = null; return }
-    // if we don't know the deriving requirements, we don't know the balance
-    if (state.rpc === undefined || state.height === undefined || state.addresses === undefined) return
-    // if we have the address list, but it's empty, we can't derive balance
-    if (!state.addresses[0]) { state.balance = null; return }
-    const address = state.addresses[0]
-    const tag = state.height
-    const url = state.rpc
-    state.balance = await e.balance({ address, tag }).call({ url }).catch(() => null)
+async function updateBalance({ tstate, signal }:UpdaterOpts) {
+    
+    // pre-check
+    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+
+    // logic
+    if (tstate.balance !== null && tstate.balance !== undefined) return 
+    if (tstate.rpc === null || tstate.height === null || tstate.addresses === null) { tstate.balance = null; return }
+    if (tstate.rpc === undefined || tstate.height === undefined || tstate.addresses === undefined) return
+    if (!tstate.addresses[0]) { tstate.balance = null; return }
+
+    // get
+    const balance = await e.balance({
+        address: tstate.addresses[0],
+        tag: tstate.height
+    }).call({ url: tstate.rpc, signal }).catch(() => null)
+
+    // post-check
+    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+
+    // commit
+    tstate.balance = balance
+
 }
 
 export { balance, updateBalance }

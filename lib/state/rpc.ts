@@ -1,17 +1,27 @@
 import { signal } from '@preact/signals'
-import { query, DAppState } from '../internal.ts'
+import { query, UpdaterOpts } from '../internal.ts'
 
 const rpc = signal<undefined|string|null>(undefined)
 
-async function updateRpc(state:DAppState) {
-    if (state.rpc !== null && state.rpc !== undefined) return 
-    if (state.chainId === null) { state.rpc = null; return }
-    if (state.chainId === undefined) return
-    const chain = await query({ id: state.chainId }).catch(() => null)
-    if (!chain) { state.rpc = null; return }
-    const rpc = chain.rpc.filter(url => !url.match(/wss/i))?.[0]
-    if (!rpc) { state.rpc = null; return }
-    state.rpc = rpc
+async function updateRpc({ tstate, signal }:UpdaterOpts) {
+
+    // pre-check
+    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+
+    // logic
+    if (tstate.rpc !== null && tstate.rpc !== undefined) return 
+    if (tstate.chainId === null) { tstate.rpc = null; return }
+    if (tstate.chainId === undefined) return
+
+    // get and parse
+    const rpc = (await query({ id: tstate.chainId }))?.rpc?.[0] ?? null
+
+    // post-check
+    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+
+    // commit
+    tstate.rpc = rpc
+
 }
 
 export { rpc, updateRpc }

@@ -1,5 +1,5 @@
 import { signal } from '@preact/signals'
-import { InjectedProvider, DAppState } from '../internal.ts'
+import { InjectedProvider, UpdaterOpts } from '../internal.ts'
 
 const globalWithEthereum = globalThis as typeof globalThis & {
     ethereum?: InjectedProvider
@@ -7,12 +7,11 @@ const globalWithEthereum = globalThis as typeof globalThis & {
 
 const provider = signal<undefined|InjectedProvider|null>(undefined)
 
-async function updateProvider(state:DAppState) {
-    // only assign once
-    if (state.provider) return
-    // if ethereum is not part of the globalThis
-    // there's no injected provider
-    await Promise.resolve(state.provider = gwe.ethereum ?? null)
+async function updateProvider({ tstate, signal }:UpdaterOpts) {
+    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+    if (tstate.provider) return
+    tstate.provider = gwe.ethereum ?? null
+    await Promise.resolve()
 }
 
 export { provider, updateProvider }
