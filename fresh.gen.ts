@@ -16,7 +16,6 @@ import * as $common_ListInput from "./islands/common/ListInput.tsx";
 import * as $common_Receiver from "./islands/common/Receiver.tsx";
 import * as $common_Web3Input from "./islands/common/Web3Input.tsx";
 import * as $index_TokenData from "./islands/index/TokenData.tsx";
-import * as $index_mod from "./islands/index/mod.ts";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -37,7 +36,6 @@ const manifest = {
     "./islands/common/Receiver.tsx": $common_Receiver,
     "./islands/common/Web3Input.tsx": $common_Web3Input,
     "./islands/index/TokenData.tsx": $index_TokenData,
-    "./islands/index/mod.ts": $index_mod,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;
