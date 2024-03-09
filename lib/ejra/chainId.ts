@@ -5,5 +5,5 @@ export default function () {
     const schema = z.string().transform(str => BigInt(str))
     const method = 'eth_chainId' as const
     const ejrrq = { method, schema }
-    return { ejrrq, call: ({ url, rlbBypass }:{ url:string, rlbBypass?:boolean }) => ejrc({ url, ejrrq, rlbBypass }) }
+    return { ejrrq, call: ({ url, rlbBypass, signal }:{ url:string, rlbBypass?:boolean, signal?:AbortSignal }) => ejrc({ url, ejrrq, rlbBypass, signal }) }
 }

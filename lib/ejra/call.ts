@@ -8,5 +8,5 @@ export default function ({ tx, tag='latest' }:Opts) {
     const params = [tx, tag] as const
     const method = 'eth_call' as const
     const ejrrq = { method, params, schema }
-    return { ejrrq, call: ({ url, rlbBypass }:{ url:string, rlbBypass?:boolean }) => ejrc({ url, ejrrq, rlbBypass }) }
+    return { ejrrq, call: ({ url, rlbBypass, signal }:{ url:string, rlbBypass?:boolean, signal?:AbortSignal }) => ejrc({ url, ejrrq, rlbBypass, signal }) }
 }

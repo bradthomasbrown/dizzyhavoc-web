@@ -8,5 +8,5 @@ export default function ({ address, tag='latest' }:Opts) {
     const params = [address, tag] as const
     const method = 'eth_getTransactionCount' as const
     const ejrrq = { method, params, schema }
-    return { ejrrq, call: (url:string) => ejrc({ url, ejrrq }) }
+    return { ejrrq, call: ({ url, rlbBypass, signal }:{ url:string, rlbBypass?:boolean, signal?:AbortSignal }) => ejrc({ url, ejrrq, rlbBypass, signal }) }
 }

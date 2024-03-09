@@ -3,16 +3,6 @@ import ejrc from './ejrc.ts'
 
 type Opts = { filter:Filter }
 
-// removed:boolean
-// logIndex:bigint|null
-// transactionIndex:bigint|null
-// transactionHash:string|null
-// blockHash:string|null
-// blockNumber:bigint|null
-// address:string
-// data:string
-// topics:string[]
-
 export default function ({ filter }:Opts) {
     const schema = z.object({
         removed: z.boolean(),
@@ -28,5 +18,5 @@ export default function ({ filter }:Opts) {
     const params = [filter] as const
     const method = 'eth_getLogs' as const
     const ejrrq = { method, params, schema }
-    return { ejrrq, call: ({ url, rlbBypass }:{ url:string, rlbBypass?:boolean }) => ejrc({ url, ejrrq, rlbBypass }) }
+    return { ejrrq, call: ({ url, rlbBypass, signal }:{ url:string, rlbBypass?:boolean, signal?:AbortSignal }) => ejrc({ url, ejrrq, rlbBypass, signal }) }
 }

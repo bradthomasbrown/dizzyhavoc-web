@@ -8,5 +8,5 @@ export default function ({ number, full=true }:Opts) {
     const params = [number, full] as const
     const method = 'eth_getBlockByNumber' as const
     const ejrrq = { method, params, schema }
-    return { ejrrq, call: (url:string) => ejrc({ url, ejrrq }) }
+    return { ejrrq, call: ({ url, rlbBypass, signal }:{ url:string, rlbBypass?:boolean, signal?:AbortSignal }) => ejrc({ url, ejrrq, rlbBypass, signal }) }
 }
