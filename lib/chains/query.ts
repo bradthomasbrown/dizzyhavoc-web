@@ -9,7 +9,7 @@ export async function query({ id }:{ id:bigint }) {
     const chain = override
         ? null
         : await import(`./chains/_data/chains/eip155-${id}.json`, { with: { type: 'json' } })
-            .then(maybeChain => schemas.chain.parseAsync(maybeChain))
+            .then(schemas.chain.parseAsync)
             .catch(() => null)
 
     return override ?? chain 
