@@ -17,19 +17,19 @@ async function updateDzhvBalance({ tstate, signal }:UpdaterOpts) {
     if (!address) { tstate.dzhvBalance = null; return }
 
     // get and parse
-    const balance = await e.call({
+    const dzhvBalance = await e.call({
         tx: {
             input: `0x70a08231${address.substring(2).padStart(64, '0')}`,
             to: tstate.dzhv.address
         },
         tag: tstate.height
-    }).call({ url: tstate.rpc }).then(z.string().transform(BigInt).parseAsync).catch(() => null)
+    }).call({ url: tstate.rpc, signal }).then(z.string().transform(BigInt).parseAsync).catch(() => null)
 
     // post-check
     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
 
     // commit
-    tstate.balance = balance
+    tstate.dzhvBalance = dzhvBalance
 
 }
 
