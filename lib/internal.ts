@@ -9,6 +9,7 @@ export * from './schemas/mod.ts'
 export * from './types/DAppState.ts'
 export * from './types/Chain.ts'
 export * from './types/InjectedProvider.ts'
+export * from './types/UpdaterOpts.ts'
 // ## ejra/
 export * as e from './ejra/mod.ts'
 // ## state/
@@ -28,6 +29,7 @@ export * from './state/init.ts'
 export * from './state/poll.ts'
 export * from './state/onChainChanged.ts'
 export * from './state/onAccountsChanged.ts'
+export * from './state/ttrack.ts'
 // ## chains/
 export * from './chains/query.ts'
 export * from './chains/overrides.ts'
