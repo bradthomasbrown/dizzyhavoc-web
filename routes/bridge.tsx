@@ -1,8 +1,5 @@
-import { Partial } from '$fresh/runtime.ts' // https://fresh.deno.dev/docs/concepts/partials - Partials allow areas of the page to be updated with new content by the server without causing the browser to reload the page
-import Connector from '../islands/Connector.tsx'
-import BridgeUI from '../islands/BridgeUI.tsx'
-import Footer from '../components/Footer.tsx'
-import LegalsPopup from '../islands/LegalsPopup.tsx';
+import { LegalsPopup, Connector, UI, Footer } from '../lib/internal.ts'
+
 export default function Home() {
   return (
     <>
@@ -22,10 +19,10 @@ export default function Home() {
             Cheaper, faster, more robust & secure.
           </p>
           <div className="min-w-[390px] sm:min-w-[500px] bg-[#d1d1d1] shadow-xl rounded-xl flex min-h-[25rem] sm:mt-[10rem] mt-[1rem] items-center justify-center">
-          <div class="border absolute min-w-full -z-10 sm:min-w-[70rem] border-t-transparent border-b-transparent h-full border border-[#EAEAEA] ">
+          <div class="border absolute min-w-full -z-10 sm:min-w-[70rem] border-t-transparent border-b-transparent h-full border-[#EAEAEA] ">
           </div>
             <div class="flex flex-col gap-3 px-3 lg:flex-row  ">
-              <BridgeUI />
+              <UI/>
             </div>
           </div>
         </div>
