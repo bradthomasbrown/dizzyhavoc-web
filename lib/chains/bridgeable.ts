@@ -11,4 +11,5 @@ const ids = [
     8546n,  // local testnet 8546
 ]
 
+// an array of bridgeable chains constructed from the above list of chain IDs
 export const bridgeable = !IS_BROWSER ? [] : await Promise.all(ids.map(id => query({ id }))) as Chain[]

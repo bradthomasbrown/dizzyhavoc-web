@@ -1,3 +1,4 @@
+// query will try to pull from this list of Chains first
 export const overrides = [
     {
         name: 'Testnet 8545',
