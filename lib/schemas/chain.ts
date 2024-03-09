@@ -4,7 +4,10 @@ export const chain = z.object({
     name: z.string(),
     chain: z.string(),
     rpc: z.string().array().transform(urls => {
-        return urls.filter(url => !url.match(/wss|API_KEY/i))
+        return urls.filter(url =>
+            !url.match(/wss|API_KEY/i)
+            && !url.match(/mycryptoapi.com/)
+        )
     }), // don't support wss or nodes requiring an API key (yet)
     nativeCurrency: z.object({
         name: z.string(),
