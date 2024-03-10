@@ -1,4 +1,4 @@
-import { rlb } from "../../../../llc/rlb/mod.ts";
+import { rlb } from 'https://deno.land/x/rlb@0.0.0/mod.ts'
 import {
     createTState, updateTState, requestAddresses, updateBalance, 
     updateChainId, updateDzhv, updateDzhvBalance, updateHeight,

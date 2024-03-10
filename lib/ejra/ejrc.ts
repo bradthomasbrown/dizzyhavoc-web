@@ -1,5 +1,5 @@
 import { z } from 'https://deno.land/x/zod@v3.22.4/mod.ts'
-import { rlb } from '../../../../llc/rlb/mod.ts'
+import { rlb } from 'https://deno.land/x/rlb@0.0.0/mod.ts'
 
 export default async function<
     E extends { method:string, params?:P, schema:S },
