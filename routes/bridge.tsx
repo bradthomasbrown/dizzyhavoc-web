@@ -28,8 +28,7 @@ export default function Home() {
             Vertigo
           </p>
           <div className="min-w-[390px] sm:min-w-[500px] bg-[#d1d1d1] dark:bg-[#151515] shadow-xl rounded-xl flex min-h-[25rem] sm:mt-[10rem] mt-[1rem]">
-          <div class="border absolute min-w-full -z-10 sm:min-w-[70rem] border-t-transparent border-b-transparent dark:border-[#2c2c2c]  dark:border-b-transparent dark:border-t-transparent h-full border-[#EAEAEA] ">
-          </div>
+  
             <div class="flex flex-col lg:flex-row">
               <UI/>
             </div>
