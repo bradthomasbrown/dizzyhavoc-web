@@ -11,10 +11,10 @@ const balance = computed(() => {
         const sym = 'DZHV'
         const tarLen = 16
         const maxExt = Infinity
-        return `Balance: ${w3LabelConv({ big, dec, sym, tarLen, maxExt })}`
-    } else return 'Unknown Balance'
+        return `${w3LabelConv({ big, dec, sym, tarLen, maxExt })}`
+    } else return 'Unknown'
 })
 
 export function Balance() {
-    return (<div class="text-xl font-[Poppins] mb-4">{balance}</div>)
+    return (<div class="text-sm text-[#2c2c2ca9] justify-center text-center dark:text-[#EAEAEAa9] font-[Poppins] mb-4">Balance<div class="text-xl text-[#2c2c2c] dark:text-[#EAEAEA] font-[Poppins]">{balance}</div></div>)
 }

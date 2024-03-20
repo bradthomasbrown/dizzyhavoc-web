@@ -29,7 +29,8 @@
     "tailwindcss": "npm:tailwindcss@3.4.1",
     "tailwindcss/": "npm:/tailwindcss@3.4.1/",
     "tailwindcss/plugin": "npm:/tailwindcss@3.4.1/plugin.js",
-    "$std/": "https://deno.land/std@0.211.0/"
+    "$std/": "https://deno.land/std@0.211.0/",
+    "ethereum-blockies-base64" : "npm:ethereum-blockies-base64@1.0.1"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

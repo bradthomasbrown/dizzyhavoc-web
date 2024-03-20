@@ -1,4 +1,6 @@
 import { useSignal, computed, Signal } from "@preact/signals";
+import { useState } from "preact/hooks";
+import { useEffect } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
 import {
     Chain, InjectedProvider,
@@ -9,19 +11,14 @@ import {
     Balance, Web3Input, ListInput
 } from '../../lib/internal.ts'
 import { IS_BROWSER } from "$fresh/runtime.ts";
+import makeBlockie from 'ethereum-blockies-base64';
 
-const hexshortSelected = computed(() => {
-    const selected = addresses.value?.[0]
-    if (!selected) return '0x'
-    return hexshort(selected)
-})
 
 export function Form() {
-    
+    const [adrs, setAdrs] = useState(addresses.value?.[0] ?? ""); // Initialize with the first address value or an empty string
     const destination = useSignal<undefined|bigint|null>(undefined)
     const recipient = useSignal<undefined|string|null>(undefined)
     const amount = useSignal<undefined|bigint|null>(undefined)
-
     function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
         const chain = bridgeable.find(({ shortName }) => e.currentTarget.value == shortName)
         destination.value = chain ? BigInt(chain.chainId) : null
@@ -54,21 +51,42 @@ export function Form() {
             address:string, provider:InjectedProvider, dzhv:{ address:string },
             destChain:Chain })
     }
-
+    const hexshortSelected = computed(() => {
+        const selected = addresses.value?.[0]
+        if (!selected) return '0x000...000'
+        return hexshort(selected)
+    })
+    useEffect(() => {
+        const selectedAddress = addresses.value?.[0];
+        setAdrs(selectedAddress ?? "0x000...000"); // Update the state with the first address value or an empty string
+      }, [addresses.value]); 
+      const blockieSrc = adrs ? makeBlockie(adrs as string) : undefined; // Generate the blockie image source based on the adrs state variable
     return (
-        <div class="flex flex-col items-center gap-1">
-            <Balance/>
-            <Web3Input placeholder="amount" maxVal={dzhvBalance.value} decimals={18n} val={amount}/>
-            <div class="font-[Poppins] font-medium mb-2">from: {hexshortSelected}</div>
-            <div class="font-[Poppins] font-medium mb-4">to:</div>
-            <div class="flex gap-2 mb-5">
-                <ListInput list="addrs" placeholder="receiving address" onInput={e => recipient.value = e.currentTarget.value}/>
-                <div class="font-[Poppins] font-medium my-auto">on</div>
-                <ListInput list="chains" placeholder="chain" onInput={onDestinationInput} addClass="w-[4rem]"/>
-            </div>
-            <Button onClick={sendBridge}>bridge</Button>
-            <datalist id="chains">{!IS_BROWSER ? [] : bridgeable.map(chain => <option value={chain?.shortName}/>)}</datalist>
-            <datalist id="addrs">{!IS_BROWSER ? [] : addresses?.value?.map(address => (<option value={address}></option>))}</datalist>
+        <>
+        <div class="flex flex-col items-start mr-[350px]">
+        <div class="flex flex-col items-start">
+        {<img class="size-[2rem]" src={blockieSrc} alt="blockie image"></img>}
+        <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm mb-2">{hexshortSelected}</div>
         </div>
+        </div>
+           
+        <div class="flex flex-col items-center gap-1">
+  
+
+        <Balance/>
+
+        <Web3Input placeholder="amount" maxVal={dzhvBalance.value} decimals={18n} val={amount}/>
+
+        <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-medium mb-4">to:</div>
+        <div class="flex gap-2 mb-5">
+            <ListInput list="addrs" placeholder="receiving address" onInput={e => recipient.value = e.currentTarget.value}/>
+            <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-medium my-auto">on</div>
+            <ListInput list="chains" placeholder="chain" onInput={onDestinationInput} addClass="w-[4rem]"/>
+        </div>
+        <Button onClick={sendBridge}>bridge</Button>
+        <datalist id="chains">{!IS_BROWSER ? [] : bridgeable.map(chain => <option value={chain?.shortName}/>)}</datalist>
+        <datalist id="addrs">{!IS_BROWSER ? [] : addresses?.value?.map(address => (<option value={address}></option>))}</datalist>
+    </div>
+    </>
     )
 }

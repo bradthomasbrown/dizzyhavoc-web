@@ -2,6 +2,7 @@
   "dependencies": {
     "@alloc/quick-lru": "^5.2.0",
     "@material-tailwind/react": "^2.1.9",
-    "@preact/signals": "^1.2.2"
+    "@preact/signals": "^1.2.2",
+    "ethereum-blockies-base64": "^1.0.1"
   }
 }
