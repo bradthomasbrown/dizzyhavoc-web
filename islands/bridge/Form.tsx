@@ -62,15 +62,13 @@ export function Form() {
       }, [addresses.value]); 
       const blockieSrc = adrs ? makeBlockie(adrs as string) : undefined; // Generate the blockie image source based on the adrs state variable
     return (
-        <>
-        <div class="flex flex-col items-start mr-[350px]">
+        <div class="w-full">
         <div class="flex flex-col items-start">
-        {<img class="size-[2rem]" src={blockieSrc} alt="blockie image"></img>}
-        <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm mb-2">{hexshortSelected}</div>
-        </div>
+        {<img class="size-[2rem] rounded-sm mt-2 ml-2" src={blockieSrc} title={adrs} alt="blockie image"></img>}
+        <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm ml-2">{hexshortSelected}</div>
         </div>
            
-        <div class="flex flex-col items-center gap-1">
+        <div class="flex flex-col translate-x-[38%] items-center justify-center gap-1">
   
 
         <Balance/>
@@ -87,6 +85,6 @@ export function Form() {
         <datalist id="chains">{!IS_BROWSER ? [] : bridgeable.map(chain => <option value={chain?.shortName}/>)}</datalist>
         <datalist id="addrs">{!IS_BROWSER ? [] : addresses?.value?.map(address => (<option value={address}></option>))}</datalist>
     </div>
-    </>
+    </div>
     )
 }
