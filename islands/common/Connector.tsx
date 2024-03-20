@@ -25,7 +25,7 @@ function connect() {
 
 export function Connector() {
     return (
-        <Button addClass="text-2xl shadow-xl" onClick={connect}>
+        <Button addClass="text-2xl px-2 text-center w-[180px] shadow-xl" onClick={connect}>
             {status}
         </Button>
     );
