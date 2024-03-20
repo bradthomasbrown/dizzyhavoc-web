@@ -27,7 +27,7 @@ export default function Home() {
           <p class="bold sm:text-[1.9rem] text-[1.2rem] font-[Poppins] text-center w-full text-[#545454] dark:text-white sm:w-[50%] mt-[2.5rem] rounded-xl px-2 mb-[1rem]">
             Vertigo
           </p>
-          <div className="min-w-[390px] sm:min-w-[500px] bg-[#d1d1d1] dark:bg-[#151515] shadow-xl rounded-xl flex min-h-[25rem] sm:mt-[10rem] mt-[1rem]">
+          <div className="min-w-[390px] sm:min-w-[500px] bg-blur3 shadow-xl rounded-xl flex min-h-[25rem] sm:mt-[10rem] mt-[1rem]">
   
             <div class="flex flex-col lg:flex-row">
               <UI/>

@@ -64,7 +64,7 @@ export function Form() {
     return (
         <div class="w-full">
         <div class="flex flex-col items-start">
-        {<img class="size-[2rem] rounded-sm mt-2 ml-2" src={blockieSrc} title={adrs} alt="blockie image"></img>}
+        {<img class="size-[2.2rem] rounded-sm mt-2 ml-2" src={blockieSrc} title={adrs} alt="blockie image"></img>}
         <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm ml-2">{hexshortSelected}</div>
         </div>
            
