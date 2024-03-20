@@ -47,7 +47,9 @@ const w3LabelConv = (opts:W3LabelConvOpts) => {
     // prefix
     const prefix = prefixes[index]
     // pad number with zeroes to length
-    return `${int}${frac}${prefix} ${sym}`
+    const formattedFrac = Number(`${frac}`).toFixed(1);
+    // remove if line causes problems ^
+    return `${int}${formattedFrac.slice(1)}${prefix} ${sym}`;
 }
 
 export { w3LabelConv }
