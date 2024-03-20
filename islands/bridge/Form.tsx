@@ -61,20 +61,16 @@ export function Form() {
         setAdrs(selectedAddress ?? "0x000...000"); // Update the state with the first address value or an empty string
       }, [addresses.value]); 
       const blockieSrc = adrs ? makeBlockie(adrs as string) : undefined; // Generate the blockie image source based on the adrs state variable
+
     return (
         <div class="w-full">
         <div class="flex flex-col items-start">
-        {<img class="size-[2.2rem] rounded-sm mt-2 ml-2" src={blockieSrc} title={adrs} alt="blockie image"></img>}
-        <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm ml-2">{hexshortSelected}</div>
+        {<img class="size-[2.2rem] rounded-sm mt-6 ml-6" src={blockieSrc} title={adrs} alt="blockie image"></img>}
+        <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm ml-6">{hexshortSelected}</div>
         </div>
-           
-        <div class="flex flex-col translate-x-[38%] items-center justify-center gap-1">
-  
-
+        <div class="flex flex-col sm:translate-x-[38%] translate-x-[7%] items-center justify-center gap-1">
         <Balance/>
-
         <Web3Input placeholder="amount" maxVal={dzhvBalance.value} decimals={18n} val={amount}/>
-
         <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-medium mb-4">to:</div>
         <div class="flex gap-2 mb-5">
             <ListInput list="addrs" placeholder="receiving address" onInput={e => recipient.value = e.currentTarget.value}/>

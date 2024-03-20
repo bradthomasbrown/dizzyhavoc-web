@@ -43,26 +43,17 @@ export * from './utils/getStateNonce.ts'
 // # components/
 import {
     Button, Footer,
-    Available, Buy, Info, More, Roadmap, Secret,
     UI
 } from './internal.ts'
 // ## common/
 export * from '../components/common/Button.tsx'
 export * from '../components/common/Footer.tsx'
-// ## index/
-export * from '../components/index/Available.tsx'
-export * from '../components/index/Buy.tsx'
-export * from '../components/index/Info.tsx'
-export * from '../components/index/More.tsx'
-export * from '../components/index/Roadmap.tsx'
-export * from '../components/index/Secret.tsx'
 // ## bridge/
 export * from '../components/bridge/UI.tsx'
 
 // # islands/
 import {
     Connector, Balance, Web3Input, ListInput,
-    TokenData,
     LegalsPopup, Form, Toaster
 } from './internal.ts'
 // ## common/
@@ -70,8 +61,6 @@ export * from '../islands/common/Connector.tsx'
 export * from '../islands/common/Balance.tsx'
 export * from '../islands/common/Web3Input.tsx'
 export * from '../islands/common/ListInput.tsx'
-// ## index/
-export * from '../islands/index/TokenData.tsx'
 // ## bridge/
 export * from '../islands/bridge/LegalsPopup.tsx'
 export * from '../islands/bridge/Form.tsx'
