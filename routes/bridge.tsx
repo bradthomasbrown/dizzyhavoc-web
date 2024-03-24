@@ -8,14 +8,11 @@ export default function Home() {
         <link rel="icon" href="/misc/Vertigo2.png" />
       </Head>
       {/* <LegalsPopup /> */}
-      <div class="w-full h-screen flex justify-center">
-        <div class="flex w-full flex-col items-center mb-[5rem]">
-          <div className="min-w-[320px] sm:min-w-[500px] bg-blur2 shadow-xl rounded-xl flex min-h-[25rem] my-auto">
-            <div class="flex flex-col lg:flex-row">
+
+        <div class="flex w-full h-screen flex-col items-center mb-[5rem]">
+          <div className="min-w-full xl:min-w-[30rem] bg-blur2 shadow-xl rounded-xl flex min-h-[25rem] my-auto">
               <UI/>
-            </div>
           </div>
-        </div>
       </div>
     </>
   );
