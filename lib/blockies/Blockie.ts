@@ -228,7 +228,7 @@ export class Blockie {
             ...trailer
         ])
 
-        console.log({ imageData })
+        // console.log({ imageData })
 
         return `data:image/gif;base64,${base64.encodeBase64(gifData)}`
 
