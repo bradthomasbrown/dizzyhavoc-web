@@ -65,7 +65,7 @@ export function Form() {
     //   const blockieSrc = adrs ? makeBlockie(adrs as string) : undefined; // Generate the blockie image source based on the adrs state variable
 
     return (
-<>
+<div class="relative">
 <div class="flex absolute flex-col top-0 left-0 items-start">
         {<img class="size-[2.2rem] rounded-sm mt-6 ml-6" src={blockieSrc} title={adrs} alt="blockie image"></img>}
         <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm ml-6">{hexshortSelected}</div>
@@ -86,6 +86,6 @@ export function Form() {
         <datalist id="addrs">{!IS_BROWSER ? [] : addresses?.value?.map(address => (<option value={address}></option>))}</datalist>
     </div>
 </div>
-</>
+</div>
     )
 }
