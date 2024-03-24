@@ -72,7 +72,7 @@ export function Form() {
     </div>
        <div class="flex flex-col items-center justify-center translate-x-[0%] sm:translate-x-[25%] gap-1 w-full h-full p-4 text-[#2c2c2c] dark:text-[#EAEAEA] font-[Poppins]">
   
-    <div class="flex flex-col items-center sm:mt-0 mt-[5rem] justify-center gap-1">
+    <div class="flex flex-col items-center mt-[5rem] justify-center gap-1">
         <Balance/>
         <Web3Input placeholder="amount" maxVal={dzhvBalance.value} decimals={18n} val={amount}/>
         <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-medium mb-4">to:</div>
