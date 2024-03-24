@@ -11,7 +11,8 @@ import {
     Balance, Web3Input, ListInput
 } from '../../lib/internal.ts'
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import makeBlockie from 'ethereum-blockies-base64';
+// import makeBlockie from 'ethereum-blockies-base64';
+import { Blockie } from '../../lib/blockies/Blockie.ts'
 
 
 export function Form() {
@@ -60,7 +61,8 @@ export function Form() {
         const selectedAddress = addresses.value?.[0];
         setAdrs(selectedAddress ?? "0x000...000"); // Update the state with the first address value or an empty string
       }, [addresses.value]); 
-      const blockieSrc = adrs ? makeBlockie(adrs as string) : undefined; // Generate the blockie image source based on the adrs state variable
+    const blockieSrc = adrs ? new Blockie({ scale: 16, seed: adrs }).base64() : undefined
+    //   const blockieSrc = adrs ? makeBlockie(adrs as string) : undefined; // Generate the blockie image source based on the adrs state variable
 
     return (
         <div class="w-full">
