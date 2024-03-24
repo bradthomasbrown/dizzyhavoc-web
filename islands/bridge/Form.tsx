@@ -65,13 +65,13 @@ export function Form() {
     //   const blockieSrc = adrs ? makeBlockie(adrs as string) : undefined; // Generate the blockie image source based on the adrs state variable
 
     return (
-<div class="relative">
+<div class="relative sm:w-[500px] w-[360px] h-full items-center flex">
 <div class="flex absolute flex-col top-0 left-0 items-start">
         {<img class="size-[2.2rem] rounded-sm mt-6 ml-6" src={blockieSrc} title={adrs} alt="blockie image"></img>}
         <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm ml-6">{hexshortSelected}</div>
 </div>
-<div class="flex flex-col items-center text-[#2c2c2c] dark:text-[#EAEAEA] font-[Poppins]">
-    <div class="flex flex-col items-center mt-[4rem]">
+<div class="flex flex-col text-[#2c2c2c] dark:text-[#EAEAEA] font-[Poppins]">
+    <div class="flex sm:w-[500px] w-[360px] mx-auto flex-col items-center">
         <Balance/>
         <Web3Input placeholder="amount" maxVal={dzhvBalance.value} decimals={18n} val={amount}/>
         <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-medium mb-4">to:</div>
