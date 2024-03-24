@@ -12,18 +12,19 @@ const globalWithEthereum = globalThis as typeof globalThis & {
 }, gwe = globalWithEthereum
 
 function connect() {
-    if (status.value == 'Connected') return
-    console.log('CONNECT')
-    const { ethereum } = gwe
-    if (ethereum) {
-        alert('CONNECTING')
-        ethereum.on('chainChanged', onChainChanged)
-        ethereum.on('accountsChanged', onAccountsChanged)
-        status.value = 'Loading'
-        init().then(() => { status.value = 'Connected' })
-    } else {
-        alert('NOPE')
-    }
+    alert('Pressed')
+    // if (status.value == 'Connected') return
+    // console.log('CONNECT')
+    // const { ethereum } = gwe
+    // if (IS_BROWSER && ethereum) {
+    //     alert('CONNECTING')
+    //     ethereum.on('chainChanged', onChainChanged)
+    //     ethereum.on('accountsChanged', onAccountsChanged)
+    //     status.value = 'Loading'
+    //     init().then(() => { status.value = 'Connected' })
+    // } else {
+    //     alert('NOPE')
+    // }
 }
 
 export function Connector() {
