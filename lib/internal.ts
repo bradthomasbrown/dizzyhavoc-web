@@ -53,7 +53,7 @@ export * from '../components/bridge/UI.tsx'
 
 // # islands/
 import {
-    Connector, Balance, Web3Input, ListInput,
+    Connector, Balance, Web3Input, ListInput, NavBar,
     LegalsPopup, Form, Toaster
 } from './internal.ts'
 // ## common/
@@ -61,6 +61,7 @@ export * from '../islands/common/Connector.tsx'
 export * from '../islands/common/Balance.tsx'
 export * from '../islands/common/Web3Input.tsx'
 export * from '../islands/common/ListInput.tsx'
+export * from '../islands/common/Navbar.tsx'
 // ## bridge/
 export * from '../islands/bridge/LegalsPopup.tsx'
 export * from '../islands/bridge/Form.tsx'

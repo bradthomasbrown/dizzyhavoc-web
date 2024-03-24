@@ -8,8 +8,10 @@ export function Button(props:{ addClass?:string }&JSX.HTMLAttributes<HTMLDivElem
       text-2xl
       text-[#3d3d3d]
       dark:text-[#d7d7d7]
-      text-center w-[180px]
-      shadow-lg font-[Poppins]
+      text-center
+      w-[180px]
+      shadow-lg
+      font-[Poppins]
       rounded-lg
       hover:scale-[102%]
       border
@@ -19,7 +21,7 @@ export function Button(props:{ addClass?:string }&JSX.HTMLAttributes<HTMLDivElem
       dark:bg-[#191919]
       bg-[#f1f1f1]
       z-20
-        ${props.addClass}
+      ${props.addClass}
       `}
     />
   );
