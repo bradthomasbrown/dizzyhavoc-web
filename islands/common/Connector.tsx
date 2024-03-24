@@ -15,7 +15,7 @@ function connect() {
     if (status.value == 'Connected') return
     console.log('CONNECT')
     const { ethereum } = gwe
-    if (IS_BROWSER && ethereum) {
+    if (ethereum) {
         alert('CONNECTING')
         ethereum.on('chainChanged', onChainChanged)
         ethereum.on('accountsChanged', onAccountsChanged)
