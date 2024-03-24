@@ -74,13 +74,13 @@ export function Form() {
     <div class="flex sm:w-[500px] w-[360px] mx-auto flex-col items-center">
         <Balance/>
         <Web3Input placeholder="amount" maxVal={dzhvBalance.value} decimals={18n} val={amount}/>
-        <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-medium mb-4">to:</div>
+        <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-medium mb-4">to</div>
         <div class="flex gap-2 mb-5">
             <ListInput list="addrs" placeholder="receiving address" onInput={e => recipient.value = e.currentTarget.value}/>
             <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-medium my-auto">on</div>
             <ListInput list="chains" placeholder="chain" onInput={onDestinationInput} addClass="w-[4rem]"/>
         </div>
-        <Button onClick={sendBridge}>bridge</Button>
+        <Button addClass="text-[#3d3d3d] dark:text-[#ccb286]" onClick={sendBridge}>bridge</Button>
         <datalist id="chains">{!IS_BROWSER ? [] : bridgeable.map(chain => <option value={chain?.shortName}/>)}</datalist>
         <datalist id="addrs">{!IS_BROWSER ? [] : addresses?.value?.map(address => (<option value={address}></option>))}</datalist>
     </div>
