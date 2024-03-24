@@ -8,7 +8,8 @@ export async function query({ id }:{ id:bigint }) {
     // otherwise attempt to pull and parse chain from lib/chains/ 
     const chain = override
         ? null
-        : await import(`./chains/_data/chains/eip155-${id}.json`, { with: { type: 'json' } })
+        : await fetch(`https://cdn.jsdelivr.net/gh/ethereum-lists/chains/_data/chains/eip155-${id}.json`)
+            .then(response => response.json())
             .then(schemas.chain.parseAsync)
             .catch(() => null)
 
