@@ -16,7 +16,7 @@ import { Blockie } from '../../lib/blockies/Blockie.ts'
 
 
 export function Form() {
-    const [adrs, setAdrs] = useState(addresses.value?.[0] ?? ""); // Initialize with the first address value or an empty string
+    const [adrs, setAdrs] = useState(addresses.value?.[0] ?? "0x000...000"); // Initialize with the first address value or an empty string
     const destination = useSignal<undefined|bigint|null>(undefined)
     const recipient = useSignal<undefined|string|null>(undefined)
     const amount = useSignal<undefined|bigint|null>(undefined)
