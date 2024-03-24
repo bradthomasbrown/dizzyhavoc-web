@@ -18,6 +18,7 @@ export function Button(props:{ addClass?:string }&JSX.HTMLAttributes<HTMLDivElem
       cursor-pointer
       dark:bg-[#191919]
       bg-[#f1f1f1]
+      z-20
         ${props.addClass}
       `}
     />

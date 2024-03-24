@@ -13,7 +13,6 @@ const globalWithEthereum = globalThis as typeof globalThis & {
 
 function connect() {
     if (status.value == 'Connected') return
-    alert('CONNECTED')
     console.log('CONNECT')
     const { ethereum } = gwe
     if (IS_BROWSER && ethereum) {
