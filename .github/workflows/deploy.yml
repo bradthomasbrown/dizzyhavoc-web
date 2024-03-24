@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write # Needed for auth with Deno Deploy
+      id-token: write # Needed for auth with Deno
       contents: read # Needed to clone the repository
 
     steps:
