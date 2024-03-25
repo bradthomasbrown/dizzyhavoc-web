@@ -12,7 +12,6 @@ const globalWithEthereum = globalThis as typeof globalThis & {
 }, gwe = globalWithEthereum
 
 function connect() {
-    alert("This should proc")
     if (status.value == 'Connected') return
     console.log('CONNECT')
     const { ethereum } = gwe
