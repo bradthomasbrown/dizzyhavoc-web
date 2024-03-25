@@ -42,21 +42,20 @@ export * from './utils/getStateNonce.ts'
 
 // # components/
 import {
-    Button, Footer,
+    Footer,
     UI
 } from './internal.ts'
 // ## common/
-export * from '../components/common/Button.tsx'
 export * from '../components/common/Footer.tsx'
 // ## bridge/
 export * from '../components/bridge/UI.tsx'
-
 // # islands/
 import {
-    Connector, Balance, Web3Input, ListInput, NavBar,
+    Button, Connector, Balance, Web3Input, ListInput, NavBar,
     LegalsPopup, Form, Toaster
 } from './internal.ts'
 // ## common/
+export * from '../islands/common/Button.tsx'
 export * from '../islands/common/Connector.tsx'
 export * from '../islands/common/Balance.tsx'
 export * from '../islands/common/Web3Input.tsx'

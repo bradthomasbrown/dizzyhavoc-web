@@ -62,7 +62,6 @@ export function Form() {
         setAdrs(selectedAddress ?? "0x000...000"); // Update the state with the first address value or an empty string
       }, [addresses.value]); 
     const blockieSrc = adrs ? new Blockie({ scale: 16, seed: adrs }).base64() : undefined
-    //   const blockieSrc = adrs ? makeBlockie(adrs as string) : undefined; // Generate the blockie image source based on the adrs state variable
 
     return (
 <div class="relative sm:w-[500px] w-[360px] h-full items-center flex">
