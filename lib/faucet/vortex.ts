@@ -201,7 +201,6 @@ const data = {
                 setTimeout(() => {
                     // try to get its provider
                     const p1193 = MMSDK.getProvider()
-                    alert(`mp1193 ${!!p1193}`)
                     // if got, resolve it
                     if (!p1193) { mGate.resolve(false); return }
                     const result = this.operator.set(p1193)
