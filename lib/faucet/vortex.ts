@@ -196,19 +196,22 @@ const data = {
                         url: window.location.href
                     }
                 })
-                alert(`mmsdk ${!!MMSDK}`)
-                // try to get its provider
-                const p1193 = MMSDK.getProvider()
-                alert(`mp1193 ${!!p1193}`)
-                // if got, resolve it
-                if (p1193) {
-                    const result = this.operator.set(p1193)
-                    if (!(result instanceof Error)) {
-                        p1193.on('chainChanged', () => vortex.flow('chain'))
-                        p1193.on('accountsChanged', () => vortex.flow('account'))
+                alert(`mmsdk ${!!MMSDK} ${!!MetaMaskSDK.MetaMaskSDK}`)
+                // https://docs.metamask.io/wallet/how-to/use-sdk/javascript/pure-js/, apparently setup is async
+                setTimeout(() => {
+                    // try to get its provider
+                    const p1193 = MMSDK.getProvider()
+                    alert(`mp1193 ${!!p1193}`)
+                    // if got, resolve it
+                    if (p1193) {
+                        const result = this.operator.set(p1193)
+                        if (!(result instanceof Error)) {
+                            p1193.on('chainChanged', () => vortex.flow('chain'))
+                            p1193.on('accountsChanged', () => vortex.flow('account'))
+                        }
+                        return
                     }
-                    return
-                }
+                },0)
             }
             
             // otherwise, try the fancier new way
