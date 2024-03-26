@@ -1,5 +1,5 @@
 import { Signal, signal, computed } from '@preact/signals'
-import { Button } from '../../components/common/Button.tsx'
+import { Button } from '../../islands/common/Button.tsx'
 import { getG1193, wp1193 } from '../../lib/state2/1193.ts'
 import { vortex } from '../../lib/faucet/vortex.ts'
 
@@ -35,7 +35,7 @@ function connect() {
 
 export function Connector() {
     return (
-        <Button disabled={disabled.value} addClass="text-2xl px-2 text-center w-[180px] shadow-xl" onClick={disabled.value ? () => {} : connect}>
+        <Button disabled={disabled.value} addClass="text-[#3d3d3d] dark:text-[#d7d7d7]" onClick={disabled.value ? () => {} : connect}>
             {status}
         </Button>
     );
