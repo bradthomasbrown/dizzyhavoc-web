@@ -1,4 +1,4 @@
-import {MenuButton} from "../../lib/internal.ts"
+import { MenuButton } from "../../lib/internal.ts"
 import { IS_BROWSER } from "$fresh/runtime.ts";
 export  function NavBar() {
     if(!IS_BROWSER) return <></>;

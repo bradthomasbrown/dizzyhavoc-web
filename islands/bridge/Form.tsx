@@ -85,7 +85,7 @@ export function Form() {
                 <datalist id="chains">{!IS_BROWSER ? [] : bridgeable.map(chain => <option value={chain?.shortName}/>)}</datalist>
                 {/* <datalist id="addrs">{!IS_BROWSER ? [] : addresses?.value?.map(address => (<option value={address}></option>))}</datalist> */}
             </div>
-            <a class="absolute bottom-0 left-0 ml-2 text-md font-[Poppins] hover:scale-[102%]" target="_blank" href="/faucet">💧testnet faucet</a>
+            <a class="absolute bottom-0 left-0 ml-1 text-md font-[Poppins] hover:scale-[102%]" target="_blank" href="/faucet">💧testnet faucet</a>
         </div>
     
         </div>

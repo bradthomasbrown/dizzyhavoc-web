@@ -76,7 +76,7 @@ export function UI() {
             <Balance/>
 
             {/* faucet button */}
-            {status.value=="Connect"||status.value=="Loading"||status.value=="Connecting" ? <Connector/> : <Button disabled={disabled.value} onClick={disabled.value ? () => {} : drink}>Get DZHV</Button>}
+            {status.value=="Connect"||status.value=="Loading"||status.value=="Connecting" ? <Connector/> : <Button addClass="text-[#3d3d3d] dark:text-[#ccb286]" disabled={disabled.value} onClick={disabled.value ? () => {} : drink}>Get DZHV</Button>}
 
         </>
     )

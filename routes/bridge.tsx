@@ -6,7 +6,6 @@ export default function Home() {
     <>
          <Head>
         <title>Vertigo</title>
-        <link rel="icon" href="/misc/Vertigo2.png" />
       </Head>
       <LegalsPopup />
 
