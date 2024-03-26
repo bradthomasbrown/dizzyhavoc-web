@@ -1,6 +1,6 @@
 import { DAppState } from '../internal.ts'
 
 export type UpdaterOpts = {
-    tstate:DAppState
+    tState:DAppState
     signal?:AbortSignal
 }
