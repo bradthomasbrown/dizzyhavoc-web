@@ -5,7 +5,7 @@ export function Form() {
     return (
         // <div class="mx-auto flex flex-col">
         <>
-              <div class="lg:text-[1.8rem] absolute bottom-[25rem] unselectable text-[1.5rem] font-[Poppins] font-medium dark:text-[#d2d2d2] text-[#282828]">
+              <div class="lg:text-[1.8rem] absolute sm:bottom-[25rem] bottom-[29rem] unselectable text-[1.5rem] font-[Poppins] font-medium dark:text-[#d2d2d2] text-[#282828]">
                     testnet faucet
                 </div>
             {/* app form */}
