@@ -1,4 +1,3 @@
-import { rlb } from 'https://deno.land/x/rlb@0.0.0/mod.ts'
 import {
     createTState, updateTState, updateAddresses, updateBalance, 
     updateDzhvBalance, commitTState, poll
@@ -6,16 +5,14 @@ import {
 
 export async function onAccountsChanged() {
     console.log('ACCOUNT')
-    const { tstate, abortController } = createTState(['addresses',
+    const { tState, abortController, updaters } = createTState(['addresses',
         'balance', 'dzhvBalance'])
-    rlb.delay = 333
     await updateTState({
-        tstate,
-        updaters: [updateAddresses, updateBalance, updateDzhvBalance],
+        tState,
+        updaters: [updateAddresses, updateBalance, updateDzhvBalance, ...updaters],
         abortController
-    }).catch(console.error)
+    }).catch(reason => { console.error(reason); return } )
     if (abortController.signal.aborted) return
-    rlb.delay = 1000
-    commitTState(tstate)
+    await commitTState(tState)
     poll()
 }

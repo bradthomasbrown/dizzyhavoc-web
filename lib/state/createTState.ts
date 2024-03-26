@@ -2,30 +2,35 @@ import { Signal } from "@preact/signals";
 import { TState, state, getStateNonce, ttrack } from '../internal.ts'
 import { DAppState } from "../internal.ts";
 
-export function createTState(invalidates:string[]) {
+export function createTState(invalidate:string[]) {
     
     // terminate ttrack if possible
     ttrack.value?.abortController.abort()
 
-    // build tstate, using ttrack.tstate if applicable
+    // build tState, using ttrack.tState if applicable
     const stateEntries = Object.entries(state)
-    const tstateEntries = stateEntries.map(([k, x]) => {
+    const tStateEntries = stateEntries.map(([k, x]) => {
         // if x not signal (stateNonce), return same
         if (!(x instanceof Signal)) return [k, x]
         // if k is in invalidates, invalidate it
-        if (invalidates.includes(k)) return [k, undefined]
+        if (invalidate.includes(k)) return [k, undefined]
         // if value is in TTrack'd TState, use that
-        const value = ttrack.value?.tstate[k as keyof DAppState]
+        const value = ttrack.value?.tState[k as keyof DAppState]
         if (value) return [k, value]
         // otherwise, use UState value
         return [k, x.value]
     }) as [keyof TState, TState[keyof TState]][]
-    const tstate = Object.fromEntries(tstateEntries) as TState
-    tstate.stateNonce = getStateNonce()
+    const tState = Object.fromEntries(tStateEntries) as TState
+    tState.stateNonce = getStateNonce()
 
-    // update ttrack, return tstate and abortController
+    // create a new abortController
     const abortController = new AbortController()
-    ttrack.value = { tstate, abortController }
-    return { tstate, abortController }
+    // get the current updaters
+    const updaters = ttrack.value?.updaters ? [...ttrack.value.updaters] : []
+    // set new ttrack
+    ttrack.value = { tState, abortController, updaters }
+
+    // return tState, abortController, and updaters
+    return { tState, abortController, updaters }
 
 }

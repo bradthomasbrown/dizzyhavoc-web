@@ -3,24 +3,24 @@ import { query, UpdaterOpts } from '../internal.ts'
 
 const rpc = signal<undefined|string|null>(undefined)
 
-async function updateRpc({ tstate, signal }:UpdaterOpts) {
+async function updateRpc({ tState, signal }:UpdaterOpts) {
 
     // pre-check
     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
 
     // logic
-    if (tstate.rpc !== null && tstate.rpc !== undefined) return 
-    if (tstate.chainId === null) { tstate.rpc = null; return }
-    if (tstate.chainId === undefined) return
+    if (tState.rpc !== null && tState.rpc !== undefined) return 
+    if (tState.chainId instanceof Error) { tState.rpc = tState.chainId; return }
+    if (tState.chainId === undefined) return
 
     // get and parse
-    const rpc = (await query({ id: tstate.chainId }))?.rpc?.[0] ?? null
+    const rpc = (await query({ id: tState.chainId }))?.rpc?.[0] ?? new Error('no rpc found for this chainId')
 
     // post-check
     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
 
     // commit
-    tstate.rpc = rpc
+    tState.rpc = rpc
 
 }
 

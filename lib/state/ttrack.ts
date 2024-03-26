@@ -2,7 +2,8 @@ import { Signal } from "@preact/signals";
 import { DAppState } from "../internal.ts";
 
 type TTrack = Signal<{
-    tstate:DAppState
+    tState:DAppState
+    updaters:(({ tState, abortController }: { tState: DAppState, abortController: AbortController; }) => Promise<void>)[]
     abortController:AbortController
 }|undefined>
 

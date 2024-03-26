@@ -1,33 +1,26 @@
-import {
-    createTState, updateTState, commitTState,
-    updateBalance, updateDzhvBalance, e, ttrack
-} from '../internal.ts'
+// import {
+//     createTState, updateTState, commitTState,
+//     updateBalance, updateDzhvBalance, ttrack
+// } from '../internal.ts'
+// import { ejra } from '../faucet/ejra.ts'
 
-export async function poll() {
-    while (true) {
-        console.log('POLL')
-        const { tstate, abortController } = createTState(['balance',
-            'dzhvBalance'])
-        if (!tstate.rpc) {
-            console.error(new Error(`cannot poll, tstate.rpc missing`))
-            return
-        }
-        const height = await e.height().call({
-            url: tstate.rpc,
-            signal: abortController.signal
-        }).catch(() => null)
-        if (abortController.signal.aborted) break
-        if (height === null) {
-            console.error(new Error(`error polling, height null`))
-            continue
-        }
-        if (!tstate.height || height <= tstate.height) continue
-        await updateTState({
-            tstate,
-            updaters: [updateBalance, updateDzhvBalance],
-            abortController
-        })
-        if (abortController.signal.aborted) break
-        commitTState(tstate)
-    }
-}
+// export async function poll() {
+//     while (true) {
+//         console.log('POLL')
+//         const { tState, abortController, updaters } = createTState(['balance',
+//             'dzhvBalance'])
+//         if (!tState.rpc) { ejra.err.push(new Error('poll: cannot poll, tState.rpc undefined')); return }
+//         if (tState.rpc instanceof Error) { ejra.err.push(tState.rpc); return }
+//         const height = await ejra.height(tState.rpc)
+//         if (abortController.signal.aborted) break
+//         if (height instanceof Error) { ejra.err.push(height); continue }
+//         if (!tState.height || tState.height instanceof Error || height <= tState.height) continue
+//         await updateTState({
+//             tState,
+//             updaters: [updateBalance, updateDzhvBalance, ...updaters],
+//             abortController
+//         })
+//         if (abortController.signal.aborted) break
+//         await commitTState(tState)
+//     }
+// }
