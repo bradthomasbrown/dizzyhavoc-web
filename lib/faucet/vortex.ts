@@ -196,8 +196,10 @@ const data = {
                         url: window.location.href
                     }
                 })
+                alert(`mmsdk ${!!MMSDK}`)
                 // try to get its provider
                 const p1193 = MMSDK.getProvider()
+                alert(`mp1193 ${!!p1193}`)
                 // if got, resolve it
                 if (p1193) {
                     const result = this.operator.set(p1193)
