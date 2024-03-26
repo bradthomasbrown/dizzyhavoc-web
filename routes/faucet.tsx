@@ -12,7 +12,7 @@ export default function Faucet() {
             </div>
 
             {/*grow to keep footer at bottom, includes title and app form*/}
-            <div class="grow flex flex-col justify-center"> 
+            <div class="grow flex flex-col justify-center mt-4 mb-8"> 
 
                 {/* app title */}
                 <div class="lg:text-[1.8rem] unselectable text-[1.5rem] font-[Poppins] font-medium dark:text-[#d2d2d2] text-[#282828]">
