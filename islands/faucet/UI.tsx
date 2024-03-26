@@ -17,6 +17,7 @@ async function drink() {
     const addresses = vortex.uState.addresses.value
     const rpc = vortex.uState.rpc.value
     const p1193 = vortex.uState.p1193.value
+    const chain = vortex.uState.chain.value
 
     if (!addresses || addresses instanceof Error) { alert('no selected address'); return }
     if (!rpc || rpc instanceof Error) { alert('no rpc'); return }
@@ -28,7 +29,7 @@ async function drink() {
     }, 'latest')
     if (result instanceof Error) { alert(result); return }
     const [divider, fee] = result.slice(2).match(/.{64}/g)?.map(s => BigInt(`0x${s}`)) ?? []
-    if (!divider || !fee) { alert('could not get divider and fee'); return } 
+    if (!divider || !fee) { alert(`could not find faucet on chain ${chain}, make sure you are connected to a valid testnet (Sepolia ETH/BASE/ARB, tBSC, AVAX Fuji)`); return } 
 
     const from = addresses[0]
     const to = '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe'
