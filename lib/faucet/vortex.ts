@@ -10,7 +10,9 @@ import {
     TStateOperator
 } from '../state2/Vortex.ts'
 import { getG1193, wp1193, p1193 as sp1193, P1193 } from '../state2/1193.ts'
+import { EIP6963AnnounceProviderEvent } from '../state2/6963.ts'
 import { ejra } from './ejra.ts'
+import { MetaMaskSDK } from 'npm:/@metamask/sdk'
 
 const init:VortexFlow = async function() {
     
@@ -172,18 +174,46 @@ const data = {
         dependsOn: [],
         async updater() {
             if (this.operator.get()) return
-            // const g1193 = getG1193()
-            // const p1193 = g1193.ethereum
-            // if (!p1193) this.operator.set(new Error('p1193 not found'))
-            // else this.operator.set(p1193)
+
+            // try the legacy way first
+            const g1193 = getG1193()
+            const p1193 = g1193.ethereum
+            if (p1193) { this.operator.set(p1193); return }
+
+            // then check if a mobile user has metamask's app installed
+            if (navigator.maxTouchPoints > 0) {
+                // create MMSDK
+                const MMSDK = new MetaMaskSDK({
+                    dappMetadata: {
+                        name: "DZHV Testnet Faucet",
+                        url: window.location.href
+                    }
+                })
+                // try to get its provider
+                const provider = MMSDK.getProvider()
+                // if got, resolve it
+                if (provider) { this.operator.set(provider); return }
+            }
             
+            // otherwise, try the fancier new way
+            // set up a gate
             const gate = new Gate<P1193>()
-            globalThis.addEventListener('eip6963:announceProvider', event => {
-                if (event.detail.info.name == 'MetaMask')
-                    gate.resolve(event.detail.provider)
+            // set up a 1 second timeout
+            const timeout = setTimeout(() => gate.reject(new Error('no detected eip-1193 or eip-6963 providers')), 1000)
+            // listen for 6963 announcements
+            globalThis.addEventListener('eip6963:announceProvider', (event:EIP6963AnnounceProviderEvent) => {
+                gate.resolve(event.detail.provider)
             })
+            // request 6963 providers
             globalThis.dispatchEvent(new Event('eip6963:requestProvider'))
-            this.operator.set(await gate.promise)
+            // grab the first one that responds, or this will be an error if no response within 1 second
+            const provider = await gate.promise.catch(reason => new Error(reason))
+            // if provider is an error, alert, set, and return
+            if (provider instanceof Error) { alert(provider.message); this.operator.set(provider); return }
+            // clear the timeout in case we did get one within 1 second
+            clearTimeout(timeout)
+            // set and return
+            this.operator.set(provider)
 
         },
         schema: sp1193
