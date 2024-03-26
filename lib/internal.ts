@@ -40,12 +40,13 @@ export * from './utils/getStateNonce.ts'
 
 // # components/
 import {
-    Button, Footer,
+    Button, Footer, MenuButton,
     UI
 } from './internal.ts'
 // ## common/
 export * from '../components/common/Button.tsx'
 export * from '../components/common/Footer.tsx'
+export * from '../components/common/menuButton.tsx'
 // ## bridge/
 export * from '../components/bridge/UI.tsx'
 // # islands/

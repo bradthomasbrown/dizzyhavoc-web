@@ -8,8 +8,6 @@ export function Button(props:{ addClass?:string }&JSX.HTMLAttributes<HTMLDivElem
       select-none
       text-2xl
       text-center
-      text-[#3d3d3d]
-      dark:text-[#d7d7d7]
       w-[160px]
       shadow-lg
       font-[Poppins]

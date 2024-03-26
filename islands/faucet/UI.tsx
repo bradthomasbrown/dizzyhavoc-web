@@ -2,7 +2,7 @@ import { IS_BROWSER } from '$fresh/runtime.ts'
 import { useEffect } from 'preact/hooks'
 import { useState } from 'preact/hooks'
 import { Signal, computed } from '@preact/signals'
-import { hexshort, /*addresses, , rpc, provider*/ } from '../../lib/internal.ts'
+import { hexshort, Connector /*addresses, , rpc, provider*/ } from '../../lib/internal.ts'
 import { Button } from '../../components/common/Button.tsx'
 import { Balance } from '../../islands/common/Balance.tsx'
 import { Blockie } from '../../lib/blockies/Blockie.ts'
@@ -76,7 +76,7 @@ export function UI() {
             <Balance/>
 
             {/* faucet button */}
-            <Button disabled={disabled.value} onClick={disabled.value ? () => {} : drink}>Get DZHV</Button>
+            {status.value=="Connect"||status.value=="Loading"||status.value=="Connecting" ? <Connector/> : <Button disabled={disabled.value} onClick={disabled.value ? () => {} : drink}>Get DZHV</Button>}
 
         </>
     )
