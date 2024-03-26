@@ -5,7 +5,7 @@ const toad = new Toad(250)
 
 const ejra = new Ejra(toad)
 
-;(async () => { for await (const m of ejra.out) console.log(m) })()
+;(async () => { for await (const m of ejra.out) m })() // console.log(m) })()
 ;(async () => { for await (const e of ejra.err) console.error(e) } )()
 
 export { ejra }

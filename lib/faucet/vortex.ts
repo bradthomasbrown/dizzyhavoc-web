@@ -13,7 +13,6 @@ import { getG1193, wp1193, p1193 as sp1193, P1193 } from '../state2/1193.ts'
 import { ejra } from './ejra.ts'
 
 const init:VortexFlow = async function() {
-    console.log('flow-init')
     
     // trigger and refresh the abort controller
     this.controller.value.abort()
@@ -24,7 +23,6 @@ const init:VortexFlow = async function() {
     for (const key of this.invalidate) this.tState[key] = undefined
 
     // while there are updaters that need to complete, run all updaters
-    console.log(this.tState, this.updaters)
     while (this.updaters.value.size) {
 
         const { signal } = controller
@@ -37,8 +35,6 @@ const init:VortexFlow = async function() {
             const datumUpdaterContext = { operator, dependencies, flow }
             return updater.bind(datumUpdaterContext)()
         }))
-
-        console.log(this.tState, this.updaters)
 
     }
 
@@ -55,7 +51,6 @@ const init:VortexFlow = async function() {
 }
 
 const chain:VortexFlow = async function() {
-    console.log('flow-chain')
     
     // trigger and refresh the abort controller
     this.controller.value.abort()
@@ -66,7 +61,6 @@ const chain:VortexFlow = async function() {
     for (const key of this.invalidate) this.tState[key] = undefined
 
     // while there are updaters that need to complete, run all updaters
-    console.log(this.tState, this.updaters)
     while (this.updaters.value.size) {
 
         const { signal } = controller
@@ -79,8 +73,6 @@ const chain:VortexFlow = async function() {
             const datumUpdaterContext = { operator, dependencies, flow }
             return updater.bind(datumUpdaterContext)()
         }))
-
-        console.log(this.tState, this.updaters)
 
     }
 
@@ -97,7 +89,6 @@ const chain:VortexFlow = async function() {
 }
 
 const account:VortexFlow = async function() {
-    console.log('flow-account')
     
     // trigger and refresh the abort controller
     this.controller.value.abort()
@@ -108,7 +99,6 @@ const account:VortexFlow = async function() {
     for (const key of this.invalidate) this.tState[key] = undefined
 
     // while there are updaters that need to complete, run all updaters
-    console.log(this.tState, this.updaters)
     while (this.updaters.value.size) {
 
         const { signal } = controller
@@ -121,8 +111,6 @@ const account:VortexFlow = async function() {
             const datumUpdaterContext = { operator, dependencies, flow }
             return updater.bind(datumUpdaterContext)()
         }))
-
-        console.log(this.tState, this.updaters)
 
     }
 
@@ -139,7 +127,6 @@ const account:VortexFlow = async function() {
 }
 
 const block:VortexFlow = async function() {
-    console.log('flow-block')
     
     // trigger and refresh the abort controller
     this.controller.value.abort()
@@ -150,7 +137,6 @@ const block:VortexFlow = async function() {
     for (const key of this.invalidate) this.tState[key] = undefined
 
     // while there are updaters that need to complete, run all updaters
-    console.log(this.tState, this.updaters)
     while (this.updaters.value.size) {
 
         const { signal } = controller
@@ -163,8 +149,6 @@ const block:VortexFlow = async function() {
             const datumUpdaterContext = { operator, dependencies, flow }
             return updater.bind(datumUpdaterContext)()
         }))
-
-        console.log(this.tState, this.updaters)
 
     }
 
@@ -316,7 +300,6 @@ const data = {
 const vortex = new Vortex(flows, data)
 
 async function poll() {
-    console.log('poll')
     const { controller: { value:controller } } = vortex
     const { rpc, height } = vortex.tState
     if (!rpc || rpc instanceof Error) return
