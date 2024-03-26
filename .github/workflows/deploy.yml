@@ -28,5 +28,4 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: "dizzyhavoc-web" # 📝 Update the deploy project name if necessary
-          entrypoint: "./main.js" # 📝 Update the entrypoint if necessary
-          root: _fresh
+          entrypoint: "./main.ts" # 📝 Update the entrypoint if necessary
