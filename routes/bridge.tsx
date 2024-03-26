@@ -4,7 +4,7 @@ import { LegalsPopup } from "../islands/bridge/LegalsPopup.tsx";
 export default function Home() {
   return (
     <>
-    <div class="h-screen sm:mb-[230px] mb-[100px] flex flex-col">
+    <div class="h-screen w-full sm:mb-[230px] mb-[100px] flex flex-col">
          <Head>
         <title>Vertigo</title>
       </Head>
