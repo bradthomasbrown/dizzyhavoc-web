@@ -1,6 +1,6 @@
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { useState } from "preact/hooks";
-export function MenuButton() {
+export default function MenuButton() {
   if(!IS_BROWSER) return <></>;
     let [category, setCategory] = useState<string>('');
     const handleCategoryChange = (category: string) => {

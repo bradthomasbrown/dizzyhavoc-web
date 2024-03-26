@@ -3,7 +3,7 @@ import { Head } from "$fresh/runtime.ts";
 import { LegalsPopup } from "../islands/bridge/LegalsPopup.tsx";
 export default function Home() {
   return (
-    <>
+    <div class="h-full w-full">
          <Head>
         <title>Vertigo</title>
       </Head>
@@ -14,6 +14,6 @@ export default function Home() {
               <UI/>
           </div>
       </div>
-    </>
+    </div>
   );
 }
