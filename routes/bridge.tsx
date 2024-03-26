@@ -1,6 +1,5 @@
-import { UI } from "../lib/internal.ts";
+import { UI, LegalsPopup } from "../lib/internal.ts";
 import { Head } from "$fresh/runtime.ts";
-import { LegalsPopup } from "../islands/bridge/LegalsPopup.tsx";
 export default function Home() {
   return (
     <>
