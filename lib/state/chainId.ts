@@ -1,27 +1,29 @@
-import { signal } from '@preact/signals'
-import z from "https://deno.land/x/zod@v3.22.4/index.ts";
-import { UpdaterOpts } from "../internal.ts";
+// import { signal } from '@preact/signals'
+// import z from "https://deno.land/x/zod@v3.22.4/index.ts";
+// import { UpdaterOpts } from "../internal.ts"
+// import { ejra } from '../faucet/ejra.ts'
 
-const chainId = signal<undefined|bigint|null>(undefined)
+// const chainId = signal<undefined|bigint|null>(undefined)
 
-async function updateChainId({ tstate, signal }:UpdaterOpts) {
+// async function updateChainId({ tState, signal }:UpdaterOpts) {
 
-    // pre-check
-    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+//     // pre-check
+//     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
 
-    // logic
-    if (tstate.chainId !== null && tstate.chainId !== undefined) return
-    if (tstate.provider === null) { tstate.chainId = null; return }
-    if (tstate.provider === undefined) return
-    const chainId = await tstate.provider.request({ method: 'eth_chainId', params: [] })
-        .then(z.string().transform(BigInt).parseAsync).catch(() => null)
+//     // logic
+//     if (tState.chainId !== undefined) return
+//     if (tState.provider instanceof Error) { tState.chainId = tState.provider; return }
+//     if (tState.provider === undefined) return
 
-    // post-check
-    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+//     const chainId = await tState.provider.request({ method: 'eth_chainId', params: [] })
+//         .then(z.string().transform(BigInt).parseAsync).catch(e => new Error(e))
 
-    // commit
-    tstate.chainId = chainId
+//     // post-check
+//     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+
+//     // commit
+//     tState.chainId = chainId
     
-}
+// }
 
-export { chainId, updateChainId }
+// export { chainId, updateChainId }

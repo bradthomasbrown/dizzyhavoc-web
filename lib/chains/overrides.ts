@@ -8,7 +8,7 @@ export const overrides = [
         nativeCurrency: {
             name: 'Ether',
             symbol: 'ETH',
-            decimal: 18
+            decimals: 18
         },
         explorers: [],
         icon: 'ethereum',
@@ -22,7 +22,7 @@ export const overrides = [
         nativeCurrency: {
             name: 'Ether',
             symbol: 'ETH',
-            decimal: 18
+            decimals: 18
         },
         explorers: [],
         icon: 'ethereum',

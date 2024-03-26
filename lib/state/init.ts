@@ -1,4 +1,3 @@
-import { rlb } from 'https://deno.land/x/rlb@0.0.0/mod.ts'
 import {
     createTState, updateTState, requestAddresses, updateBalance, 
     updateChainId, updateDzhv, updateDzhvBalance, updateHeight,
@@ -7,17 +6,15 @@ import {
 
 export async function init() {
     console.log('INIT')
-    const { tstate, abortController } = createTState([])
-    rlb.delay = 333
+    const { tState, abortController } = createTState([])
     await updateTState({
-        tstate,
+        tState,
         updaters: [requestAddresses, updateBalance, 
-            updateChainId,  updateDzhv, updateDzhvBalance, 
+            updateChainId, updateDzhv, updateDzhvBalance, 
             updateHeight, updateProvider, updateRpc],
         abortController
-    }).catch(console.error)
+    }).catch(reason => { console.error(reason); return } )
     if (abortController.signal.aborted) return
-    rlb.delay = 1000
-    commitTState(tstate)
+    await commitTState(tState)
     poll()
 }

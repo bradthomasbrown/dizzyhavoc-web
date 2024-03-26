@@ -1,10 +1,11 @@
+import { Gate } from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.0/mod.ts'
 import { Signal, batch } from "@preact/signals-core"
 import { DAppState, TState, state } from '../internal.ts'
 
-export function commitTState(tstate:TState) {
-    // if tstate contains null values, we cannot commit
-    if (Object.values(tstate).includes(null)) {
-        const nullKeys = Object.entries(tstate)
+export async function commitTState(tState:TState) {
+    // if tState contains null values, we cannot commit
+    if (Object.values(tState).reduce((p, c) => c instanceof Error || p, false)) {
+        const nullKeys = Object.entries(tState)
             .filter(([_,v]) => v === null)
             .map(([k]) => k)
         // log keys of TState with null values
@@ -12,13 +13,14 @@ export function commitTState(tstate:TState) {
             JSON.stringify(nullKeys)}`))
         return
     }
-    // if tstate nonce <= ustate nonce, then don't commit
-    if (tstate.stateNonce <= state.stateNonce) {
+    // if tState nonce <= ustate nonce, then don't commit
+    if (tState.stateNonce <= state.stateNonce) {
         console.log(`not committing TState, old stateNonce (T${
-            tstate.stateNonce} <= U${state.stateNonce})`)
+            tState.stateNonce} <= U${state.stateNonce})`)
         return
     }
-    // batch update state signals using tstae
+    // batch update state signals using tState
+    const gate = new Gate<void>()
     batch(() => {
         // pull signals from UState
         const stateSignals = Object.entries(state)
@@ -26,8 +28,10 @@ export function commitTState(tstate:TState) {
                 [keyof DAppState, Signal][]
         // update signal values
         for (const [key, signal] of stateSignals)
-            signal.value = tstate[key]
+            signal.value = tState[key]
         // update stateNonce
-        state.stateNonce = tstate.stateNonce
+        state.stateNonce = tState.stateNonce
+        gate.resolve()
     })
+    await gate.promise
 }

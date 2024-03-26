@@ -7,10 +7,10 @@ const globalWithEthereum = globalThis as typeof globalThis & {
 
 const provider = signal<undefined|InjectedProvider|null>(undefined)
 
-async function updateProvider({ tstate, signal }:UpdaterOpts) {
+async function updateProvider({ tState, signal }:UpdaterOpts) {
     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
-    if (tstate.provider) return
-    tstate.provider = gwe.ethereum ?? null
+    if (tState.provider) return
+    tState.provider = gwe.ethereum ?? new Error('no injected provider detected')
     await Promise.resolve()
 }
 

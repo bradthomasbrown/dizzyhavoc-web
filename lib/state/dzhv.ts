@@ -1,33 +1,35 @@
-import { signal } from '@preact/signals'
-import { UpdaterOpts, e } from "../internal.ts";
+// import { signal } from '@preact/signals'
+// import { UpdaterOpts } from "../internal.ts"
+// import { ejra } from '../faucet/ejra.ts'
 
-const dzhv = signal<undefined|{ address:string }|null>(undefined)
+// const dzhv = signal<undefined|{ address:string }|null>(undefined)
 
-async function updateDzhv({ tstate, signal }:UpdaterOpts) {
+// async function updateDzhv({ tState, signal }:UpdaterOpts) {
     
-    // pre-check
-    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+//     // pre-check
+//     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
 
-    // logic
-    if (tstate.dzhv) return
-    if (tstate.height === null || tstate.rpc === null) { tstate.dzhv = null; return }
-    if (tstate.height === undefined || tstate.rpc === undefined) return
+//     // logic
+//     if (tState.dzhv) return
+//     if (tState.height instanceof Error) { tState.dzhv = tState.height; return }
+//     if (tState.rpc instanceof Error) { tState.dzhv = tState.rpc; return }
+//     if (tState.height === undefined || tState.rpc === undefined) return
 
-    // get and parse
-    const code = await e.code({
-        address: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe',
-        tag: tstate.height
-    }).call({ url: tstate.rpc, signal }).catch(() => null)
-    const dzhv = code === null || code == '0x'
-        ? null
-        : { address: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' }
+//     // get
+//     const code = await ejra.code(tState.rpc, '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe', tState.height)
 
-    // post-check
-    if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
+//     const dzhv = code instanceof Error
+//         ? code
+//         : code == '0x'
+//             ? new Error('dzhv not on this chain')
+//             : { address: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe' }
+
+//     // post-check
+//     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
     
-    // commit
-    tstate.dzhv = dzhv
+//     // commit
+//     tState.dzhv = dzhv
 
-}
+// }
 
-export { dzhv, updateDzhv }
+// export { dzhv, updateDzhv }

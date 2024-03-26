@@ -2,14 +2,14 @@ import { Signal } from "@preact/signals";
 import { InjectedProvider } from '../internal.ts'
 
 type DAppState = {
-    provider:undefined|InjectedProvider|null,
-    addresses:undefined|string[]|null,
-    rpc:undefined|string|null,
-    height:undefined|bigint|null,
-    balance:undefined|bigint|null,
-    chainId:undefined|bigint|null,
-    dzhvBalance:undefined|bigint|null,
-    dzhv:undefined|{ address:string }|null,
+    provider:undefined|InjectedProvider|Error,
+    addresses:undefined|string[]|Error,
+    rpc:undefined|string|Error,
+    height:undefined|bigint|Error,
+    balance:undefined|bigint|Error,
+    chainId:undefined|bigint|Error,
+    dzhvBalance:undefined|bigint|Error,
+    dzhv:undefined|{ address:string }|Error,
     stateNonce:bigint
 }
 

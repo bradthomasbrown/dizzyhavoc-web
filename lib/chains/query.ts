@@ -1,7 +1,9 @@
+
 import { schemas, overrides } from '../internal.ts'
+import { Chain } from '../types/Chain.ts'
 
 // query overrides and then ethereum-lists/chains for chain info
-export async function query({ id }:{ id:bigint }) {
+export async function query({ id }:{ id:bigint }):Promise<Error|Chain> {
 
     // search overrides for chain
     const override = overrides.find(({ chainId }) => BigInt(chainId) == id)
@@ -11,8 +13,8 @@ export async function query({ id }:{ id:bigint }) {
         : await fetch(`https://cdn.jsdelivr.net/gh/ethereum-lists/chains/_data/chains/eip155-${id}.json`)
             .then(response => response.json())
             .then(schemas.chain.parseAsync)
-            .catch(() => null)
+            .catch(reason => new Error(reason))
 
-    return override ?? chain 
+    return override ?? (chain as NonNullable<typeof chain>)
 
 }
