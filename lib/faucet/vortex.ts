@@ -177,7 +177,13 @@ const data = {
             // try the legacy way first
             const g1193 = getG1193()
             const p1193 = g1193.ethereum
-            if (p1193) { this.operator.set(p1193); return }
+            if (p1193) {
+                const result = this.operator.set(p1193)
+                if (!(result instanceof Error)) {
+                    p1193.on('onChainChanged', () => vortex.flow('chain'))
+                    p1193.on('onAccountsChanged', () => vortex.flow('account'))
+                }
+            }
 
             // then check if a mobile user has metamask's app installed
             if (navigator.maxTouchPoints > 0) {
@@ -191,9 +197,16 @@ const data = {
                     }
                 })
                 // try to get its provider
-                const provider = MMSDK.getProvider()
+                const p1193 = MMSDK.getProvider()
                 // if got, resolve it
-                if (provider) { this.operator.set(provider); return }
+                if (p1193) {
+                    const result = this.operator.set(p1193)
+                    if (!(result instanceof Error)) {
+                        p1193.on('onChainChanged', () => vortex.flow('chain'))
+                        p1193.on('onAccountsChanged', () => vortex.flow('account'))
+                    }
+                    return
+                }
             }
             
             // otherwise, try the fancier new way
@@ -208,13 +221,17 @@ const data = {
             // request 6963 providers
             globalThis.dispatchEvent(new Event('eip6963:requestProvider'))
             // grab the first one that responds, or this will be an error if no response within 1 second
-            const provider = await gate.promise.catch(reason => new Error(reason))
+            const pOther = await gate.promise.catch(reason => new Error(reason))
             // if provider is an error, alert, set, and return
-            if (provider instanceof Error) { alert(provider.message); this.operator.set(provider); return }
+            if (pOther instanceof Error) { alert(pOther.message); this.operator.set(pOther); return }
             // clear the timeout in case we did get one within 1 second
             clearTimeout(timeout)
             // set and return
-            this.operator.set(provider)
+            const result = this.operator.set(pOther)
+            if (!(result instanceof Error)) {
+                pOther.on('onChainChanged', () => vortex.flow('chain'))
+                pOther.on('onAccountsChanged', () => vortex.flow('account'))
+            }
 
         },
         schema: sp1193
@@ -225,9 +242,13 @@ const data = {
         async updater() {
             if (this.operator.get()) return
             if (!this.operator.knows(this.dependencies)) return
+            const p1193 = this.operator.get('p1193') as P1193
             const error = this.operator.errors(this.dependencies)[0] as undefined|Error
             if (error) { this.operator.set(error); return }
-            this.operator.set(await wp1193.chainId())
+            this.operator.set(
+                await p1193.request({ method: 'eth_chainId', params: [] })
+                    .then(z.string().transform(BigInt).parseAsync)
+                    .catch(reason => new Error(String(reason))) as bigint)
         },
         schema: z.bigint()
     },
@@ -237,11 +258,12 @@ const data = {
         async updater() {
             if (this.operator.get()) return
             if (!this.operator.knows(this.dependencies)) return
+            const p1193 = this.operator.get('p1193') as P1193
             const error = this.operator.errors(this.dependencies)[0] as undefined|Error
             if (error) { this.operator.set(error); return }
             const addresses = this.flow == 'init'
-                ? await wp1193.requestAddresses()
-                : await wp1193.addresses()
+                ? await p1193.request({ method: 'eth_requestAccounts', params: [] }).catch(reason => new Error(String(reason))) as Error|string[]
+                : await p1193.request({ method: 'eth_accounts', params: [] }).catch(reason => new Error(String(reason))) as Error|string[]
             this.operator.set(
                 addresses instanceof Error
                     ? addresses
