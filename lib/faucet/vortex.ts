@@ -185,6 +185,7 @@ const data = {
                 }
             }
 
+            const mGate = new Gate<boolean>()
             // then check if a mobile user has metamask's app installed
             if (navigator.maxTouchPoints > 0) {
                 // create MMSDK
@@ -196,23 +197,22 @@ const data = {
                         url: window.location.href
                     }
                 })
-                alert(`mmsdk ${!!MMSDK} ${!!MetaMaskSDK.MetaMaskSDK}`)
                 // https://docs.metamask.io/wallet/how-to/use-sdk/javascript/pure-js/, apparently setup is async
                 setTimeout(() => {
                     // try to get its provider
                     const p1193 = MMSDK.getProvider()
                     alert(`mp1193 ${!!p1193}`)
                     // if got, resolve it
-                    if (p1193) {
-                        const result = this.operator.set(p1193)
-                        if (!(result instanceof Error)) {
-                            p1193.on('chainChanged', () => vortex.flow('chain'))
-                            p1193.on('accountsChanged', () => vortex.flow('account'))
-                        }
-                        return
-                    }
-                },0)
+                    if (!p1193) { mGate.resolve(false); return }
+                    const result = this.operator.set(p1193)
+                    if (result instanceof Error) { mGate.resolve(false); return }
+                    p1193.on('chainChanged', () => vortex.flow('chain'))
+                    p1193.on('accountsChanged', () => vortex.flow('account'))
+                    mGate.resolve(true)
+                }, 0)
             }
+            const mResult = await mGate.promise
+            if (mResult) return
             
             // otherwise, try the fancier new way
             // set up a gate
