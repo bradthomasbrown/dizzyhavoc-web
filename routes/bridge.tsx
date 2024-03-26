@@ -1,9 +1,12 @@
 import { UI } from '../lib/internal.ts'
+import { NavBar } from "../lib/internal.ts";
 import { Head } from "$fresh/runtime.ts";
 import { LegalsPopup } from "../islands/bridge/LegalsPopup.tsx";
 export default function Home() {
   return (
-    <div class="h-full w-full">
+    <>
+    <NavBar/>
+    <div class="h-screen sm:mb-[230px] mb-[100px] flex flex-col">
          <Head>
         <title>Vertigo</title>
       </Head>
@@ -15,5 +18,6 @@ export default function Home() {
           </div>
       </div>
     </div>
+    </>
   );
 }
