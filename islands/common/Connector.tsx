@@ -25,10 +25,11 @@ export const status = computed(() => {
 const disabled = computed(() => status.value != 'Connect')
 
 function connect() {
-    const g1193 = getG1193()
-    if (!g1193.ethereum) { alert('no eip-1193 provider detected'); return }
-    wp1193.onChainChanged(() => vortex.flow('chain'))
-    wp1193.onAccountsChanged(() => vortex.flow('account'))
+    // hail mary
+    // const g1193 = getG1193()
+    // if (!g1193.ethereum) { alert('no eip-1193 provider detected'); return }
+    // wp1193.onChainChanged(() => vortex.flow('chain'))
+    // wp1193.onAccountsChanged(() => vortex.flow('account'))
     vortex.flow('init')
 }
 
