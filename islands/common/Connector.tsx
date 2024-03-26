@@ -1,5 +1,5 @@
 import { Signal, signal, computed } from '@preact/signals'
-import { Button } from '../../islands/common/Button.tsx'
+import { Button } from '../../components/common/Button.tsx'
 import { getG1193, wp1193 } from '../../lib/state2/1193.ts'
 import { vortex } from '../../lib/faucet/vortex.ts'
 
