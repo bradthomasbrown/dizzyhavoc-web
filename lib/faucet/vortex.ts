@@ -180,8 +180,8 @@ const data = {
             if (p1193) {
                 const result = this.operator.set(p1193)
                 if (!(result instanceof Error)) {
-                    p1193.on('onChainChanged', () => vortex.flow('chain'))
-                    p1193.on('onAccountsChanged', () => vortex.flow('account'))
+                    p1193.on('chainChanged', () => vortex.flow('chain'))
+                    p1193.on('accountsChanged', () => vortex.flow('account'))
                 }
             }
 
@@ -202,8 +202,8 @@ const data = {
                 if (p1193) {
                     const result = this.operator.set(p1193)
                     if (!(result instanceof Error)) {
-                        p1193.on('onChainChanged', () => vortex.flow('chain'))
-                        p1193.on('onAccountsChanged', () => vortex.flow('account'))
+                        p1193.on('chainChanged', () => vortex.flow('chain'))
+                        p1193.on('accountsChanged', () => vortex.flow('account'))
                     }
                     return
                 }
@@ -229,8 +229,8 @@ const data = {
             // set and return
             const result = this.operator.set(pOther)
             if (!(result instanceof Error)) {
-                pOther.on('onChainChanged', () => vortex.flow('chain'))
-                pOther.on('onAccountsChanged', () => vortex.flow('account'))
+                pOther.on('chainChanged', () => vortex.flow('chain'))
+                pOther.on('accountsChanged', () => vortex.flow('account'))
             }
 
         },
