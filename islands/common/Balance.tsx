@@ -1,18 +1,17 @@
-import { computed } from "@preact/signals"
+import { Signal, computed } from "@preact/signals"
 import {
-    dzhvBalance,
     w3LabelConv
 } from "../../lib/internal.ts";
+import { vortex } from '../../lib/faucet/vortex.ts'
 
 const balance = computed(() => {
-    if (dzhvBalance.value) {
-        const big = dzhvBalance.value
-        const dec = 18
-        const sym = 'DZHV'
-        const tarLen = 16
-        const maxExt = Infinity
-        return `${w3LabelConv({ big, dec, sym, tarLen, maxExt })}`
-    } else return 'Unknown'
+    const balance = vortex.uState.dzhvBalance.value
+    const big = !balance || balance instanceof Error ? 0n : balance
+    const dec = 18
+    const sym = 'DZHV'
+    const tarLen = 16
+    const maxExt = Infinity
+    return `${w3LabelConv({ big, dec, sym, tarLen, maxExt })}`
 })
 
 export function Balance() {
