@@ -76,7 +76,7 @@ export function UI() {
             <Balance/>
 
             {/* faucet button */}
-            <Button disabled={disabled.value} onClick={drink}>Get DZHV</Button>
+            <Button disabled={disabled.value} onClick={disabled.value ? () => {} : drink}>Get DZHV</Button>
 
         </>
     )
