@@ -173,18 +173,11 @@ const data = {
         dependsOn: [],
         async updater() {
             if (this.operator.get()) return
-
-            // try the legacy way first
+            
             const g1193 = getG1193()
             const p1193 = g1193.ethereum
-            if (p1193) {
-                const result = this.operator.set(p1193)
-                if (!(result instanceof Error)) {
-                    p1193.on('chainChanged', () => vortex.flow('chain'))
-                    p1193.on('accountsChanged', () => vortex.flow('account'))
-                }
-            }
 
+            // # check for metamask mobile first
             const mGate = new Gate<boolean>()
             // then check if a mobile user has metamask's app installed
             if (navigator.maxTouchPoints > 0) {
@@ -209,33 +202,80 @@ const data = {
                     p1193.on('accountsChanged', () => vortex.flow('account'))
                     mGate.resolve(true)
                 }, 0)
+            } else mGate.resolve(false)
+            if (await mGate.promise) return
+
+            // # check to see if trustwallet is lurking somewhere
+            if (p1193) {
+                // is it the 1193?
+                if ('isTrust' in p1193) {
+                    const result = this.operator.set(p1193)
+                    if (!(result instanceof Error)) {
+                        p1193.on('chainChanged', () => vortex.flow('chain'))
+                        p1193.on('accountsChanged', () => vortex.flow('account'))
+                        return
+                    }
+                }
+                // if our 1193 is a 5749, check if any of the providers there are trustwallet
+                if ('providers' in p1193 && p1193.providers instanceof Array && p1193.providers.find(p => 'isTrust' in p)) {
+                    const provider = p1193.providers.find(p => 'isTrust' in p)
+                    const result = this.operator.set(provider)
+                    if (!(result instanceof Error)) {
+                        provider.on('chainChanged', () => vortex.flow('chain'))
+                        provider.on('accountsChanged', () => vortex.flow('account'))
+                        return
+                    }
+                }
+                // check window.trustwallet
+                if  (g1193.trustwallet) {
+                    const provider = g1193.trustwallet
+                    const result = this.operator.set(provider)
+                    if (!(result instanceof Error)) {
+                        provider.on('chainChanged', () => vortex.flow('chain'))
+                        provider.on('accountsChanged', () => vortex.flow('account'))
+                        return
+                    }
+                }
             }
-            const mResult = await mGate.promise
-            if (mResult) return
             
-            // otherwise, try the fancier new way
+            // # then try to get the first 6963 provider that responds within 250ms
             // set up a gate
             const gate = new Gate<P1193>()
-            // set up a 1 second timeout
-            const timeout = setTimeout(() => gate.reject(new Error('no detected eip-1193 or eip-6963 providers')), 1000)
+            // set up a 250ms second timeout
+            setTimeout(() => gate.reject(new Error('no eip-6963 provider request responses')), 250)
             // listen for 6963 announcements
             globalThis.addEventListener('eip6963:announceProvider', (event:EIP6963AnnounceProviderEvent) => {
+                // resolve gate with the first provider that repsonds
                 gate.resolve(event.detail.provider)
             })
             // request 6963 providers
             globalThis.dispatchEvent(new Event('eip6963:requestProvider'))
-            // grab the first one that responds, or this will be an error if no response within 1 second
-            const pOther = await gate.promise.catch(reason => new Error(reason))
-            // if provider is an error, alert, set, and return
-            if (pOther instanceof Error) { alert(pOther.message); this.operator.set(pOther); return }
-            // clear the timeout in case we did get one within 1 second
-            clearTimeout(timeout)
-            // set and return
-            const result = this.operator.set(pOther)
-            if (!(result instanceof Error)) {
-                pOther.on('chainChanged', () => vortex.flow('chain'))
-                pOther.on('accountsChanged', () => vortex.flow('account'))
+            // wait for a provider response or 250ms, whichever comes first
+            const provider = await gate.promise.catch(reason => new Error(reason))
+            // otherwise, pick the first provider in the list
+            if (!(provider instanceof Error)) {
+                // try to set them
+                const result = this.operator.set(provider)
+                if (!(result instanceof Error)) {
+                    provider.on('chainChanged', () => vortex.flow('chain'))
+                    provider.on('accountsChanged', () => vortex.flow('account'))
+                    return
+                }
             }
+
+            // # then try to get the 1193 provider
+            if (p1193) {
+                const result = this.operator.set(p1193)
+                if (!(result instanceof Error)) {
+                    p1193.on('chainChanged', () => vortex.flow('chain'))
+                    p1193.on('accountsChanged', () => vortex.flow('account'))
+                    return
+                }
+            }
+
+            // # if we end up here, alert that no wallet was found
+            alert('no wallet found')
+            this.operator.set(new Error('no wallet found'))
 
         },
         schema: sp1193
