@@ -5,12 +5,12 @@ export function Form() {
     return (
         // <div class="mx-auto flex flex-col">
         <>
-        
-            {/* app form */}
-            <div className="relative sm:w-[500px] w-[360px] bg-blur2 shadow-xl rounded-xl flex flex-col justify-center items-center min-h-[25rem] overflow-hidden">
-            <div class="lg:text-[1.8rem] absolute top-2 left-2 bg-blur2 unselectable text-[1.5rem] font-[Poppins] font-medium dark:text-[#d2d2d2] text-[#282828]">
+              <div class="lg:text-[1.8rem] absolute bottom-[25rem] unselectable text-[1.5rem] font-[Poppins] font-medium dark:text-[#d2d2d2] text-[#282828]">
                     testnet faucet
                 </div>
+            {/* app form */}
+            <div className="relative sm:w-[500px] w-[360px] bg-blur2 shadow-xl rounded-xl flex flex-col justify-center items-center min-h-[25rem] overflow-hidden">
+      
                 {/* absolute container for background image */}
                 <div class="z-[-1] w-full h-full absolute flex justify-center items-center">
                     <image
