@@ -29,7 +29,7 @@ export function LegalsPopup() {
                              <div 
                              className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-center"
                          >
-                             <div className="bg-white dark:bg-[#191919] h-auto p-6 rounded max-w-md mx-auto">
+                             <div className="bg-white dark:bg-[#191919] h-[400px] p-6 rounded max-w-lg mx-auto">
                                  <p className="text-xl text-gray-800 dark:text-[#d2d2d2] text-center">
                                      By clicking continue and using our Bridge you agree to:
                                  </p>
@@ -57,7 +57,7 @@ export function LegalsPopup() {
                                  <div className="mt-6 flex justify-end">
                                      <div
                                          style={{ opacity: checked ? 1 : 0.5, pointerEvents: checked ? 'auto' : 'none' }}
-                                         className={`text-2xl mx-auto shadow-xl font-[Poppins] text-gray-800 dark:text-[#d2d2d2] rounded-lg py-1 px-4 hover:scale-[105%] border dark:border-[#3d3d3d] border-[#e9e9e9] dark:bg-[#191919] cursor-pointer bg-[#f1f1f1] ${displayPopUp ? '' : 'opacity-50 pointer-events-none'}`}
+                                         className={`text-2xl mx-auto shadow-xl font-[Poppins] text-gray-800 dark:text-[#d2d2d2] rounded-lg py-1 px-4 hover:scale-[102%] border dark:border-[#3d3d3d] border-[#e9e9e9] dark:bg-[#191919] cursor-pointer bg-[#f1f1f1] ${displayPopUp ? '' : 'opacity-50 pointer-events-none'}`}
                                          onClick={() => {closePopUp()}}
                                      >
                                          Continue
