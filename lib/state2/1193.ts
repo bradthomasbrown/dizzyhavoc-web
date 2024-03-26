@@ -16,11 +16,17 @@ const metaMaskProvider = p1193.and(z.object({
     isMetaMask: z.literal(true)
 }))
 
+const trustWalletProvider = p1193.and(z.object({
+    isTrust: z.literal(true)
+}))
+
 export type P1193 = z.infer<typeof p1193>
 
 type MetaMaskProvider = z.infer<typeof metaMaskProvider>
 
-type G1193 = typeof globalThis & { ethereum?:P1193|MetaMaskProvider }
+type TrustWalletProvider = z.infer<typeof trustWalletProvider>
+
+type G1193 = typeof globalThis & { ethereum?:P1193|MetaMaskProvider } & { trustwallet?:TrustWalletProvider }
 
 export function getG1193():G1193 { return globalThis }
 
