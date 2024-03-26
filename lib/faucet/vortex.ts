@@ -12,7 +12,6 @@ import {
 import { getG1193, wp1193, p1193 as sp1193, P1193 } from '../state2/1193.ts'
 import { EIP6963AnnounceProviderEvent } from '../state2/6963.ts'
 import { ejra } from './ejra.ts'
-import { MetaMaskSDK } from 'npm:/@metamask/sdk'
 
 const init:VortexFlow = async function() {
     
@@ -183,6 +182,8 @@ const data = {
             // then check if a mobile user has metamask's app installed
             if (navigator.maxTouchPoints > 0) {
                 // create MMSDK
+                // @ts-ignore going to see if we can lazy load this since it is too fat for deno deploy
+                const { MetaMaskSDK } = (await import('https://unpkg.com/@metamask/sdk@0.18.1/dist/browser/umd/metamask-sdk.js')).default
                 const MMSDK = new MetaMaskSDK({
                     dappMetadata: {
                         name: "DZHV Testnet Faucet",
