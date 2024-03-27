@@ -226,11 +226,23 @@ const data = {
                 await gate.promise
             }
 
-            // something like this.operator.set(await connector.choose(providers)))
-            if (p6963s.size > 1) this.operator.set(await choose([...p6963s.values()]))
-            else if (p6963s.size == 1) this.operator.set((p6963s.values().next().value as P6963).provider)
-            else if (g1193.ethereum) this.operator.set(g1193.ethereum)
-            else { alert('no web3 providers detected'); this.operator.set(new Error('no web3 providers detected')) }
+            // try to get the provider from our choices
+            let provider:undefined|P1193
+            if (p6963s.size > 1) provider = await choose([...p6963s.values()])//this.operator.set()
+            else if (p6963s.size == 1) provider = (p6963s.values().next().value as P6963).provider//this.operator.set()
+            else if (g1193.ethereum) provider = g1193.ethereum//this.operator.set(g1193.ethereum)
+
+            if (provider) {
+                // if we got one, listen to events (aliasing trustwallet's 'addListener' to the standard 'on') and set the provider
+                if (!provider.on && 'addListener' in provider) provider.on = (provider.addListener as P1193['on']).bind(provider)
+                provider.on('chainChanged', () => vortex.flow('chain'))
+                provider.on('accountsChanged', () => vortex.flow('account'))
+                this.operator.set(provider)
+            } else {
+                // otherwise, no providers were found, set provider to error
+                alert('no web3 providers detected')
+                this.operator.set(new Error('no web3 providers detected'))
+            }
 
         },
         schema: sp1193
@@ -263,6 +275,7 @@ const data = {
             if (error) { this.operator.set(error); return }
             const addresses = this.flow == 'init'
                 ? await p1193.request({ method: 'eth_requestAccounts', params: [] }).catch(reason => {
+                    console.error(reason)
                     this.operator.controller.abort()
                     for (const key in this.operator.tState) this.operator.tState[key] = undefined
                     vortex.updaters.value = new Set()
