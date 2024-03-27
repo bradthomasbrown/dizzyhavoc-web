@@ -2,10 +2,10 @@ import { UI } from "../../islands/faucet/UI.tsx";
 
 export function Form() {
   return (
-    // <div class="mx-auto flex flex-col">
     <>
       {/* app form */}
       <div className="relative sm:w-[500px] w-[360px] bg-blur2 shadow-xl rounded-xl flex flex-col justify-center items-center min-h-[25rem] overflow-hidden">
+        
         {/* absolute container for background image */}
         <div class="z-[-1] w-full h-full absolute flex justify-center items-center">
           <image
@@ -16,8 +16,8 @@ export function Form() {
 
         {/* faucet UI */}
         <UI />
+
       </div>
     </>
-    // </div>
   );
 }
