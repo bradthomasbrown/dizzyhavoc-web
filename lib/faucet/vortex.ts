@@ -244,10 +244,13 @@ const data = {
             const p1193 = this.operator.get('p1193') as P1193
             const error = this.operator.errors(this.dependencies)[0] as undefined|Error
             if (error) { this.operator.set(error); return }
-            this.operator.set(
-                await p1193.request({ method: 'eth_chainId', params: [] })
-                    .then(z.string().transform(BigInt).parseAsync)
-                    .catch(reason => new Error(String(reason))) as bigint)
+            alert('sending chain request')
+            const chain = await p1193.request({ method: 'eth_chainId', params: [] })
+                .then(z.string().transform(BigInt).parseAsync)
+                .catch(reason => new Error(String(reason))) as Error|bigint
+            alert(chain)
+            this.operator.set(chain)
+                
         },
         schema: z.bigint()
     },
@@ -260,6 +263,7 @@ const data = {
             const p1193 = this.operator.get('p1193') as P1193
             const error = this.operator.errors(this.dependencies)[0] as undefined|Error
             if (error) { this.operator.set(error); return }
+            alert('requesting accounts')
             const addresses = this.flow == 'init'
                 ? await p1193.request({ method: 'eth_requestAccounts', params: [] }).catch(reason => {
                     this.operator.controller.abort()
@@ -268,6 +272,7 @@ const data = {
                     return new Error(JSON.stringify(reason))
                 }) as string[]
                 : await p1193.request({ method: 'eth_accounts', params: [] }).catch(reason => new Error(String(reason))) as Error|string[]
+            alert(chain)
             this.operator.set(
                 addresses instanceof Error
                     ? addresses
