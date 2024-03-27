@@ -38,8 +38,6 @@ const init:VortexFlow = async function() {
             return updater.bind(datumUpdaterContext)()
         }))
 
-        alert(`debugging ${typeof this.tState.p1193} ${!!this.tState.p1193} ${JSON.stringify(this.tState.p1193)} ${!!this.tState.p1193?.request}`)
-
     }
 
     const gate = new Gate<void>()
