@@ -117,7 +117,7 @@ export function UI() {
                     >
                         Bridge
                     </Button>
-                    <a class="absolute dark:text-[#d2d2d2] text-[#282828] bottom-0 left-0 ml-1 text-md font-[Poppins] hover:scale-[102%]" target="_blank" href="/faucet">💧faucet</a>
+                    <a class="absolute dark:text-[#d2d2d2] text-[#282828] bottom-0 right-2 text-md font-[Poppins] hover:scale-[102%]" target="_blank" href="/faucet">💧faucet</a>
                 </>
         }</>
     )
