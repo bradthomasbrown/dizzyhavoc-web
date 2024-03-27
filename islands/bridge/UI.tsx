@@ -81,9 +81,8 @@ export function UI() {
     })
     
     return(
-        <>{status.value != 'Connected'
-                ? <Connector/>
-                : <>
+        
+               <>
 
                     {/* blockie + hexshort */}
                     <div class="absolute top-3 left-3 flex flex-row">
@@ -110,6 +109,7 @@ export function UI() {
                     <datalist id="chains">{bridgeable.map(chain => <option value={chain?.shortName}/>)}</datalist>
 
                     {/* bridge button */}
+                    <Connector/>
                     <Button
                         addClass="text-[#3d3d3d] dark:text-[#ccb286]"
                         disabled={disabled.value}
@@ -119,6 +119,6 @@ export function UI() {
                     </Button>
                     <a class="absolute dark:text-[#d2d2d2] text-[#282828] bottom-0 left-0 ml-1 text-md font-[Poppins] hover:scale-[102%]" target="_blank" href="/faucet">💧testnet faucet</a>
                 </>
-        }</>
+      
     )
 }
