@@ -244,7 +244,6 @@ const data = {
             const p1193 = this.operator.get('p1193') as P1193
             const error = this.operator.errors(this.dependencies)[0] as undefined|Error
             if (error) { this.operator.set(error); return }
-            alert(Object.keys(p1193.ethereum))
             const chain = await p1193.request({ method: 'eth_chainId', params: [] })
                 .then(z.string().transform(BigInt).parseAsync)
                 .catch(reason => new Error(String(reason))) as Error|bigint
