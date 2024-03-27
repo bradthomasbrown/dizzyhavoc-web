@@ -22,19 +22,22 @@ export class TStateOperator {
 
     tState:TState
     signal:AbortSignal
+    controller:AbortController
     updater:DatumUpdater
     updaters:Signal<Set<DatumUpdater>>
     key:string
 
-    constructor({ tState, key, signal, updater, updaters }:{
+    constructor({ tState, key, signal, controller, updater, updaters }:{
         tState:TState
         signal:AbortSignal
+        controller:AbortController
         updater:DatumUpdater
         updaters:Signal<Set<DatumUpdater>>
         key:string
     }) {
         this.tState = tState
         this.signal = signal
+        this.controller = controller
         this.updater = updater
         this.updaters = updaters
         this.key = key 
