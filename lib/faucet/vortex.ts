@@ -199,7 +199,7 @@ const data = {
 
             // check trustwallet
             if (g1193.trustwallet) {
-                const provider = g1193.trustwallet
+                const provider = g1193.trustwallet.ethereum
                 const info = provider.info ?? { name: 'TrustWallet', uuid: crypto.randomUUID(), icon: new Blockie({ scale: 12, seed: [...crypto.getRandomValues(new Uint8Array(20))].map(x => String.fromCharCode(x)).join('') }).base64() }
                 p6963s.set(info.uuid, { provider, info })
             }
