@@ -7,10 +7,10 @@ export function Button(props:{ addClass?:string }&JSX.HTMLAttributes<HTMLDivElem
       className={`
       select-none
       text-2xl
-      text-[#3d3d3d]
-      dark:text-[#d7d7d7]
-      text-center w-[180px]
-      shadow-lg font-[Poppins]
+      text-center
+      w-[160px]
+      shadow-lg
+      font-[Poppins]
       rounded-lg
       ${props.disabled ? '' : 'hover:scale-[102%]'}
       ${props.disabled ? '' : 'active:scale-[98%]'}
@@ -21,7 +21,9 @@ export function Button(props:{ addClass?:string }&JSX.HTMLAttributes<HTMLDivElem
       ${props.disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
       dark:bg-[#191919]
       bg-[#f1f1f1]
-        ${props.addClass}
+      font-light
+      z-20
+      ${props.addClass}
       `}
     />
   );

@@ -14,8 +14,10 @@ import * as $bridge_Toaster from "./islands/bridge/Toaster.tsx";
 import * as $common_Balance from "./islands/common/Balance.tsx";
 import * as $common_Connector from "./islands/common/Connector.tsx";
 import * as $common_ListInput from "./islands/common/ListInput.tsx";
+import * as $common_Navbar from "./islands/common/Navbar.tsx";
 import * as $common_Receiver from "./islands/common/Receiver.tsx";
 import * as $common_Web3Input from "./islands/common/Web3Input.tsx";
+import * as $common_menuButton from "./islands/common/menuButton.tsx";
 import * as $faucet_UI from "./islands/faucet/UI.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -35,8 +37,10 @@ const manifest = {
     "./islands/common/Balance.tsx": $common_Balance,
     "./islands/common/Connector.tsx": $common_Connector,
     "./islands/common/ListInput.tsx": $common_ListInput,
+    "./islands/common/Navbar.tsx": $common_Navbar,
     "./islands/common/Receiver.tsx": $common_Receiver,
     "./islands/common/Web3Input.tsx": $common_Web3Input,
+    "./islands/common/menuButton.tsx": $common_menuButton,
     "./islands/faucet/UI.tsx": $faucet_UI,
   },
   baseUrl: import.meta.url,

@@ -35,7 +35,7 @@ function connect() {
 
 export function Connector() {
     return (
-        <Button disabled={disabled.value} addClass="text-2xl px-2 text-center w-[180px] shadow-xl" onClick={disabled.value ? () => {} : connect}>
+        <Button disabled={disabled.value} addClass="text-[#3d3d3d] dark:text-[#d7d7d7]" onClick={disabled.value ? () => {} : connect}>
             {status}
         </Button>
     );
