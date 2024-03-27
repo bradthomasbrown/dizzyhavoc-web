@@ -87,7 +87,7 @@ export function UI() {
 
                     {/* blockie + hexshort */}
                     <div class="absolute top-3 left-3 flex flex-row">
-                    <img class="size-[1.2rem] rounded-sm mr-1" src={blockieData} title={seed} alt="blockie image"/>
+                    <img class="size-[1.4rem] rounded-sm mr-1" src={blockieData} title={seed} alt="blockie image"/>
                     <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-[14px] mb-2">{hexshortSelected}</div>
                     </div>
 
@@ -117,7 +117,7 @@ export function UI() {
                     >
                         Bridge
                     </Button>
-                    <a class="absolute dark:text-[#d2d2d2] text-[#282828] bottom-0 left-0 ml-1 text-md font-[Poppins] hover:scale-[102%]" target="_blank" href="/faucet">💧testnet faucet</a>
+                    <a class="absolute dark:text-[#d2d2d2] text-[#282828] bottom-0 left-0 ml-1 text-md font-[Poppins] hover:scale-[102%]" target="_blank" href="/faucet">💧faucet</a>
                 </>
         }</>
     )

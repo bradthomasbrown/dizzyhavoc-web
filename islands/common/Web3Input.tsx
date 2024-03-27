@@ -44,7 +44,7 @@ export function Web3Input(
       <input type="text"
           {...props}
           disabled={!IS_BROWSER||props.disabled}
-          class="h-[9mm] py-2 px-3 text-xl bg-transparent border-solid border-b-2 border-[#8d8d8d] rounded-sm dark:caret-[#EAEAEA] caret-[#2c2c2c] text-[#2c2c2c] dark:text-[#EAEAEA] font-[monospace]"
+          class="h-[9mm] py-2 px-3 text-xl bg-blur3 rounded-lg border-solid border-b-2 border-[#8d8d8d] dark:caret-[#EAEAEA] caret-[#2c2c2c] text-[#2c2c2c] dark:text-[#EAEAEA] font-[monospace]"
           value={numValue}
           onInput={onTextInput}
       />
