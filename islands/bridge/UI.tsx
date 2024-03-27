@@ -1,18 +1,21 @@
+import { computed } from '@preact/signals'
+import { Blockie } from '../../lib/blockies/Blockie.ts'
+import { Connector, status } from '../common/Connector.tsx'
+import { vortex } from '../../lib/faucet/vortex.ts'
+import { Button } from '../../components/common/Button.tsx'
+import { hexshort } from '../../lib/utils/hexshort.ts'
 // import { IS_BROWSER } from '$fresh/runtime.ts'
 // import { useEffect } from 'preact/hooks'
 // import { useState } from 'preact/hooks'
-// import { Signal, computed } from '@preact/signals'
 // import { hexshort, Connector /*addresses, , rpc, provider*/ } from '../../lib/internal.ts'
-// import { Button } from '../../components/common/Button.tsx'
 // import { Balance } from '../../islands/common/Balance.tsx'
-// import { Blockie } from '../../lib/blockies/Blockie.ts'
 // import { ejra } from '../../lib/faucet/ejra.ts'
-// import { vortex } from '../../lib/faucet/vortex.ts'
 // import { status } from '../common/Connector.tsx'
 
-// const disabled = computed(() => status.value != 'Connected')
 
-// async function drink() {
+const disabled = computed(() => status.value != 'Connected')
+
+async function bridge() {
 
 //     const addresses = vortex.uState.addresses.value
 //     const rpc = vortex.uState.rpc.value
@@ -40,55 +43,54 @@
 
 //     await p1193.request({ method: 'eth_sendTransaction', params: [tx] })
 
-// }
+}
 
 export function UI() {
 
-    // const defaultSeed = '0xa9C5db3e478D8F2E229254ef1d7e3a8ddBf2737c'
-    // const seed = computed(() => {
-    //     const addresses = vortex.uState.addresses.value
-    //     return !addresses || addresses instanceof Error
-    //         ? defaultSeed
-    //         : addresses[0]
-    // })
-    // const blockieData = computed(() => {
-    //     return new Blockie({ scale: 16, seed: seed.value }).base64()
-    // })
+    const defaultSeed = '0xa9C5db3e478D8F2E229254ef1d7e3a8ddBf2737c'
+    const seed = computed(() => {
+        const addresses = vortex.uState.addresses.value
+        return !addresses || addresses instanceof Error
+            ? defaultSeed
+            : addresses[0]
+    })
+    const blockieData = computed(() => {
+        return new Blockie({ scale: 16, seed: seed.value }).base64()
+    })
 
-    // const hexshortSelected = computed(() => {
-    //     const addresses = vortex.uState.addresses.value
-    //     const zeroAddress = '0x'.padEnd(42, '0')
-    //     return hexshort(
-    //         !addresses || addresses instanceof Error
-    //             ? zeroAddress
-    //             : addresses[0])
-    // })
+    const hexshortSelected = computed(() => {
+        const addresses = vortex.uState.addresses.value
+        const zeroAddress = '0x'.padEnd(42, '0')
+        return hexshort(
+            !addresses || addresses instanceof Error
+                ? zeroAddress
+                : addresses[0])
+    })
     
     return(
-        <>foo</>
-        // <>{status.value != 'Connected'
-        //         ? <Connector/>
-        //         : <>
+        <>{status.value != 'Connected'
+                ? <Connector/>
+                : <>
 
-        //             {/* blockie */}
-        //             <img class="size-[2.2rem] rounded-sm mb-1" src={blockieData} title={seed} alt="blockie image"/>
+                    {/* blockie */}
+                    <img class="size-[2.2rem] rounded-sm mb-1" src={blockieData} title={seed} alt="blockie image"/>
 
-        //             {/* hexshort */}
-        //             <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm mb-2">{hexshortSelected}</div>
+                    {/* hexshort */}
+                    <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm mb-2">{hexshortSelected}</div>
 
-        //             {/* balance */}
-        //             <Balance/>
+                    {/* balance */}
+                    {/* <Balance/> */}
 
-        //             {/* faucet button */}
-        //             <Button
-        //                 addClass="text-[#3d3d3d] dark:text-[#ccb286]"
-        //                 disabled={disabled.value}
-        //                 onClick={disabled.value ? () => {} : drink}
-        //             >
-        //                 Get DZHV
-        //             </Button>
+                    {/* bridge button */}
+                    <Button
+                        addClass="text-[#3d3d3d] dark:text-[#ccb286]"
+                        disabled={disabled.value}
+                        onClick={disabled.value ? () => {} : bridge}
+                    >
+                        Bridge
+                    </Button>
 
-        //         </>
-        // }</>
+                </>
+        }</>
     )
 }
