@@ -1,7 +1,5 @@
 import MenuButton from "./menuButton.tsx";
-import { IS_BROWSER } from "$fresh/runtime.ts";
-export  function NavBar() {
-    if(!IS_BROWSER) return <></>;
+export function NavBar() {
   return (
     <div class="sm:min-h-[4rem] top-0 min-h-[4.5rem] w-full sm:bg-transparent dark:sm:bg-transparent dark:bg-[#2828283f] bg-[#dbdbdb3f] sm:w-[45rem] justify-center mx-auto items-center px-4 flex  border-e-transparent border-s-transparent border-t-transparent dark:border-e-transparent dark:border-s-transparent dark:border-t-transparent dark:border-[#5e5e5e4d] border-[#dbdbdb] border">
       <div class="justify-start w-full flex">
