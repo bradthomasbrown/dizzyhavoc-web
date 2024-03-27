@@ -25,7 +25,7 @@ const init:VortexFlow = async function() {
     for (const key of this.invalidate) this.tState[key] = undefined
 
     // while there are updaters that need to complete, run all updaters
-    alert([...this.updaters.value].map(updater => this.dataKey.get(updater)))
+    alert(this.tState.p1193?.isTrust)
     while (this.updaters.value.size) {
 
         const { signal } = controller
@@ -38,15 +38,15 @@ const init:VortexFlow = async function() {
             const datumUpdaterContext = { operator, dependencies, flow }
             return updater.bind(datumUpdaterContext)()
         }))
-        
-        alert([...this.updaters.value].map(updater => this.dataKey.get(updater)))
+
+        alert(this.tState.p1193?.isTrust)
 
     }
 
     const gate = new Gate<void>()
     batch(() => {
         if (!controller.signal.aborted)
-        for (const [key, value] of Object.entries(this.tState)) this.uState[key].value = value
+            for (const [key, value] of Object.entries(this.tState)) this.uState[key].value = value
         gate.resolve()
     })
     await gate.promise
@@ -84,7 +84,7 @@ const chain:VortexFlow = async function() {
     const gate = new Gate<void>()
     batch(() => {
         if (!controller.signal.aborted)
-        for (const [key, value] of Object.entries(this.tState)) this.uState[key].value = value
+            for (const [key, value] of Object.entries(this.tState)) this.uState[key].value = value
         gate.resolve()
     })
     await gate.promise
@@ -122,7 +122,7 @@ const account:VortexFlow = async function() {
     const gate = new Gate<void>()
     batch(() => {
         if (!controller.signal.aborted)
-        for (const [key, value] of Object.entries(this.tState)) this.uState[key].value = value
+            for (const [key, value] of Object.entries(this.tState)) this.uState[key].value = value
         gate.resolve()
     })
     await gate.promise
@@ -160,7 +160,7 @@ const block:VortexFlow = async function() {
     const gate = new Gate<void>()
     batch(() => {
         if (!controller.signal.aborted)
-        for (const [key, value] of Object.entries(this.tState)) this.uState[key].value = value
+            for (const [key, value] of Object.entries(this.tState)) this.uState[key].value = value
         gate.resolve()
     })
     await gate.promise
