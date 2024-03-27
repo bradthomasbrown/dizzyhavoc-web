@@ -1,16 +1,22 @@
+import { JSX } from 'preact'
 import { computed } from '@preact/signals'
 import { Blockie } from '../../lib/blockies/Blockie.ts'
 import { Connector, status } from '../common/Connector.tsx'
 import { vortex } from '../../lib/faucet/vortex.ts'
-import { Button } from '../../components/common/Button.tsx'
-import { hexshort } from '../../lib/utils/hexshort.ts'
 // import { IS_BROWSER } from '$fresh/runtime.ts'
 // import { useEffect } from 'preact/hooks'
 // import { useState } from 'preact/hooks'
-// import { hexshort, Connector /*addresses, , rpc, provider*/ } from '../../lib/internal.ts'
-// import { Balance } from '../../islands/common/Balance.tsx'
+import { useSignal } from "@preact/signals"
+
+import { Web3Input, 
+        bridgeable, 
+        ListInput, 
+        Balance, 
+        hexshort, 
+        Button, 
+        dzhvBalance } from "../../lib/internal.ts"
+
 // import { ejra } from '../../lib/faucet/ejra.ts'
-// import { status } from '../common/Connector.tsx'
 
 
 const disabled = computed(() => status.value != 'Connected')
@@ -46,6 +52,13 @@ async function bridge() {
 }
 
 export function UI() {
+    const destination = useSignal<undefined|bigint|null>(undefined)
+    const recipient = useSignal<undefined|string|null>(undefined)
+    const amount = useSignal<undefined|bigint|null>(undefined)
+    function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
+        const chain = bridgeable.find(({ shortName }) => e.currentTarget.value == shortName)
+        destination.value = chain ? BigInt(chain.chainId) : null
+    }
 
     const defaultSeed = '0xa9C5db3e478D8F2E229254ef1d7e3a8ddBf2737c'
     const seed = computed(() => {
@@ -79,8 +92,23 @@ export function UI() {
                     <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm mb-2">{hexshortSelected}</div>
 
                     {/* balance */}
-                    {/* <Balance/> */}
+                    <Balance/>
+                    
+                    { /* amount */}
+                    <Web3Input placeholder="amount" maxVal={dzhvBalance.value} decimals={18n} val={amount}/>
 
+                   { /* recipient */}
+                    <div class="flex gap-2 mb-5">
+                    <ListInput list="addrs" placeholder="receiving address" onInput={e => recipient.value = e.currentTarget.value}/>
+
+                    { /* destination chain */}
+                    <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-medium my-auto">on</div>
+                    <ListInput list="chains" placeholder="chain" onInput={onDestinationInput} addClass="w-[4rem]"/>
+                    </div>
+
+                    { /* datalist */}
+                    <datalist id="chains">{bridgeable.map(chain => <option value={chain?.shortName}/>)}</datalist>
+                    
                     {/* bridge button */}
                     <Button
                         addClass="text-[#3d3d3d] dark:text-[#ccb286]"
@@ -89,7 +117,7 @@ export function UI() {
                     >
                         Bridge
                     </Button>
-
+                    <a class="absolute dark:text-[#d2d2d2] text-[#282828] bottom-0 left-0 ml-1 text-md font-[Poppins] hover:scale-[102%]" target="_blank" href="/faucet">💧testnet faucet</a>
                 </>
         }</>
     )
