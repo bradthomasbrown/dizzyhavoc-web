@@ -85,11 +85,11 @@ export function UI() {
                 ? <Connector/>
                 : <>
 
-                    {/* blockie */}
-                    <img class="size-[2.2rem] rounded-sm mb-1" src={blockieData} title={seed} alt="blockie image"/>
-
-                    {/* hexshort */}
-                    <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm mb-2">{hexshortSelected}</div>
+                    {/* blockie + hexshort */}
+                    <div class="absolute top-3 left-3 flex flex-row">
+                    <img class="size-[1.2rem] rounded-sm mr-1" src={blockieData} title={seed} alt="blockie image"/>
+                    <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-[14px] mb-2">{hexshortSelected}</div>
+                    </div>
 
                     {/* balance */}
                     <Balance/>
@@ -108,7 +108,7 @@ export function UI() {
 
                     { /* datalist */}
                     <datalist id="chains">{bridgeable.map(chain => <option value={chain?.shortName}/>)}</datalist>
-                    
+
                     {/* bridge button */}
                     <Button
                         addClass="text-[#3d3d3d] dark:text-[#ccb286]"
