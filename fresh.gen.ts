@@ -11,6 +11,7 @@ import * as $bridge_Form from "./islands/bridge/Form.tsx";
 import * as $bridge_LegalsPopup from "./islands/bridge/LegalsPopup.tsx";
 import * as $bridge_Toast from "./islands/bridge/Toast.tsx";
 import * as $bridge_Toaster from "./islands/bridge/Toaster.tsx";
+import * as $bridge_UI from "./islands/bridge/UI.tsx";
 import * as $common_Balance from "./islands/common/Balance.tsx";
 import * as $common_Connector from "./islands/common/Connector.tsx";
 import * as $common_ListInput from "./islands/common/ListInput.tsx";
@@ -34,6 +35,7 @@ const manifest = {
     "./islands/bridge/LegalsPopup.tsx": $bridge_LegalsPopup,
     "./islands/bridge/Toast.tsx": $bridge_Toast,
     "./islands/bridge/Toaster.tsx": $bridge_Toaster,
+    "./islands/bridge/UI.tsx": $bridge_UI,
     "./islands/common/Balance.tsx": $common_Balance,
     "./islands/common/Connector.tsx": $common_Connector,
     "./islands/common/ListInput.tsx": $common_ListInput,
