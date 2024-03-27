@@ -226,7 +226,7 @@ const data = {
                 await gate.promise
             }
 
-            alert(`${p6963s.size} ${p6963s.values().next().value?.isTrust}`)
+            alert(`${p6963s.size} ${p6963s.values().next().value?.provider?.isTrust}`)
 
             // something like this.operator.set(await connector.choose(providers)))
             if (p6963s.size > 1) this.operator.set(await choose([...p6963s.values()]))
