@@ -65,20 +65,29 @@ export function UI() {
     })
     
     return(
-        <>
+        <>{status.value != 'Connected'
+                ? <Connector/>
+                : <>
 
-            {/* blockie */}
-            {<img class="size-[2.2rem] rounded-sm mb-1" src={blockieData} title={seed} alt="blockie image"></img>}
+                    {/* blockie */}
+                    <img class="size-[2.2rem] rounded-sm mb-1" src={blockieData} title={seed} alt="blockie image"/>
 
-            {/* hexshort */}
-            <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm mb-2">{hexshortSelected}</div>
+                    {/* hexshort */}
+                    <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm mb-2">{hexshortSelected}</div>
 
-            {/* balance */}
-            <Balance/>
+                    {/* balance */}
+                    <Balance/>
 
-            {/* faucet button */}
-            {status.value=="Connect"||status.value=="Loading"||status.value=="Connecting" ? <Connector/> : <Button addClass="text-[#3d3d3d] dark:text-[#ccb286]" disabled={disabled.value} onClick={disabled.value ? () => {} : drink}>Get DZHV</Button>}
+                    {/* faucet button */}
+                    <Button
+                        addClass="text-[#3d3d3d] dark:text-[#ccb286]"
+                        disabled={disabled.value}
+                        onClick={disabled.value ? () => {} : drink}
+                    >
+                        Get DZHV
+                    </Button>
 
-        </>
+                </>
+        }</>
     )
 }
