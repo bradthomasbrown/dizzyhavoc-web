@@ -245,7 +245,6 @@ const data = {
             const p1193 = this.operator.get('p1193') as P1193
             const error = this.operator.errors(this.dependencies)[0] as undefined|Error
             if (error) { this.operator.set(error); return }
-            console.log('requesting chain')
             this.operator.set(
                 await p1193.request({ method: 'eth_chainId', params: [] })
                     .then(z.string().transform(BigInt).parseAsync)
@@ -262,7 +261,6 @@ const data = {
             const p1193 = this.operator.get('p1193') as P1193
             const error = this.operator.errors(this.dependencies)[0] as undefined|Error
             if (error) { this.operator.set(error); return }
-            if (this.flow == 'init') console.log('requesting accounts')
             const addresses = this.flow == 'init'
                 ? await p1193.request({ method: 'eth_requestAccounts', params: [] }).catch(reason => {
                     this.operator.controller.abort()
