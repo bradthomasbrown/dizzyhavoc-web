@@ -184,7 +184,6 @@ const data = {
             // check standard 5749 
             if (g1193.evmproviders) {
                 for (const provider of Object.values(g1193.evmproviders)) {
-                    alert('g1193.evmproviders')
                     const info = provider.info ?? { name: 'Unknown', uuid: crypto.randomUUID(), icon: new Blockie({ scale: 12, seed: [...crypto.getRandomValues(new Uint8Array(20))].map(x => String.fromCharCode(x)).join('') }).base64() }
                     p6963s.set(info.uuid, { provider, info })
                 }
@@ -193,7 +192,6 @@ const data = {
             // check nonstandard 5749 
             if (g1193.ethereum?.providers) {
                 for (const provider of g1193.ethereum.providers) {
-                    alert('g1193.ethereum?.providers')
                     const info = provider.info ?? { name: 'Unknown', uuid: crypto.randomUUID(), icon: new Blockie({ scale: 12, seed: [...crypto.getRandomValues(new Uint8Array(20))].map(x => String.fromCharCode(x)).join('') }).base64() }
                     p6963s.set(info.uuid, { provider, info })
                 }
@@ -201,7 +199,6 @@ const data = {
 
             // check trustwallet
             if (g1193.trustwallet) {
-                alert('g1193.trustwallet')
                 const provider = g1193.trustwallet
                 const info = provider.info ?? { name: 'TrustWallet', uuid: crypto.randomUUID(), icon: new Blockie({ scale: 12, seed: [...crypto.getRandomValues(new Uint8Array(20))].map(x => String.fromCharCode(x)).join('') }).base64() }
                 p6963s.set(info.uuid, { provider, info })
@@ -232,7 +229,7 @@ const data = {
             // something like this.operator.set(await connector.choose(providers)))
             if (p6963s.size > 1) this.operator.set(await choose([...p6963s.values()]))
             else if (p6963s.size == 1) this.operator.set((p6963s.values().next().value as P6963).provider)
-            else if (g1193.ethereum) { alert('g1193.ethereum'); this.operator.set(g1193.ethereum) }
+            else if (g1193.ethereum) this.operator.set(g1193.ethereum)
             else { alert('no web3 providers detected'); this.operator.set(new Error('no web3 providers detected')) }
 
         },
@@ -247,7 +244,7 @@ const data = {
             const p1193 = this.operator.get('p1193') as P1193
             const error = this.operator.errors(this.dependencies)[0] as undefined|Error
             if (error) { this.operator.set(error); return }
-            alert(Object.keys(p1193))
+            alert(Object.keys(p1193.ethereum))
             const chain = await p1193.request({ method: 'eth_chainId', params: [] })
                 .then(z.string().transform(BigInt).parseAsync)
                 .catch(reason => new Error(String(reason))) as Error|bigint
