@@ -25,7 +25,6 @@ const init:VortexFlow = async function() {
     for (const key of this.invalidate) this.tState[key] = undefined
 
     // while there are updaters that need to complete, run all updaters
-    alert(this.tState.p1193?.isTrust)
     while (this.updaters.value.size) {
 
         const { signal } = controller
@@ -38,8 +37,6 @@ const init:VortexFlow = async function() {
             const datumUpdaterContext = { operator, dependencies, flow }
             return updater.bind(datumUpdaterContext)()
         }))
-
-        alert(this.tState.p1193?.isTrust)
 
     }
 
@@ -193,8 +190,8 @@ const data = {
             }
             
             // check nonstandard 5749 
-            if (g1193.providers) {
-                for (const provider of g1193.providers) {
+            if (g1193.ethereum?.providers) {
+                for (const provider of g1193.ethereum.providers) {
                     const info = provider.info ?? { name: 'Unknown', uuid: crypto.randomUUID(), icon: new Blockie({ scale: 12, seed: [...crypto.getRandomValues(new Uint8Array(20))].map(x => String.fromCharCode(x)).join('') }).base64() }
                     p6963s.set(info.uuid, { provider, info })
                 }

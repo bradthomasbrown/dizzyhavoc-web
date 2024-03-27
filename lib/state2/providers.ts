@@ -32,9 +32,8 @@ export interface EIP6963AnnounceProviderEvent extends CustomEvent {
 }
 
 type G1193 = typeof globalThis
-    & { ethereum?:P1193&Partial<P5749> }
+    & { ethereum?:P1193&Partial<P5749>&{ providers?:Array<P1193&Partial<P5749>> } }
     & { trustwallet?:P1193&Partial<P5749> }
     & { evmproviders?:{ [key:string]:P1193&Partial<P5749> } }
-    & { providers?:Array<P1193&Partial<P5749>> }
 
 export function getG1193():G1193 { return globalThis }
