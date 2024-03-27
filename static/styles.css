@@ -62,6 +62,11 @@ user-select: none; /* Standard */
     backdrop-filter: blur(4px);
     background: #ededede0 no-repeat padding-box;
   }
+  .bg-blur4 {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    background: #ededed32 no-repeat padding-box;
+  }
   section2{
     position: absolute;
     width: 100%;
@@ -155,6 +160,11 @@ user-select: none; /* Standard */
   background: #34343432 no-repeat padding-box;
 }
 .bg-blur3 {
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  background: #2c2c2c32 no-repeat padding-box;
+}
+.bg-blur4 {
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   background: #2c2c2c32 no-repeat padding-box;
