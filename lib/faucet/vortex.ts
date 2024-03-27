@@ -25,6 +25,7 @@ const init:VortexFlow = async function() {
     for (const key of this.invalidate) this.tState[key] = undefined
 
     // while there are updaters that need to complete, run all updaters
+    alert([...this.updaters.value].map(updater => this.dataKey.get(updater)))
     while (this.updaters.value.size) {
 
         const { signal } = controller
@@ -37,6 +38,8 @@ const init:VortexFlow = async function() {
             const datumUpdaterContext = { operator, dependencies, flow }
             return updater.bind(datumUpdaterContext)()
         }))
+        
+        alert([...this.updaters.value].map(updater => this.dataKey.get(updater)))
 
     }
 
