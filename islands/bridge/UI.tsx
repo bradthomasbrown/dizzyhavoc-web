@@ -7,6 +7,7 @@ import { bridgeable } from "../../lib/chains/bridgeable.ts";
 import { Chain } from "../../lib/types/Chain.ts";
 import { JSX } from "preact/jsx-runtime";
 import { ConnectionInfo } from "../common/ConnectionInfo.tsx";
+import { Input } from "../common/Input.tsx";
 // import { IS_BROWSER } from '$fresh/runtime.ts'
 // import { useEffect } from 'preact/hooks'
 // import { useState } from 'preact/hooks'
@@ -109,29 +110,7 @@ export function UI() {
               </div>
 
               {/* search */}
-              <div class="flex">
-                <input
-                  class={`
-                            grow
-                            bg-[#f2f2f2]
-                            dark:bg-[#1e1e1e]
-                            rounded-lg
-                            m-4
-                            px-2
-                            lg:text-lg
-                            text-[#2c2c2c]
-                            dark:text-[#EAEAEA]
-                            border
-                            dark:border-1
-                            border-1
-                            border-[#2c2c2c2a]
-                            dark:border-[#eaeaea2a]
-                            font-mono
-                        `}
-                  onClick={(e) => e.currentTarget.value = ""}
-                  onInput={onFilterChange}
-                />
-              </div>
+              <Input clearClick={true} onInput={onFilterChange}/>
 
               {/* choices */}
               <div class="grid place-items-center grid-flow-row grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-2 max-w-full overflow-auto">
@@ -174,7 +153,7 @@ export function UI() {
       {!whichChain.value
         ? (
           <>
-            <ConnectionInfo/>
+            <ConnectionInfo />
 
             {/* balance */}
             {/* <Balance/> */}

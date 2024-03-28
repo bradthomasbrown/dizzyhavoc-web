@@ -33,5 +33,5 @@ export function ConnectionInfo() {
         {hexshortSelected}
       </div>
     </div>
-  )
+  );
 }
