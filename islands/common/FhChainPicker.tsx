@@ -16,7 +16,7 @@ export function FhChainPicker(
     <div class="flex flex-row items-center">
       <div
         onClick={() => onClick(which)}
-        class="w-[80px] h-[80px] border-2 flex justify-center items-center rounded-full border-brand-violet950 p-3 bg-dark-stone950 cursor-pointer hover:border-brand-lime600"
+        class="hover:scale-[102%] active:scale-[98%] w-[80px] h-[80px] border-2 flex justify-center items-center rounded-full border-[#282828] dark:border-[#d2d2d2] p-3 cursor-pointer "
       >
         {chosen.value[which]
           ? (
