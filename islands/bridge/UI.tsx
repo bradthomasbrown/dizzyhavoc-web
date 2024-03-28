@@ -88,6 +88,7 @@ async function chainChoices(which:string) {
     whichChain.value = which
     selectedChains.value = { ...selectedChains.value, [which]: await chainChoiceGate.value.promise }
     whichChain.value = undefined
+    filteredActive.value = bridgeable.sort((a, b) => a.name < b.name ? -1 : a.name == b.name ? 0 : 1)
 }
 
 export function UI() {
@@ -195,15 +196,9 @@ export function UI() {
             <div class="flex flex-row items-center">
 
                 <div class="flex flex-col items-end mr-2">
-
-                    <div class="font-extrabold text-3xl text-neutrals-slate300 cursor-default">
-                        DZHV
-                    </div>
-                    
-                    <div class="font-regular text-xs text-neutrals-slate400 cursor-default">
+                    <div class="select-none font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-light">
                         {selectedChains.value.from?.name}
                     </div>
-
                 </div>
 
                 <div 
