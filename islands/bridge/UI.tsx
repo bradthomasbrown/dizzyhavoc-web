@@ -290,7 +290,6 @@ export function UI() {
                     )
                     : (
                       <svg
-                        title={"Destination chain"}
                         class="w-[52px] h-[52px] text-gray-800 dark:text-white"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
@@ -311,6 +310,7 @@ export function UI() {
                     )}
                 </div>
               </div>
+           
             </div>
             {
               /* <ListInput list="chains" placeholder="chain" onInput={() => {}} addClass="w-[4rem]"/>
