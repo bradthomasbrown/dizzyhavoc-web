@@ -3,10 +3,10 @@ import { schemas, overrides } from '../internal.ts'
 import { Chain } from '../types/Chain.ts'
 
 // query overrides and then ethereum-lists/chains for chain info
-export async function query({ id }:{ id:bigint }):Promise<Error|Chain> {
+export async function query({ id }:{ id:number }):Promise<Error|Chain> {
 
     // search overrides for chain
-    const override = overrides.find(({ chainId }) => BigInt(chainId) == id)
+    const override = overrides.find(({ chainId }) => chainId == id)
     // otherwise attempt to pull and parse chain from lib/chains/ 
     const chain = override
         ? null
