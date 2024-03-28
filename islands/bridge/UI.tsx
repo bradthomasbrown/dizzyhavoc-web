@@ -1,15 +1,10 @@
 import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.0/mod.ts";
-import { computed, Signal } from "@preact/signals";
-import { status } from "../common/Connector.tsx";
-import { Button } from "../../components/common/Button.tsx";
-import { getIcon } from "../../lib/chains/icons.ts";
+import { Signal } from "@preact/signals";
 import { bridgeable } from "../../lib/chains/bridgeable.ts";
 import { Chain } from "../../lib/types/Chain.ts";
 import { ConnectionInfo } from "../common/ConnectionInfo.tsx";
 import { WhichChain } from "../common/WhichChain.tsx";
 import { FhChainPicker } from "../common/FhChainPicker.tsx";
-
-const disabled = computed(() => status.value != "Connected");
 
 async function bridge() {
   //     const addresses = vortex.uState.addresses.value
@@ -41,10 +36,6 @@ async function bridge() {
 
 const whichChain = new Signal<undefined | string>(undefined);
 
-const choosingChain = new Signal<boolean>(false);
-
-const chainPickerKey = new Signal<undefined | string>(undefined);
-
 const chosenChains = new Signal<Record<string, Chain>>({});
 
 const chainChoiceGate = new Signal<undefined | Gate<Chain>>(undefined);
@@ -54,13 +45,25 @@ function chooseChain(chain: Chain) {
 }
 
 async function pickChain(which: string) {
-  console.log("pickChain", which);
   chainChoiceGate.value = new Gate<Chain>();
   whichChain.value = which;
-  chosenChains.value = {
-    ...chosenChains.value,
-    [which]: await chainChoiceGate.value.promise,
-  };
+  const chain = await chainChoiceGate.value.promise;
+  if (Object.values(chosenChains.value).includes(chain)) {
+    // if chosen chain is already in chosenChains, swap instead of set
+    const j = Object.entries(chosenChains.value).find(([k, v]) => v === chain)
+      ?.[0] as string;
+    chosenChains.value = {
+      ...chosenChains.value,
+      [j]: chosenChains.value[which],
+      [which]: chain,
+    };
+  } else {
+    // otherwise, just set
+    chosenChains.value = {
+      ...chosenChains.value,
+      [which]: chain,
+    };
+  }
   whichChain.value = undefined;
 }
 
@@ -119,19 +122,18 @@ export function UI() {
                 onClick={pickChain}
               />
             </div>
-            {
-              /* <ListInput list="chains" placeholder="chain" onInput={() => {}} addClass="w-[4rem]"/>
-            <datalist id="chains">{bridgeable.map(chain => <option value={chain?.shortName}/>)}</datalist> */
-            }
 
             {/* bridge button */}
-            <Button
+            {
+              /* <Button
               addClass="text-[#3d3d3d] dark:text-[#ccb286]"
               disabled={disabled.value}
               onClick={disabled.value ? () => {} : bridge}
             >
               Bridge
-            </Button>
+            </Button> */
+            }
+
             <a
               class="absolute dark:text-[#d2d2d2] bg-blur4 rounded-xl pr-1 text-[#282828] bottom-0 right-2 text-md font-[Poppins] hover:scale-[102%]"
               target="_blank"
