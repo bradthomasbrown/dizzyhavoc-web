@@ -245,6 +245,7 @@ export function UI() {
                         fill="none"
                         viewBox="0 0 24 24"
                       >
+                        <title>Origin chain</title>
                         <path
                           stroke="currentColor"
                           stroke-linecap="round"
@@ -289,6 +290,7 @@ export function UI() {
                     )
                     : (
                       <svg
+                        title={"Destination chain"}
                         class="w-[52px] h-[52px] text-gray-800 dark:text-white"
                         aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg"
@@ -297,6 +299,7 @@ export function UI() {
                         fill="none"
                         viewBox="0 0 24 24"
                       >
+                       <title>Destination chain</title>                        
                         <path
                           stroke="currentColor"
                           stroke-linecap="round"
