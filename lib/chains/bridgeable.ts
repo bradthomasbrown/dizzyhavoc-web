@@ -3,12 +3,17 @@ import { Chain, query } from '../internal.ts'
 
 // active chain IDs
 const ids = [
-    1n,     // ethereum,
-    56n,    // binance smart chain
-    8453n,  // base
-    42161n, // arbitrum
-    43114n, // avalanche,
-    8546n,  // local testnet 8546
+    // # mainnet
+    // 1n,      // ethereum,
+    // 56n,     // binance smart chain
+    // 8453n,   // base
+    // 42161n,  // arbitrum
+    // 43114n,  // avalanche,
+    11155111,  // ethereum sepolia
+    421614,    // arbitrum sepolia
+    84532,     // base sepolia
+    43113,     // avalanche fuji
+    97         // BSC Testnet
 ]
 
 // an array of bridgeable chains constructed from the above list of chain IDs
