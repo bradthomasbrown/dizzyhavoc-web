@@ -9,6 +9,8 @@ import { Blockie } from '../../lib/blockies/Blockie.ts'
 import { ejra } from '../../lib/faucet/ejra.ts'
 import { vortex } from '../../lib/faucet/vortex.ts'
 import { status } from '../common/Connector.tsx'
+import { getIcon } from "../../lib/chains/icons.ts";
+import { chain } from "../../lib/schemas/chain.ts";
 
 const disabled = computed(() => status.value != 'Connected')
 
@@ -69,6 +71,22 @@ export function UI() {
                 ? <Connector/>
                 : <>
 
+                    {/* chain icon */}
+                    <div class="absolute top-2 left-2">
+                    <picture>
+                        <source
+                          srcset={getIcon(Number(vortex.uState.chain.value)).dark}
+                          media="(prefers-color-scheme: dark)"
+                        />
+                        <img
+                          title={"chain id: " + String(vortex.uState.chain.value)}
+                          draggable={false}
+                          class="w-7 h-7"
+                          src={getIcon(Number(vortex.uState.chain.value)).light}
+                        />
+                    </picture>
+                    </div>
+
                     {/* blockie */}
                     <img class="size-[2.2rem] rounded-sm mb-1" src={blockieData} title={seed} alt="blockie image"/>
 
@@ -86,7 +104,7 @@ export function UI() {
                     >
                         Get DZHV
                     </Button>
-
+            
                 </>
         }</>
     )
