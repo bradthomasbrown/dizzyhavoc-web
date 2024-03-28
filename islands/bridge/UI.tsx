@@ -12,10 +12,9 @@ import { JSX } from 'preact/jsx-runtime'
 // import { IS_BROWSER } from '$fresh/runtime.ts'
 // import { useEffect } from 'preact/hooks'
 // import { useState } from 'preact/hooks'
-// import { hexshort, Connector /*addresses, , rpc, provider*/ } from '../../lib/internal.ts'
-// import { Balance } from '../../islands/common/Balance.tsx'
+// import { useSignal } from "@preact/signals"
+
 // import { ejra } from '../../lib/faucet/ejra.ts'
-// import { status } from '../common/Connector.tsx'
 
 
 const disabled = computed(() => status.value != 'Connected')
@@ -92,15 +91,21 @@ async function chainChoices(which:string) {
 }
 
 export function UI() {
+    // const destination = useSignal<undefined|bigint|null>(undefined)
+    // const recipient = useSignal<undefined|string|null>(undefined)
+    // const amount = useSignal<undefined|bigint|null>(undefined)
+    // function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
+    //     const chain = bridgeable.find(({ shortName }) => e.currentTarget.value == shortName)
+    //     destination.value = chain ? BigInt(chain.chainId) : null
+    // }
 
     // function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
     //     const chain = bridgeable.find(({ shortName }) => e.currentTarget.value == shortName)
     //     destination.value = chain ? BigInt(chain.chainId) : null
     // }
     
-    return(
-        <>
-        
+    return (<>
+
 
 
         { whichChain.value ? <>
@@ -170,11 +175,21 @@ export function UI() {
 
         { !whichChain.value ? <>
 
-            {/* blockie */}
-            <img class="size-[2.2rem] rounded-sm mb-1" src={blockieData} title={seed} alt="blockie image"/>
+            {/* blockie + hexshort */}
+            <div class="absolute top-3 left-3 flex flex-row">
+                <img class="size-[1.4rem] rounded-sm mr-1" src={blockieData} title={seed} alt="blockie image"/>
+                <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-[14px] mb-2">{hexshortSelected}</div>
+            </div>
+            
+            {/* balance */}
+            {/* <Balance/> */}
+                    
+            { /* amount */}
+            {/* <Web3Input placeholder="amount" maxVal={dzhvBalance.value} decimals={18n} val={amount}/> */}
 
-            {/* hexshort */}
-            <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-sm mb-2">{hexshortSelected}</div>
+            { /* recipient */}
+            {/* <div class="flex gap-2 mb-5"> */}
+            {/* <ListInput list="addrs" placeholder="receiving address" onInput={e => recipient.value = e.currentTarget.value}/> */}
 
             {/* fabianhortiguela selector button */}
             <div class="flex flex-row items-center">
@@ -221,11 +236,12 @@ export function UI() {
             >
                 Bridge
             </Button>
+            <a class="absolute dark:text-[#d2d2d2] text-[#282828] bottom-0 right-2 text-md font-[Poppins] hover:scale-[102%]" target="_blank" href="/faucet">💧faucet</a>
 
         </> : <></> }
 
 
 
-        </>
-    )
+        
+    </>)
 }

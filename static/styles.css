@@ -16,6 +16,12 @@
 -ms-user-select: none; /* IE10+/Edge */
 user-select: none; /* Standard */
 }
+.selectable {
+  -webkit-user-select: text; /* Safari */
+  -moz-user-select: text; /* Firefox */
+  -ms-user-select: text; /* IE10+/Edge */
+  user-select: text; /* Standard */
+}
 #chart {
   max-width: 650px;
 }
@@ -55,6 +61,11 @@ user-select: none; /* Standard */
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
     background: #ededede0 no-repeat padding-box;
+  }
+  .bg-blur4 {
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    background: #ededed32 no-repeat padding-box;
   }
   section2{
     position: absolute;
@@ -149,6 +160,11 @@ user-select: none; /* Standard */
   background: #34343432 no-repeat padding-box;
 }
 .bg-blur3 {
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  background: #2c2c2c32 no-repeat padding-box;
+}
+.bg-blur4 {
   -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   background: #2c2c2c32 no-repeat padding-box;

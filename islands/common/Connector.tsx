@@ -61,7 +61,7 @@ export function Connector() {
                             { choices.value.map(choice =>
                                 <div class="flex flex-col justify-center items-center h-24 w-24 cursor-pointer grow gap-1" onClick={() => onChoice(choice)}>
                                     <img draggable={false} class="hover:scale-[102%] active:scale-[98%] min-h-16 min-w-16 max-h-16 max-w-16" src={choice.info.icon}/>
-                                    <div class="select-none font-light lg:text-[1rem] text-[0.75rem]">{ choice.info.name }</div>
+                                    <div class="select-none font-light text-[0.75rem]">{ choice.info.name }</div>
                                 </div>
                             )}
                         </div>

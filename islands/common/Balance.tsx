@@ -15,5 +15,5 @@ const balance = computed(() => {
 })
 
 export function Balance() {
-    return (<div class="text-sm text-[#2c2c2ca9] justify-center text-center dark:text-[#EAEAEAa9] font-[Poppins] mb-4">Balance<div class="text-xl text-[#2c2c2c] dark:text-[#EAEAEA] font-[Poppins]">{balance}</div></div>)
+    return (<div class="text-sm unselectable text-[#2c2c2ca9] justify-center text-center dark:text-[#EAEAEAa9] font-[Poppins] mb-4">Balance<div class="text-xl selectable text-[#2c2c2c] dark:text-[#EAEAEA] font-[Poppins]">{balance}</div></div>)
 }
