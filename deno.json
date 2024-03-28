@@ -6,7 +6,7 @@
     "semiColons": false,
     "proseWrap": "always",
     "singleQuote": true,
-    "exclude": ["**/chains/chains/**/*"]
+    "exclude": ["**/chains/chains/**", "**/chains/chains/**/.*"]
   },
   "c_fmt": {
     "useTabs": false,
@@ -15,7 +15,7 @@
     "semiColons": true,
     "proseWrap": "always",
     "singleQuote": false,
-    "exclude": ["**/chains/chains/**/*"]
+    "exclude": ["**/chains/chains/**", "**/chains/chains/**/.*"]
   },
   "lock": false,
   "tasks": {
