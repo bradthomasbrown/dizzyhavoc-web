@@ -1,6 +1,8 @@
 import { JSX } from "preact";
 
-export function Button(props:{ addClass?:string }&JSX.HTMLAttributes<HTMLDivElement>) {
+export function Button(
+  props: { addClass?: string } & JSX.HTMLAttributes<HTMLDivElement>,
+) {
   return (
     <div
       {...props}
@@ -12,13 +14,13 @@ export function Button(props:{ addClass?:string }&JSX.HTMLAttributes<HTMLDivElem
       shadow-lg
       font-[Poppins]
       rounded-lg
-      ${props.disabled ? '' : 'hover:scale-[102%]'}
-      ${props.disabled ? '' : 'active:scale-[98%]'}
-      ${props.disabled ? 'contrast-[75%]' : ''}
+      ${props.disabled ? "" : "hover:scale-[102%]"}
+      ${props.disabled ? "" : "active:scale-[98%]"}
+      ${props.disabled ? "contrast-[75%]" : ""}
       border
       border-[#e9e9e9]
       dark:border-[#ffffff1f]
-      ${props.disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
+      ${props.disabled ? "cursor-not-allowed" : "cursor-pointer"}
       dark:bg-[#191919]
       bg-[#f1f1f1]
       font-light

@@ -5,7 +5,7 @@
 // const balance = signal<undefined|bigint|null>(undefined)
 
 // async function updateBalance({ tState, signal }:UpdaterOpts) {
-    
+
 //     // pre-check
 //     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
 
@@ -19,7 +19,7 @@
 
 //     // get
 //     const balance = await ejra.balance(tState.rpc, tState.addresses[0], tState.height)
-    
+
 //     // post-check
 //     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
 

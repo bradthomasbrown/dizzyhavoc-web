@@ -1,6 +1,6 @@
-import { chain } from './chain.ts'
-import { injectedProvider } from './injectedProvider.ts'
+import { chain } from "./chain.ts";
+import { injectedProvider } from "./injectedProvider.ts";
 
-const schemas = { chain, injectedProvider }
+const schemas = { chain, injectedProvider };
 
-export { schemas }
+export { schemas };

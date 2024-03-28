@@ -10,7 +10,7 @@
 //     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
 
 //     // logic
-//     if (tState.height !== null && tState.height !== undefined) return 
+//     if (tState.height !== null && tState.height !== undefined) return
 //     if (tState.rpc instanceof Error) { tState.height = tState.rpc; return }
 //     if (tState.rpc === undefined) return
 

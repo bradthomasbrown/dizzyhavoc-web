@@ -3,59 +3,65 @@ import { Signal, useSignal } from "@preact/signals";
 import { JSX } from "preact/jsx-runtime";
 
 export function Web3Input(
-  props:{ decimals:bigint, maxVal:bigint|null|undefined, val:Signal<undefined|bigint|null> }&JSX.HTMLAttributes<HTMLInputElement>,
+  props: {
+    decimals: bigint;
+    maxVal: bigint | null | undefined;
+    val: Signal<undefined | bigint | null>;
+  } & JSX.HTMLAttributes<HTMLInputElement>,
 ) {
+  const decimals = 18;
+  const numValue = useSignal("0");
+  const rangeValue = useSignal(0n);
 
-    const decimals = 18
-    const numValue = useSignal('0')
-    const rangeValue = useSignal(0n)
-
-    function onTextInput(e:JSX.TargetedEvent<HTMLInputElement>) {
-        const { maxVal } = props
-        if (maxVal === undefined || maxVal === null) return
-        numValue.value = e.currentTarget.value
-        let tmp = `${numValue}`
-        if (tmp.match(/[^\d\.]|\..*\.|^\.?$/))
-            return props.val.value = rangeValue.value = 0n
-        const index = tmp.match(/\./)?.index ?? tmp.length - 1
-        const fracs = tmp.length - 1 - index
-        const zeros = Array(Math.max(decimals - fracs, 0)).fill('0').join('')
-        if (fracs > decimals) tmp = tmp.slice(0, decimals - fracs)
-        tmp = tmp.replace(/\./, '')
-        props.val.value = BigInt(`${tmp}${zeros}`)
-        rangeValue.value = props.val.value * 100n / maxVal
+  function onTextInput(e: JSX.TargetedEvent<HTMLInputElement>) {
+    const { maxVal } = props;
+    if (maxVal === undefined || maxVal === null) return;
+    numValue.value = e.currentTarget.value;
+    let tmp = `${numValue}`;
+    if (tmp.match(/[^\d\.]|\..*\.|^\.?$/)) {
+      return props.val.value = rangeValue.value = 0n;
     }
+    const index = tmp.match(/\./)?.index ?? tmp.length - 1;
+    const fracs = tmp.length - 1 - index;
+    const zeros = Array(Math.max(decimals - fracs, 0)).fill("0").join("");
+    if (fracs > decimals) tmp = tmp.slice(0, decimals - fracs);
+    tmp = tmp.replace(/\./, "");
+    props.val.value = BigInt(`${tmp}${zeros}`);
+    rangeValue.value = props.val.value * 100n / maxVal;
+  }
 
-    function onRangeInput(e:JSX.TargetedEvent<HTMLInputElement>) {
-        const { maxVal } = props
-        if (maxVal === undefined || maxVal === null) return
-        rangeValue.value = BigInt(e.currentTarget.value)
-        props.val.value = BigInt(rangeValue.value) * maxVal / 100n
-        let tmp = `${props.val.value}`.padStart(decimals, '0')
-        if (tmp.length == decimals) tmp = `0.${tmp}`
-        else tmp = `${tmp.slice(0, tmp.length - decimals)}.${
-            tmp.slice(tmp.length - decimals)}`
-        tmp = tmp.replace(/\.?0*$/, '')
-        numValue.value = tmp
-    }
+  function onRangeInput(e: JSX.TargetedEvent<HTMLInputElement>) {
+    const { maxVal } = props;
+    if (maxVal === undefined || maxVal === null) return;
+    rangeValue.value = BigInt(e.currentTarget.value);
+    props.val.value = BigInt(rangeValue.value) * maxVal / 100n;
+    let tmp = `${props.val.value}`.padStart(decimals, "0");
+    if (tmp.length == decimals) tmp = `0.${tmp}`;
+    else {tmp = `${tmp.slice(0, tmp.length - decimals)}.${
+        tmp.slice(tmp.length - decimals)
+      }`;}
+    tmp = tmp.replace(/\.?0*$/, "");
+    numValue.value = tmp;
+  }
 
   return (
     <div class="flex flex-col">
-      <input type="text"
-          {...props}
-          disabled={!IS_BROWSER||props.disabled}
-          class="h-[9mm] py-2 px-3 text-xl bg-blur4 rounded-lg border-solid border-b-2 border-[#8d8d8d] dark:caret-[#EAEAEA] caret-[#2c2c2c] text-[#2c2c2c] dark:text-[#EAEAEA] font-[monospace]"
-          value={numValue}
-          onInput={onTextInput}
+      <input
+        type="text"
+        {...props}
+        disabled={!IS_BROWSER || props.disabled}
+        class="h-[9mm] py-2 px-3 text-xl bg-blur4 rounded-lg border-solid border-b-2 border-[#8d8d8d] dark:caret-[#EAEAEA] caret-[#2c2c2c] text-[#2c2c2c] dark:text-[#EAEAEA] font-[monospace]"
+        value={numValue}
+        onInput={onTextInput}
       />
-      <input type="range"
-          {...props}
-          disabled={!IS_BROWSER||props.disabled}
-          class="h-[9mm] text-xl dark:accent-[#EAEAEA] accent-[#222222]"
-          value={rangeValue.value.toString()}
-          onInput={onRangeInput}
+      <input
+        type="range"
+        {...props}
+        disabled={!IS_BROWSER || props.disabled}
+        class="h-[9mm] text-xl dark:accent-[#EAEAEA] accent-[#222222]"
+        value={rangeValue.value.toString()}
+        onInput={onRangeInput}
       />
     </div>
-  )
-
+  );
 }

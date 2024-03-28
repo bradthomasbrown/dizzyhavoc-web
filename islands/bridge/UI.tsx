@@ -214,7 +214,6 @@ export function UI() {
 
             {/* 'from -> to' row */}
             <div class="flex flex-row gap-x-4">
-
               {/* fabianhortiguela from selector button */}
               <div class="flex flex-row items-center">
                 <div
@@ -223,7 +222,7 @@ export function UI() {
                 >
                   {selectedChains.value.from
                     ? (
-                        <picture title={selectedChains.value.from.name}>
+                      <picture title={selectedChains.value.from.name}>
                         <source
                           srcset={getIcon(selectedChains.value.from.chainId)
                             .dark}
@@ -298,7 +297,7 @@ export function UI() {
                         fill="none"
                         viewBox="0 0 24 24"
                       >
-                       <title>Destination chain</title>                        
+                        <title>Destination chain</title>
                         <path
                           stroke="currentColor"
                           stroke-linecap="round"
@@ -310,7 +309,6 @@ export function UI() {
                     )}
                 </div>
               </div>
-           
             </div>
             {
               /* <ListInput list="chains" placeholder="chain" onInput={() => {}} addClass="w-[4rem]"/>

@@ -5,10 +5,12 @@ export function NavBar() {
       <div class="justify-start w-full flex">
         <div class="lg:text-[1.8rem] unselectable sm:gap-2 gap-1 items-center flex justify-center text-[1.5rem] font-[Poppins] font-medium z-10 font-Poppins dark:text-[#d2d2d2] text-[#282828]">
           <a href="/">
-          <img
-            src="/misc/token.png"
-            className="lg:max-w-[50px] lg:min-w-[50px] max-w-[35px] min-w-[35px] flex hover:scale-[105%]"
-          ></img></a>
+            <img
+              src="/misc/token.png"
+              className="lg:max-w-[50px] lg:min-w-[50px] max-w-[35px] min-w-[35px] flex hover:scale-[105%]"
+            >
+            </img>
+          </a>
           DizzyHavoc
         </div>
       </div>

@@ -1,10 +1,10 @@
-import { Form, Toaster } from '../../lib/internal.ts'
+import { Form, Toaster } from "../../lib/internal.ts";
 
 export function UI() {
-    return (
-        <div>
-            <Toaster/>
-            <Form/>
-        </div>
-    );
+  return (
+    <div>
+      <Toaster />
+      <Form />
+    </div>
+  );
 }

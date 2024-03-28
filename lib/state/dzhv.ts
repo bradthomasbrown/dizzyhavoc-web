@@ -5,7 +5,7 @@
 // const dzhv = signal<undefined|{ address:string }|null>(undefined)
 
 // async function updateDzhv({ tState, signal }:UpdaterOpts) {
-    
+
 //     // pre-check
 //     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
 
@@ -26,7 +26,7 @@
 
 //     // post-check
 //     if (signal?.aborted) throw new DOMException('Aborted', 'AbortError')
-    
+
 //     // commit
 //     tState.dzhv = dzhv
 

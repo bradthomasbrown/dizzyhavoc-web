@@ -1,3 +1,5 @@
-let nonce = 0n
+let nonce = 0n;
 
-export function getStateNonce() { return ++nonce }
+export function getStateNonce() {
+  return ++nonce;
+}
