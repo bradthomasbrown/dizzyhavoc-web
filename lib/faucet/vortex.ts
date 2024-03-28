@@ -220,9 +220,9 @@ const data = {
             uuid: crypto.randomUUID(),
             icon: new Blockie({
               scale: 12,
-              seed: [...crypto.getRandomValues(new Uint8Array(20))].map((x) =>
-                String.fromCharCode(x)
-              ).join(""),
+              seed: [
+                ...crypto.getRandomValues(new Uint8Array(20)),
+              ].map((x) => String.fromCharCode(x)).join(""),
             }).base64(),
           };
           p6963s.set(info.uuid, { provider, info });
@@ -237,9 +237,9 @@ const data = {
             uuid: crypto.randomUUID(),
             icon: new Blockie({
               scale: 12,
-              seed: [...crypto.getRandomValues(new Uint8Array(20))].map((x) =>
-                String.fromCharCode(x)
-              ).join(""),
+              seed: [
+                ...crypto.getRandomValues(new Uint8Array(20)),
+              ].map((x) => String.fromCharCode(x)).join(""),
             }).base64(),
           };
           p6963s.set(info.uuid, { provider, info });
@@ -254,9 +254,8 @@ const data = {
           uuid: crypto.randomUUID(),
           icon: new Blockie({
             scale: 12,
-            seed: [...crypto.getRandomValues(new Uint8Array(20))].map((x) =>
-              String.fromCharCode(x)
-            ).join(""),
+            seed: [...crypto.getRandomValues(new Uint8Array(20))]
+              .map((x) => String.fromCharCode(x)).join(""),
           }).base64(),
         };
         p6963s.set(info.uuid, { provider, info });
@@ -316,7 +315,9 @@ const data = {
       if (provider) {
         // if we got one, listen to events (aliasing trustwallet's 'addListener' to the standard 'on') and set the provider
         if (!provider.on && "addListener" in provider) {
-          provider.on = (provider.addListener as P1193["on"]).bind(provider);
+          provider.on = (provider.addListener as P1193["on"]).bind(
+            provider,
+          );
         }
         provider.on("chainChanged", () => vortex.flow("chain"));
         provider.on("accountsChanged", () => vortex.flow("account"));
@@ -343,7 +344,10 @@ const data = {
         this.operator.set(error);
         return;
       }
-      const chain = await p1193.request({ method: "eth_chainId", params: [] })
+      const chain = await p1193.request({
+        method: "eth_chainId",
+        params: [],
+      })
         .then(z.string().transform(BigInt).parseAsync)
         .catch((reason) => new Error(String(reason))) as Error | bigint;
       this.operator.set(chain);
@@ -365,7 +369,10 @@ const data = {
         return;
       }
       const addresses = this.flow == "init"
-        ? await p1193.request({ method: "eth_requestAccounts", params: [] })
+        ? await p1193.request({
+          method: "eth_requestAccounts",
+          params: [],
+        })
           .catch((reason) => {
             console.error(reason);
             this.operator.controller.abort();
@@ -375,9 +382,10 @@ const data = {
             vortex.updaters.value = new Set();
             return new Error(JSON.stringify(reason));
           }) as string[]
-        : await p1193.request({ method: "eth_accounts", params: [] }).catch(
-          (reason) => new Error(String(reason)),
-        ) as Error | string[];
+        : await p1193.request({ method: "eth_accounts", params: [] })
+          .catch(
+            (reason) => new Error(String(reason)),
+          ) as Error | string[];
       this.operator.set(
         addresses instanceof Error
           ? addresses
@@ -401,7 +409,9 @@ const data = {
         this.operator.set(error);
         return;
       }
-      const chain = await query({ id: this.operator.get("chain") as bigint });
+      const chain = await query({
+        id: this.operator.get("chain") as bigint,
+      });
       this.operator.set(
         chain instanceof Error
           ? chain
@@ -497,7 +507,9 @@ async function poll() {
   if (!rpc || rpc instanceof Error) return;
   const newHeight = await ejra.height(rpc);
   if (newHeight instanceof Error) return;
-  if (height === undefined || height instanceof Error || newHeight <= height) {
+  if (
+    height === undefined || height instanceof Error || newHeight <= height
+  ) {
     return;
   }
   if (controller.signal.aborted) return;

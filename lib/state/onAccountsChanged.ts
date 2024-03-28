@@ -17,7 +17,12 @@ export async function onAccountsChanged() {
   ]);
   await updateTState({
     tState,
-    updaters: [updateAddresses, updateBalance, updateDzhvBalance, ...updaters],
+    updaters: [
+      updateAddresses,
+      updateBalance,
+      updateDzhvBalance,
+      ...updaters,
+    ],
     abortController,
   }).catch((reason) => {
     console.error(reason);

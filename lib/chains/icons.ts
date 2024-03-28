@@ -13,7 +13,8 @@ export function getIcon(chainId: number): { dark: string; light: string } {
     case 97:
       return { dark: "/chains/bsc.svg", light: "chains/bsc.svg" };
     default: {
-      const b64 = new Blockie({ scale: 8, seed: chainId.toString() }).base64();
+      const b64 = new Blockie({ scale: 8, seed: chainId.toString() })
+        .base64();
       return { dark: b64, light: b64 };
     }
   }

@@ -4,7 +4,9 @@ import { DAppState, state, TState } from "../internal.ts";
 
 export async function commitTState(tState: TState) {
   // if tState contains null values, we cannot commit
-  if (Object.values(tState).reduce((p, c) => c instanceof Error || p, false)) {
+  if (
+    Object.values(tState).reduce((p, c) => c instanceof Error || p, false)
+  ) {
     const nullKeys = Object.entries(tState)
       .filter(([_, v]) => v === null)
       .map(([k]) => k);
@@ -28,7 +30,10 @@ export async function commitTState(tState: TState) {
   batch(() => {
     // pull signals from UState
     const stateSignals = Object.entries(state)
-      .filter(([_, v]) => v instanceof Signal) as [keyof DAppState, Signal][];
+      .filter(([_, v]) => v instanceof Signal) as [
+        keyof DAppState,
+        Signal,
+      ][];
     // update signal values
     for (const [key, signal] of stateSignals) {
       signal.value = tState[key];

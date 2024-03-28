@@ -77,7 +77,9 @@ type TStateSpecific<D extends VortexData> = {
 export type UState = Record<string, Signal<unknown>>;
 
 type UStateSpecific<D extends VortexData> = {
-  -readonly [K in keyof D]: Signal<undefined | Error | z.infer<D[K]["schema"]>>;
+  -readonly [K in keyof D]: Signal<
+    undefined | Error | z.infer<D[K]["schema"]>
+  >;
 };
 
 type FlowContext = {

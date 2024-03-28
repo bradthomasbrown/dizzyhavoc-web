@@ -91,14 +91,18 @@ export function UI() {
           <div class="absolute top-2 left-2">
             <picture>
               <source
-                srcset={getIcon(Number(vortex.uState.chain.value)).dark}
+                srcset={getIcon(
+                  Number(vortex.uState.chain.value),
+                ).dark}
                 media="(prefers-color-scheme: dark)"
               />
               <img
-                title={"chain id: " + String(vortex.uState.chain.value)}
+                title={"chain id: " +
+                  String(vortex.uState.chain.value)}
                 draggable={false}
                 class="w-7 h-7"
-                src={getIcon(Number(vortex.uState.chain.value)).light}
+                src={getIcon(Number(vortex.uState.chain.value))
+                  .light}
               />
             </picture>
           </div>

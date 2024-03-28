@@ -121,9 +121,10 @@ export function UI() {
           <>
             <div class="w-full h-full max-h-full flex flex-col grow">
               <div class="font-[Poppins] text-center pt-4 text-[#2c2c2c] dark:text-[#EAEAEA]">
-                {whichChain.value.slice(0, 1).toUpperCase().concat(
-                  whichChain.value.slice(1),
-                )}
+                {whichChain.value.slice(0, 1).toUpperCase()
+                  .concat(
+                    whichChain.value.slice(1),
+                  )}
               </div>
 
               {/* search */}
@@ -161,13 +162,16 @@ export function UI() {
                     >
                       <picture>
                         <source
-                          srcset={getIcon(chain.chainId).dark}
+                          srcset={getIcon(
+                            chain.chainId,
+                          ).dark}
                           media="(prefers-color-scheme: dark)"
                         />
                         <img
                           draggable={false}
                           class="w-12 h-12"
-                          src={getIcon(chain.chainId).light}
+                          src={getIcon(chain.chainId)
+                            .light}
                         />
                       </picture>
 
@@ -222,15 +226,24 @@ export function UI() {
                 >
                   {selectedChains.value.from
                     ? (
-                      <picture title={selectedChains.value.from.name}>
+                      <picture
+                        title={selectedChains.value.from
+                          .name}
+                      >
                         <source
-                          srcset={getIcon(selectedChains.value.from.chainId)
+                          srcset={getIcon(
+                            selectedChains.value
+                              .from.chainId,
+                          )
                             .dark}
                           media="(prefers-color-scheme: dark)"
                         />
                         <img
                           class="w-[52px] h-[52px]"
-                          src={getIcon(selectedChains.value.from.chainId).light}
+                          src={getIcon(
+                            selectedChains.value
+                              .from.chainId,
+                          ).light}
                         />
                       </picture>
                     )
@@ -276,14 +289,23 @@ export function UI() {
                 >
                   {selectedChains.value.to
                     ? (
-                      <picture title={selectedChains.value.to.name}>
+                      <picture
+                        title={selectedChains.value.to
+                          .name}
+                      >
                         <source
-                          srcset={getIcon(selectedChains.value.to.chainId).dark}
+                          srcset={getIcon(
+                            selectedChains.value.to
+                              .chainId,
+                          ).dark}
                           media="(prefers-color-scheme: dark)"
                         />
                         <img
                           class="w-[52px] h-[52px]"
-                          src={getIcon(selectedChains.value.to.chainId).light}
+                          src={getIcon(
+                            selectedChains.value.to
+                              .chainId,
+                          ).light}
                         />
                       </picture>
                     )

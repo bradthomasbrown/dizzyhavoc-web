@@ -47,7 +47,11 @@ export class Blockie {
         g = hueToRgb(p, q, h);
         b = hueToRgb(p, q, h - 1 / 3);
       }
-      return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+      return [
+        Math.round(r * 255),
+        Math.round(g * 255),
+        Math.round(b * 255),
+      ];
     }
 
     function hueToRgb(p: number, q: number, t: number) {
@@ -219,7 +223,10 @@ export class Blockie {
 
     while (bytes.length) {
       dataSubBlocks.push(
-        new Uint8Array([Math.min(bytes.length, 255), ...bytes.splice(0, 255)]),
+        new Uint8Array([
+          Math.min(bytes.length, 255),
+          ...bytes.splice(0, 255),
+        ]),
       );
     }
 
