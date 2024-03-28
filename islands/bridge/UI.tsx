@@ -62,8 +62,15 @@ export function UI() {
 
   return (
     <>
-
-      { whichChain.value ? <WhichChain which={whichChain.value} chains={bridgeable} onPick={chooseChain} /> : <></> }
+      {whichChain.value
+        ? (
+          <WhichChain
+            which={whichChain.value}
+            chains={bridgeable}
+            onPick={chooseChain}
+          />
+        )
+        : <></>}
 
       {/* at some point, we probably want to move the Connector conditional outside UI and into Form */}
       {/* { !whichChain.value && status.value != 'Connected' ? <Connector/> : <></> } */}

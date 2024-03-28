@@ -4,10 +4,13 @@ import { getIcon } from "../../lib/chains/icons.ts";
 import { Chain } from "../../lib/internal.ts";
 import { Input } from "./Input.tsx";
 
-export function WhichChain(props:{ which:string, chains:Chain[], onPick:(chain:Chain)=>unknown }) {
-
+export function WhichChain(
+  props: { which: string; chains: Chain[]; onPick: (chain: Chain) => unknown },
+) {
   const sortedChains = new Signal<Chain[]>(
-    props.chains.sort((a, b) => a.name < b.name ? -1 : a.name == b.name ? 0 : 1),
+    props.chains.sort((a, b) =>
+      a.name < b.name ? -1 : a.name == b.name ? 0 : 1
+    ),
   );
 
   function onFilterChange(e: JSX.TargetedEvent<HTMLInputElement>) {
@@ -18,7 +21,7 @@ export function WhichChain(props:{ which:string, chains:Chain[], onPick:(chain:C
             e.currentTarget.value.toLowerCase(),
           )
         )
-        .sort((a, b) => a.name < b.name ? -1 : a.name == b.name ? 0 : 1)
+        .sort((a, b) => a.name < b.name ? -1 : a.name == b.name ? 0 : 1);
     }
   }
 
@@ -32,7 +35,7 @@ export function WhichChain(props:{ which:string, chains:Chain[], onPick:(chain:C
       </div>
 
       {/* search */}
-      <Input clearClick={true} onInput={onFilterChange}/>
+      <Input clearClick={true} onInput={onFilterChange} />
 
       {/* choices */}
       <div class="grid place-items-center grid-flow-row grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-2 max-w-full overflow-auto">
@@ -65,5 +68,5 @@ export function WhichChain(props:{ which:string, chains:Chain[], onPick:(chain:C
         ))}
       </div>
     </div>
-  )
+  );
 }
