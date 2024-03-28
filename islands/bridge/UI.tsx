@@ -39,13 +39,17 @@ async function bridge() {
 }
 
 const whichChain = new Signal<undefined | string>(undefined);
+
 const selectedChains = new Signal<
   { from: undefined | Chain; to: undefined | Chain }
 >({ from: undefined, to: undefined });
+
 const chainChoiceGate = new Signal<undefined | Gate<Chain>>(undefined);
+
 function chooseChain(chain: Chain) {
   chainChoiceGate.value?.resolve(chain);
 }
+
 async function chainChoices(which: string) {
   chainChoiceGate.value = new Gate<Chain>();
   whichChain.value = which;
@@ -60,6 +64,8 @@ export function UI() {
   // const recipient = useSignal<undefined|string|null>(undefined)
   // const amount = useSignal<undefined|bigint|null>(undefined)
 
+  // at some point, we probably want to move the Connector conditional outside UI and into Form */}
+
   return (
     <>
       {whichChain.value
@@ -70,13 +76,7 @@ export function UI() {
             onPick={chooseChain}
           />
         )
-        : <></>}
-
-      {/* at some point, we probably want to move the Connector conditional outside UI and into Form */}
-      {/* { !whichChain.value && status.value != 'Connected' ? <Connector/> : <></> } */}
-
-      {!whichChain.value
-        ? (
+        : (
           <>
             <ConnectionInfo />
 
@@ -227,8 +227,7 @@ export function UI() {
               💧faucet
             </a>
           </>
-        )
-        : <></>}
+        )}
     </>
   );
 }
