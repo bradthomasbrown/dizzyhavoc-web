@@ -1,14 +1,12 @@
 import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.0/mod.ts";
 import { computed, Signal } from "@preact/signals";
-import { Blockie } from "../../lib/blockies/Blockie.ts";
-import { Connector, status } from "../common/Connector.tsx";
-import { vortex } from "../../lib/faucet/vortex.ts";
+import { status } from "../common/Connector.tsx";
 import { Button } from "../../components/common/Button.tsx";
-import { hexshort } from "../../lib/utils/hexshort.ts";
 import { getIcon } from "../../lib/chains/icons.ts";
 import { bridgeable } from "../../lib/chains/bridgeable.ts";
 import { Chain } from "../../lib/types/Chain.ts";
 import { JSX } from "preact/jsx-runtime";
+import { ConnectionInfo } from "../common/ConnectionInfo.tsx";
 // import { IS_BROWSER } from '$fresh/runtime.ts'
 // import { useEffect } from 'preact/hooks'
 // import { useState } from 'preact/hooks'
@@ -46,15 +44,6 @@ async function bridge() {
   //     await p1193.request({ method: 'eth_sendTransaction', params: [tx] })
 }
 
-const defaultSeed = "0xa9C5db3e478D8F2E229254ef1d7e3a8ddBf2737c";
-const seed = computed(() => {
-  const addresses = vortex.uState.addresses.value;
-  return !addresses || addresses instanceof Error ? defaultSeed : addresses[0];
-});
-const blockieData = computed(() => {
-  return new Blockie({ scale: 16, seed: seed.value }).base64();
-});
-
 const filteredActive = new Signal<Chain[]>(
   bridgeable.sort((a, b) => a.name < b.name ? -1 : a.name == b.name ? 0 : 1),
 );
@@ -70,14 +59,6 @@ function onFilterChange(e: JSX.TargetedEvent<HTMLInputElement>) {
       .sort((a, b) => a.name < b.name ? -1 : a.name == b.name ? 0 : 1)
     : bridgeable;
 }
-
-const hexshortSelected = computed(() => {
-  const addresses = vortex.uState.addresses.value;
-  const zeroAddress = "0x".padEnd(42, "0");
-  return hexshort(
-    !addresses || addresses instanceof Error ? zeroAddress : addresses[0],
-  );
-});
 
 const whichChain = new Signal<undefined | string>(undefined);
 const selectedChains = new Signal<
@@ -193,18 +174,7 @@ export function UI() {
       {!whichChain.value
         ? (
           <>
-            {/* blockie + hexshort */}
-            <div class="absolute top-3 left-3 flex flex-row">
-              <img
-                class="size-[1.4rem] rounded-sm mr-1"
-                src={blockieData}
-                title={seed}
-                alt="blockie image"
-              />
-              <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-[14px] mb-2">
-                {hexshortSelected}
-              </div>
-            </div>
+            <ConnectionInfo/>
 
             {/* balance */}
             {/* <Balance/> */}

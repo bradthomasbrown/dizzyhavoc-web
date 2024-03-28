@@ -13,6 +13,7 @@ import * as $bridge_Toast from "./islands/bridge/Toast.tsx";
 import * as $bridge_Toaster from "./islands/bridge/Toaster.tsx";
 import * as $bridge_UI from "./islands/bridge/UI.tsx";
 import * as $common_Balance from "./islands/common/Balance.tsx";
+import * as $common_ConnectionInfo from "./islands/common/ConnectionInfo.tsx";
 import * as $common_Connector from "./islands/common/Connector.tsx";
 import * as $common_ListInput from "./islands/common/ListInput.tsx";
 import * as $common_Navbar from "./islands/common/Navbar.tsx";
@@ -37,6 +38,7 @@ const manifest = {
     "./islands/bridge/Toaster.tsx": $bridge_Toaster,
     "./islands/bridge/UI.tsx": $bridge_UI,
     "./islands/common/Balance.tsx": $common_Balance,
+    "./islands/common/ConnectionInfo.tsx": $common_ConnectionInfo,
     "./islands/common/Connector.tsx": $common_Connector,
     "./islands/common/ListInput.tsx": $common_ListInput,
     "./islands/common/Navbar.tsx": $common_Navbar,
