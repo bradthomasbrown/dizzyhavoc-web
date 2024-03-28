@@ -7,6 +7,7 @@ import { bridgeable } from "../../lib/chains/bridgeable.ts";
 import { Chain } from "../../lib/types/Chain.ts";
 import { ConnectionInfo } from "../common/ConnectionInfo.tsx";
 import { WhichChain } from "../common/WhichChain.tsx";
+import { FhChainPicker } from "../common/FhChainPicker.tsx";
 
 const disabled = computed(() => status.value != "Connected");
 
@@ -40,9 +41,11 @@ async function bridge() {
 
 const whichChain = new Signal<undefined | string>(undefined);
 
-const selectedChains = new Signal<
-  { from: undefined | Chain; to: undefined | Chain }
->({ from: undefined, to: undefined });
+const choosingChain = new Signal<boolean>(false);
+
+const chainPickerKey = new Signal<undefined | string>(undefined);
+
+const chosenChains = new Signal<Record<string, Chain>>({});
 
 const chainChoiceGate = new Signal<undefined | Gate<Chain>>(undefined);
 
@@ -50,11 +53,12 @@ function chooseChain(chain: Chain) {
   chainChoiceGate.value?.resolve(chain);
 }
 
-async function chainChoices(which: string) {
+async function pickChain(which: string) {
+  console.log("pickChain", which);
   chainChoiceGate.value = new Gate<Chain>();
   whichChain.value = which;
-  selectedChains.value = {
-    ...selectedChains.value,
+  chosenChains.value = {
+    ...chosenChains.value,
     [which]: await chainChoiceGate.value.promise,
   };
   whichChain.value = undefined;
@@ -92,57 +96,11 @@ export function UI() {
 
             {/* 'from -> to' row */}
             <div class="flex flex-row gap-x-4">
-              {/* fabianhortiguela from selector button */}
-              <div class="flex flex-row items-center">
-                <div
-                  onClick={() => chainChoices("from")}
-                  class="w-[80px] h-[80px] border-2 flex justify-center items-center rounded-full border-brand-violet950 p-3 bg-dark-stone950 cursor-pointer hover:border-brand-lime600"
-                >
-                  {selectedChains.value.from
-                    ? (
-                      <picture
-                        title={selectedChains.value.from
-                          .name}
-                      >
-                        <source
-                          srcset={getIcon(
-                            selectedChains.value
-                              .from.chainId,
-                          )
-                            .dark}
-                          media="(prefers-color-scheme: dark)"
-                        />
-                        <img
-                          class="w-[52px] h-[52px]"
-                          src={getIcon(
-                            selectedChains.value
-                              .from.chainId,
-                          ).light}
-                        />
-                      </picture>
-                    )
-                    : (
-                      <svg
-                        class="w-[52px] h-[52px] text-gray-800 dark:text-white"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <title>Origin chain</title>
-                        <path
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"
-                        />
-                      </svg>
-                    )}
-                </div>
-              </div>
+              <FhChainPicker
+                chosen={chosenChains}
+                which={"from"}
+                onClick={pickChain}
+              />
 
               {/* arrow/separator */}
               <div class="w-full h-full scale-[200%] invert flex justify-center items-center rounded-full p-3">
@@ -155,56 +113,11 @@ export function UI() {
                 </svg>
               </div>
 
-              {/* fabianhortiguela to selector button */}
-              <div class="flex flex-row items-center">
-                <div
-                  onClick={() => chainChoices("to")}
-                  class="w-[80px] h-[80px] border-2 flex justify-center items-center rounded-full border-brand-violet950 p-3 bg-dark-stone950 cursor-pointer hover:border-brand-lime600"
-                >
-                  {selectedChains.value.to
-                    ? (
-                      <picture
-                        title={selectedChains.value.to
-                          .name}
-                      >
-                        <source
-                          srcset={getIcon(
-                            selectedChains.value.to
-                              .chainId,
-                          ).dark}
-                          media="(prefers-color-scheme: dark)"
-                        />
-                        <img
-                          class="w-[52px] h-[52px]"
-                          src={getIcon(
-                            selectedChains.value.to
-                              .chainId,
-                          ).light}
-                        />
-                      </picture>
-                    )
-                    : (
-                      <svg
-                        class="w-[52px] h-[52px] text-gray-800 dark:text-white"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <title>Destination chain</title>
-                        <path
-                          stroke="currentColor"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M13.213 9.787a3.391 3.391 0 0 0-4.795 0l-3.425 3.426a3.39 3.39 0 0 0 4.795 4.794l.321-.304m-.321-4.49a3.39 3.39 0 0 0 4.795 0l3.424-3.426a3.39 3.39 0 0 0-4.794-4.795l-1.028.961"
-                        />
-                      </svg>
-                    )}
-                </div>
-              </div>
+              <FhChainPicker
+                chosen={chosenChains}
+                which={"to"}
+                onClick={pickChain}
+              />
             </div>
             {
               /* <ListInput list="chains" placeholder="chain" onInput={() => {}} addClass="w-[4rem]"/>
