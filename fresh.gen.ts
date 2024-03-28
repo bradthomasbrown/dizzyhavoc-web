@@ -20,6 +20,7 @@ import * as $common_ListInput from "./islands/common/ListInput.tsx";
 import * as $common_Navbar from "./islands/common/Navbar.tsx";
 import * as $common_Receiver from "./islands/common/Receiver.tsx";
 import * as $common_Web3Input from "./islands/common/Web3Input.tsx";
+import * as $common_WhichChain from "./islands/common/WhichChain.tsx";
 import * as $common_menuButton from "./islands/common/menuButton.tsx";
 import * as $faucet_UI from "./islands/faucet/UI.tsx";
 import { type Manifest } from "$fresh/server.ts";
@@ -46,6 +47,7 @@ const manifest = {
     "./islands/common/Navbar.tsx": $common_Navbar,
     "./islands/common/Receiver.tsx": $common_Receiver,
     "./islands/common/Web3Input.tsx": $common_Web3Input,
+    "./islands/common/WhichChain.tsx": $common_WhichChain,
     "./islands/common/menuButton.tsx": $common_menuButton,
     "./islands/faucet/UI.tsx": $faucet_UI,
   },

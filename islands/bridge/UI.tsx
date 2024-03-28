@@ -5,15 +5,8 @@ import { Button } from "../../components/common/Button.tsx";
 import { getIcon } from "../../lib/chains/icons.ts";
 import { bridgeable } from "../../lib/chains/bridgeable.ts";
 import { Chain } from "../../lib/types/Chain.ts";
-import { JSX } from "preact/jsx-runtime";
 import { ConnectionInfo } from "../common/ConnectionInfo.tsx";
-import { Input } from "../common/Input.tsx";
-// import { IS_BROWSER } from '$fresh/runtime.ts'
-// import { useEffect } from 'preact/hooks'
-// import { useState } from 'preact/hooks'
-// import { useSignal } from "@preact/signals"
-
-// import { ejra } from '../../lib/faucet/ejra.ts'
+import { WhichChain } from "../common/WhichChain.tsx";
 
 const disabled = computed(() => status.value != "Connected");
 
@@ -45,22 +38,6 @@ async function bridge() {
   //     await p1193.request({ method: 'eth_sendTransaction', params: [tx] })
 }
 
-const filteredActive = new Signal<Chain[]>(
-  bridgeable.sort((a, b) => a.name < b.name ? -1 : a.name == b.name ? 0 : 1),
-);
-
-function onFilterChange(e: JSX.TargetedEvent<HTMLInputElement>) {
-  filteredActive.value = e.currentTarget.value
-    ? bridgeable
-      .filter((chain) =>
-        JSON.stringify(chain).toLowerCase().match(
-          e.currentTarget.value.toLowerCase(),
-        )
-      )
-      .sort((a, b) => a.name < b.name ? -1 : a.name == b.name ? 0 : 1)
-    : bridgeable;
-}
-
 const whichChain = new Signal<undefined | string>(undefined);
 const selectedChains = new Signal<
   { from: undefined | Chain; to: undefined | Chain }
@@ -77,75 +54,16 @@ async function chainChoices(which: string) {
     [which]: await chainChoiceGate.value.promise,
   };
   whichChain.value = undefined;
-  filteredActive.value = bridgeable.sort((a, b) =>
-    a.name < b.name ? -1 : a.name == b.name ? 0 : 1
-  );
 }
 
 export function UI() {
-  // const destination = useSignal<undefined|bigint|null>(undefined)
   // const recipient = useSignal<undefined|string|null>(undefined)
   // const amount = useSignal<undefined|bigint|null>(undefined)
-  // function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
-  //     const chain = bridgeable.find(({ shortName }) => e.currentTarget.value == shortName)
-  //     destination.value = chain ? BigInt(chain.chainId) : null
-  // }
-
-  // function onDestinationInput(e:JSX.TargetedEvent<HTMLInputElement>) {
-  //     const chain = bridgeable.find(({ shortName }) => e.currentTarget.value == shortName)
-  //     destination.value = chain ? BigInt(chain.chainId) : null
-  // }
 
   return (
     <>
-      {whichChain.value
-        ? (
-          <>
-            <div class="w-full h-full max-h-full flex flex-col grow">
-              <div class="font-[Poppins] text-center pt-4 text-[#2c2c2c] dark:text-[#EAEAEA]">
-                {whichChain.value.slice(0, 1).toUpperCase()
-                  .concat(
-                    whichChain.value.slice(1),
-                  )}
-              </div>
 
-              {/* search */}
-              <Input clearClick={true} onInput={onFilterChange}/>
-
-              {/* choices */}
-              <div class="grid place-items-center grid-flow-row grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-2 max-w-full overflow-auto">
-                {filteredActive.value.map((chain) => (
-                  <div class="min-w-24 min-h-24 max-w-24 max-h-24">
-                    <div
-                      class="hover:scale-[102%] active:scale-[98%] cursor-pointer flex flex-col items-center gap-1"
-                      onClick={() => chooseChain(chain)}
-                    >
-                      <picture>
-                        <source
-                          srcset={getIcon(
-                            chain.chainId,
-                          ).dark}
-                          media="(prefers-color-scheme: dark)"
-                        />
-                        <img
-                          draggable={false}
-                          class="w-12 h-12"
-                          src={getIcon(chain.chainId)
-                            .light}
-                        />
-                      </picture>
-
-                      <div class="select-none text-center lg:text-sm text-xs text-[#2c2c2c] dark:text-[#EAEAEA]">
-                        {chain.name}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </>
-        )
-        : <></>}
+      { whichChain.value ? <WhichChain which={whichChain.value} chains={bridgeable} onPick={chooseChain} /> : <></> }
 
       {/* at some point, we probably want to move the Connector conditional outside UI and into Form */}
       {/* { !whichChain.value && status.value != 'Connected' ? <Connector/> : <></> } */}
