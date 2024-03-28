@@ -223,7 +223,7 @@ export function UI() {
                 >
                   {selectedChains.value.from
                     ? (
-                      <picture>
+                        <picture title={selectedChains.value.from.name}>
                         <source
                           srcset={getIcon(selectedChains.value.from.chainId)
                             .dark}
@@ -258,7 +258,7 @@ export function UI() {
               </div>
 
               {/* arrow/separator */}
-              <div class="w-full h-full scale-[200%] dark:invert flex justify-center items-center rounded-full p-3">
+              <div class="w-full h-full scale-[200%] invert flex justify-center items-center rounded-full p-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="19.99"
@@ -276,7 +276,7 @@ export function UI() {
                 >
                   {selectedChains.value.to
                     ? (
-                      <picture>
+                      <picture title={selectedChains.value.to.name}>
                         <source
                           srcset={getIcon(selectedChains.value.to.chainId).dark}
                           media="(prefers-color-scheme: dark)"
