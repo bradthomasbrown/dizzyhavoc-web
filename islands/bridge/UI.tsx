@@ -134,7 +134,7 @@ export function UI() {
               </div>
 
               {/* choices */}
-              <div class="grid place-items-center sm:grid-cols-4 grid-cols-3 grid-flow-row gap-2 max-w-full overflow-auto">
+              <div class="grid place-items-center grid-flow-row grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-2 max-w-full overflow-auto">
                 {filteredActive.value.map((chain) => (
                   <div class="min-w-24 min-h-24 max-w-24 max-h-24">
                     <div
