@@ -4,7 +4,7 @@ export function Form() {
     return (
       <>
         {/* app form */}
-        <div className="relative sm:w-[500px] w-[360px] bg-blur2 shadow-xl rounded-xl flex flex-col justify-center items-center min-h-[25rem] overflow-hidden">
+        <div className="relative sm:w-[500px] w-[360px] bg-blur2 shadow-xl rounded-xl flex flex-col justify-center items-center min-h-[25rem] overflow-hidden max-h-[500px] h-[500px]">
 
           {/* absolute container for background image */}
           <div class="z-[-1] w-full h-full absolute flex justify-center items-center">
