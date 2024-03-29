@@ -205,6 +205,7 @@ export function UI() {
                     </div>
                     <div class="flex">
                     <input
+                      autocomplete="off"
                       id="from"
                       type="text"
                       class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
@@ -288,6 +289,7 @@ export function UI() {
                     </div>
                     <div class="flex">
                     <input
+                      autocomplete="off"
                       id="to"
                       type="text"
                       class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
