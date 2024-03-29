@@ -63,7 +63,10 @@ function flipChosen() {
     from: chosenChains.value.to,
     to: chosenChains.value.from,
   };
-  getQuotes()
+  const temp = Quotes.from;
+  Quotes.from = Quotes.to;
+  Quotes.to = temp;
+
 }
 
 const chainChoiceGate = new Signal<undefined | Gate<Chain>>(undefined);
@@ -349,7 +352,8 @@ export function UI() {
                       <div class="grow font-extralight text-sm font-mono">
                       {Quotes.to&&amount.value ? "$"+ (Number(Quotes.to)*Number(amount.value)).toFixed(2) : "$0"}
                       </div>
-                      <div>{chosenChains.value["to"]?.shortName ?? "‎ "}</div>
+                      <div>{chosenChains.value["to"]?.shortName ?? "‎ "}
+                      </div>
                     </div>
                   </div>
                 </div>
