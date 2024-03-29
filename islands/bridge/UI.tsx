@@ -75,7 +75,6 @@ function chooseChain(chain: Chain) {
 function handleInput(e: JSX.TargetedEvent<HTMLInputElement>) {
   if (e.currentTarget.id == "from") {
     from_amount.value = Number(e.currentTarget.value);
-  } else if (e.currentTarget.id == "to") {
     to_amount.value = Number(e.currentTarget.value);
   }
 }
@@ -261,7 +260,7 @@ export function UI() {
                     </div>
                     <div class="flex">
                       <div class="grow font-extralight text-sm font-mono">
-                      {Quotes.to ? "$"+ Number(Quotes.to)*1 : "$0"}
+                      {Quotes.to&&to_amount.value ? "$"+ (Number(Quotes.to)*Number(to_amount.value)).toFixed(2) : "$0"}
                       </div>
                       <div>{chosenChains.value["to"]?.shortName ?? ""}</div>
                     </div>
