@@ -73,10 +73,8 @@ function chooseChain(chain: Chain) {
 }
 
 function handleInput(e: JSX.TargetedEvent<HTMLInputElement>) {
-  if (e.currentTarget.id == "from") {
     from_amount.value = Number(e.currentTarget.value);
     to_amount.value = Number(e.currentTarget.value);
-  }
 }
 
 async function getQuotes() {
