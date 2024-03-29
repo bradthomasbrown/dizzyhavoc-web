@@ -264,7 +264,7 @@ export function UI() {
                       />
                     </div>
                     <div class="flex">
-                      <div class="grow font-extralight text-sm font-mono">
+                      <div title={Quotes.from? `price: $${Quotes.from}` : "select chain"} class="grow font-extralight text-sm font-mono">
                       {Quotes.from&&amount.value ? "$"+ (Number(Quotes.from)*Number(amount.value)).toFixed(2) : "$0"}
                       </div>
                       <div class="font-extralight text-sm">
@@ -349,7 +349,7 @@ export function UI() {
                       />
                     </div>
                     <div class="flex">
-                      <div class="grow font-extralight text-sm font-mono">
+                      <div title={Quotes.to? `price: $${Quotes.to}` : "select chain"} class="grow font-extralight text-sm font-mono">
                       {Quotes.to&&amount.value ? "$"+ (Number(Quotes.to)*Number(amount.value)).toFixed(2) : "$0"}
                       </div>
                       <div>{chosenChains.value["to"]?.shortName ?? "‎ "}
