@@ -1,8 +1,9 @@
 import { JSX } from "preact";
 
 export function Button(
-  props: { addClass?: string } & JSX.HTMLAttributes<HTMLDivElement>,
+  props: { addClass?: string, rounding?:string, wiggle?:boolean } & JSX.HTMLAttributes<HTMLDivElement>,
 ) {
+  if (props.disabled) props.wiggle = false
   return (
     <div
       {...props}
@@ -13,10 +14,14 @@ export function Button(
       w-[160px]
       shadow-lg
       font-[Poppins]
-      rounded-lg
-      ${props.disabled ? "" : "hover:scale-[102%]"}
-      ${props.disabled ? "" : "active:scale-[98%]"}
+      ${props.rounding ?? "rounded-lg"}
+      ${props.wiggle ? "hover:scale-[102%]" : ""}
+      ${props.wiggle ? "active:scale-[98%]" : ""}
       ${props.disabled ? "contrast-[75%]" : ""}
+      hover:brightness-95
+      active:brightness-110
+      dark:hover:brightness-105
+      dark:active:brightness-90
       border
       border-[#e9e9e9]
       dark:border-[#ffffff1f]
