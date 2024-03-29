@@ -265,7 +265,7 @@ export function UI() {
                       {Quotes.from&&amount.value ? "$"+ (Number(Quotes.from)*Number(amount.value)).toFixed(2) : "$0"}
                       </div>
                       <div class="font-extralight text-sm">
-                        {chosenChains.value["from"]?.shortName ?? ""}
+                        {chosenChains.value["from"]?.shortName ?? "‎ "}
                       </div>
                     </div>
                   </div>
@@ -349,7 +349,7 @@ export function UI() {
                       <div class="grow font-extralight text-sm font-mono">
                       {Quotes.to&&amount.value ? "$"+ (Number(Quotes.to)*Number(amount.value)).toFixed(2) : "$0"}
                       </div>
-                      <div>{chosenChains.value["to"]?.shortName ?? ""}</div>
+                      <div>{chosenChains.value["to"]?.shortName ?? "‎ "}</div>
                     </div>
                   </div>
                 </div>
