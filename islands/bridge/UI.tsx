@@ -8,6 +8,7 @@ import { FhChainPicker } from "../common/FhChainPicker.tsx";
 import { Button } from "../../lib/internal.ts";
 import { receipt } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/ejra@0.0.1-toad/schemas/receipt.ts";
 import { hexshort } from "../../lib/internal.ts";
+import { JSX } from "preact/jsx-runtime";
 
 async function bridge() {
   //     const addresses = vortex.uState.addresses.value
@@ -41,6 +42,9 @@ const whichChain = new Signal<undefined | string>(undefined);
 
 const chosenChains = new Signal<Record<string, Chain>>({});
 
+const from_amount = new Signal<Number | undefined>(undefined);
+const to_amount = new Signal<Number | undefined>(undefined);
+
 class quoteSignal<T> extends Signal<T> {
   from: T | undefined;
   to: T | undefined;
@@ -66,6 +70,14 @@ const chainChoiceGate = new Signal<undefined | Gate<Chain>>(undefined);
 
 function chooseChain(chain: Chain) {
   chainChoiceGate.value?.resolve(chain);
+}
+
+function handleInput(e: JSX.TargetedEvent<HTMLInputElement>) {
+  if (e.currentTarget.id == "from") {
+    from_amount.value = Number(e.currentTarget.value);
+  } else if (e.currentTarget.id == "to") {
+    to_amount.value = Number(e.currentTarget.value);
+  }
 }
 
 async function getQuotes() {
@@ -126,7 +138,7 @@ async function pickChain(which: string) {
       [which]: chain,
     };
   });
-  getQuotes() 
+  await getQuotes() 
   whichChain.value = undefined;
 }
 
@@ -194,8 +206,11 @@ export function UI() {
                     </div>
                     <div class="flex">
                       <input
+                        id="from"
                         class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
                         placeholder="0"
+                        oninput={handleInput}
+                        value={from_amount.value}
                       />
                       <FhChainPicker
                         chosen={chosenChains}
@@ -206,7 +221,7 @@ export function UI() {
                     </div>
                     <div class="flex">
                       <div class="grow font-extralight text-sm font-mono">
-                        $123.00
+                      {Quotes.from&&from_amount.value ? "$"+ (Number(Quotes.from)*Number(from_amount.value)).toFixed(2) : "$0"}
                       </div>
                       <div class="font-extralight text-sm">
                         {chosenChains.value["from"]?.shortName ?? ""}
@@ -231,8 +246,11 @@ export function UI() {
                     </div>
                     <div class="flex">
                       <input
+                        id="to"
                         class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
                         placeholder="0"
+                        oninput={handleInput}
+                        value={to_amount.value}
                       />
                       <FhChainPicker
                         chosen={chosenChains}
@@ -243,7 +261,7 @@ export function UI() {
                     </div>
                     <div class="flex">
                       <div class="grow font-extralight text-sm font-mono">
-                        $99.00
+                      {Quotes.to ? "$"+ Number(Quotes.to)*1 : "$0"}
                       </div>
                       <div>{chosenChains.value["to"]?.shortName ?? ""}</div>
                     </div>
