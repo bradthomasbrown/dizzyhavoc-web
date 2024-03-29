@@ -1,9 +1,11 @@
 import { JSX } from "preact";
 
 export function Button(
-  props: { addClass?: string, rounding?:string, wiggle?:boolean } & JSX.HTMLAttributes<HTMLDivElement>,
+  props:
+    & { addClass?: string; rounding?: string; wiggle?: boolean }
+    & JSX.HTMLAttributes<HTMLDivElement>,
 ) {
-  if (props.disabled) props.wiggle = false
+  if (props.disabled) props.wiggle = false;
   return (
     <div
       {...props}

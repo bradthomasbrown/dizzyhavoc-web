@@ -70,11 +70,11 @@ async function pickChain(which: string) {
   whichChain.value = undefined;
 }
 
-const recipient = new Signal<string>('0x'.padEnd(2 + 40, '0'))
+const recipient = new Signal<string>("0x".padEnd(2 + 40, "0"));
 
-const recipientFocused = new Signal<boolean>(false)
+const recipientFocused = new Signal<boolean>(false);
 
-recipientFocused.subscribe(x => console.log(x, hexshort(recipient.value)))
+recipientFocused.subscribe((x) => console.log(x, hexshort(recipient.value)));
 
 export function UI() {
   // const recipient = useSignal<undefined|string|null>(undefined)
@@ -97,16 +97,13 @@ export function UI() {
             <ConnectionInfo />
 
             <div class="w-full sm:px-16 px-8 text-[#282828] dark:text-[#d2d2d2]">
-
               <div class="bg-blur2 shadow-xl w-auto flex flex-col font-[Poppins]">
-
                 <div class="flex">
                   <div class="grow">gas</div>
                   <div>time</div>
                 </div>
 
                 <div class="relative">
-
                   <svg
                     onClick={flipChosen}
                     class="z-10 absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] [hover:scale-[105%] active:scale-[95%] cursor-pointer w-8 h-8"
@@ -136,7 +133,10 @@ export function UI() {
                       </div>
                     </div>
                     <div class="flex">
-                      <input class="w-0 grow flex font-mono items-center text-[32px] bg-transparent" placeholder="0"/>
+                      <input
+                        class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
+                        placeholder="0"
+                      />
                       <FhChainPicker
                         chosen={chosenChains}
                         which={"from"}
@@ -170,7 +170,10 @@ export function UI() {
                       </div>
                     </div>
                     <div class="flex">
-                      <input class="w-0 grow flex font-mono items-center text-[32px] bg-transparent" placeholder="0"/>
+                      <input
+                        class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
+                        placeholder="0"
+                      />
                       <FhChainPicker
                         chosen={chosenChains}
                         which={"to"}
@@ -179,23 +182,33 @@ export function UI() {
                       />
                     </div>
                     <div class="flex">
-                    <div class="grow font-extralight text-sm font-mono">
+                      <div class="grow font-extralight text-sm font-mono">
                         $99.00
                       </div>
                       <div>{chosenChains.value["to"]?.shortName ?? ""}</div>
                     </div>
                   </div>
-
                 </div>
-
               </div>
 
               <input
                 class="px-2 py-1 w-full bg-transparent text-center font-mono"
-                placeholder={hexshort('0x'.padEnd(2 + 40, '0'))}
-                onInput={e => recipient.value = e.currentTarget.value}
-                onBlur={e => { recipientFocused.value = false; if (recipient.value && recipient.value !== '0x'.padEnd(2 + 40, '0')) e.currentTarget.value = hexshort(recipient.value) }}
-                onFocus={e => { recipientFocused.value = true; if (recipient.value && recipient.value !== '0x'.padEnd(2 + 40, '0')) e.currentTarget.value = recipient.value }}
+                placeholder={hexshort("0x".padEnd(2 + 40, "0"))}
+                onInput={(e) => recipient.value = e.currentTarget.value}
+                onBlur={(e) => {
+                  recipientFocused.value = false;
+                  if (
+                    recipient.value &&
+                    recipient.value !== "0x".padEnd(2 + 40, "0")
+                  ) e.currentTarget.value = hexshort(recipient.value);
+                }}
+                onFocus={(e) => {
+                  recipientFocused.value = true;
+                  if (
+                    recipient.value &&
+                    recipient.value !== "0x".padEnd(2 + 40, "0")
+                  ) e.currentTarget.value = recipient.value;
+                }}
               />
 
               <Button
@@ -208,7 +221,6 @@ export function UI() {
               >
                 Bridge
               </Button>
-
             </div>
 
             {/* balance */}
