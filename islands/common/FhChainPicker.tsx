@@ -3,17 +3,20 @@
 import { Signal } from "@preact/signals";
 import { getIcon } from "../../lib/chains/icons.ts";
 import { Chain } from "../../lib/internal.ts";
+import { JSX } from "preact/jsx-runtime";
 
-export function FhChainPicker(
-  props: {
+export function FhChainPicker(props
+  :Omit<JSX.DOMAttributes<HTMLDivElement>,'onClick'>
+  &{
     chosen: Signal<Record<string, Chain>>;
     which: string;
     onClick: (which: string) => unknown;
-  },
+    addClass?: string
+  }
 ) {
   const { chosen, which, onClick } = props;
   return (
-    <div class="flex flex-row items-center">
+    <div class={`flex flex-row items-center ${props.addClass}`}>
       <div
         onClick={() => onClick(which)}
         class="hover:scale-[102%] active:scale-[98%] w-[80px] h-[80px] border-2 flex justify-center items-center rounded-full border-[#282828] dark:border-[#d2d2d2] p-3 cursor-pointer "
