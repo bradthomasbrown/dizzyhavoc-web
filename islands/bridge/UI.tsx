@@ -38,6 +38,13 @@ const whichChain = new Signal<undefined | string>(undefined);
 
 const chosenChains = new Signal<Record<string, Chain>>({});
 
+function flipChosen() {
+  chosenChains.value = {
+    from: chosenChains.value.to,
+    to: chosenChains.value.from
+  }
+}
+
 const chainChoiceGate = new Signal<undefined | Gate<Chain>>(undefined);
 
 function chooseChain(chain: Chain) {
@@ -105,16 +112,10 @@ export function UI() {
                 onClick={pickChain}
               />
 
-              {/* arrow/separator */}
-              <div class="w-full h-full scale-[200%] invert flex justify-center items-center rounded-full p-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="19.99"
-                  height="18"
-                >
-                  <path d="M10.029 5H0v7.967h10.029V18l9.961-9.048L10.029 0v5z" />
-                </svg>
-              </div>
+              {/* swapper */}
+              <svg onClick={flipChosen} class="hover:scale-[102%] active:scale-[98%] cursor-pointer w-8 h-8 text-[#282828] dark:text-[#d2d2d2]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
+              </svg>
 
               <FhChainPicker
                 chosen={chosenChains}
