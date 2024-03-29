@@ -5,14 +5,15 @@ import { getIcon } from "../../lib/chains/icons.ts";
 import { Chain } from "../../lib/internal.ts";
 import { JSX } from "preact/jsx-runtime";
 
-export function FhChainPicker(props
-  :Omit<JSX.DOMAttributes<HTMLDivElement>,'onClick'>
-  &{
-    chosen: Signal<Record<string, Chain>>;
-    which: string;
-    onClick: (which: string) => unknown;
-    addClass?: string
-  }
+export function FhChainPicker(
+  props:
+    & Omit<JSX.DOMAttributes<HTMLDivElement>, "onClick">
+    & {
+      chosen: Signal<Record<string, Chain>>;
+      which: string;
+      onClick: (which: string) => unknown;
+      addClass?: string;
+    },
 ) {
   const { chosen, which, onClick } = props;
   return (
@@ -29,7 +30,7 @@ export function FhChainPicker(props
                 media="(prefers-color-scheme: dark)"
               />{" "}
               <img
-                draggable={false} 
+                draggable={false}
                 class="w-[52px] h-[52px]"
                 src={getIcon(chosen.value[which].chainId).light}
               />

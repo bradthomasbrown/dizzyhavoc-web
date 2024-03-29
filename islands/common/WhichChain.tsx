@@ -1,29 +1,20 @@
-import { Signal } from "@preact/signals";
-import { JSX } from "preact/jsx-runtime";
+import { computed, Signal } from "@preact/signals";
 import { getIcon } from "../../lib/chains/icons.ts";
 import { Chain } from "../../lib/internal.ts";
 import { Input } from "./Input.tsx";
 
+const filter = new Signal<string>("");
+
 export function WhichChain(
   props: { which: string; chains: Chain[]; onPick: (chain: Chain) => unknown },
 ) {
-  const sortedChains = new Signal<Chain[]>(
-    props.chains.sort((a, b) =>
-      a.name < b.name ? -1 : a.name == b.name ? 0 : 1
-    ),
-  );
-
-  function onFilterChange(e: JSX.TargetedEvent<HTMLInputElement>) {
-    if (e.currentTarget.value) {
-      sortedChains.value = props.chains
-        .filter((chain) =>
-          JSON.stringify(chain).toLowerCase().match(
-            e.currentTarget.value.toLowerCase(),
-          )
-        )
-        .sort((a, b) => a.name < b.name ? -1 : a.name == b.name ? 0 : 1);
-    }
-  }
+  const fsChains = computed(() => {
+    return [...props.chains]
+      .filter((chain) =>
+        JSON.stringify(chain).toLowerCase().match(filter.value.toLowerCase())
+      )
+      .sort((a, b) => a.name < b.name ? -1 : a.name == b.name ? 0 : 1);
+  });
 
   return (
     <div class="w-full h-full max-h-full flex flex-col grow">
@@ -35,11 +26,14 @@ export function WhichChain(
       </div>
 
       {/* search */}
-      <Input clearClick={true} onInput={onFilterChange} />
+      <Input
+        clearClick={true}
+        onInput={(e) => filter.value = e.currentTarget.value}
+      />
 
       {/* choices */}
       <div class="grid place-items-center grid-flow-row grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-2 max-w-full overflow-auto">
-        {sortedChains.value.map((chain) => (
+        {fsChains.value.map((chain) => (
           <div class="min-w-24 min-h-24 max-w-24 max-h-24">
             <div
               class="hover:scale-[102%] active:scale-[98%] cursor-pointer flex flex-col items-center gap-1"
