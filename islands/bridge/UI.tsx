@@ -6,6 +6,8 @@ import { ConnectionInfo } from "../common/ConnectionInfo.tsx";
 import { WhichChain } from "../common/WhichChain.tsx";
 import { FhChainPicker } from "../common/FhChainPicker.tsx";
 import { Button } from "../../lib/internal.ts";
+import { receipt } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/ejra@0.0.1-toad/schemas/receipt.ts";
+import { hexshort } from "../../lib/internal.ts";
 
 async function bridge() {
   //     const addresses = vortex.uState.addresses.value
@@ -68,6 +70,12 @@ async function pickChain(which: string) {
   whichChain.value = undefined;
 }
 
+const recipient = new Signal<string>('0x'.padEnd(2 + 40, '0'))
+
+const recipientFocused = new Signal<boolean>(false)
+
+recipientFocused.subscribe(x => console.log(x, hexshort(recipient.value)))
+
 export function UI() {
   // const recipient = useSignal<undefined|string|null>(undefined)
   // const amount = useSignal<undefined|bigint|null>(undefined)
@@ -88,9 +96,9 @@ export function UI() {
           <>
             <ConnectionInfo />
 
-            <div class="w-full sm:px-16 px-8">
+            <div class="w-full sm:px-16 px-8 text-[#282828] dark:text-[#d2d2d2]">
 
-              <div class="p-2 bg-blur2 shadow-xl w-auto flex flex-col font-[Poppins] text-[#282828] dark:text-[#d2d2d2]">
+              <div class="bg-blur2 shadow-xl w-auto flex flex-col font-[Poppins]">
 
                 <div class="flex">
                   <div class="grow">gas</div>
@@ -101,7 +109,7 @@ export function UI() {
 
                   <svg
                     onClick={flipChosen}
-                    class="z-10 absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] [hover:scale-[105%] active:scale-[95%] cursor-pointer w-8 h-8 text-[#282828] dark:text-[#d2d2d2]"
+                    class="z-10 absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] [hover:scale-[105%] active:scale-[95%] cursor-pointer w-8 h-8"
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -118,12 +126,12 @@ export function UI() {
                     />
                   </svg>
 
-                  <div class="flex flex-col">
-                    <div class="flex">
-                      <div class="grow text-sm">
+                  <div class="p-2 flex flex-col">
+                    <div class="flex text-sm font-semibold">
+                      <div class="grow">
                         Burn
                       </div>
-                      <div class="text-sm">
+                      <div>
                         From
                       </div>
                     </div>
@@ -133,7 +141,7 @@ export function UI() {
                         chosen={chosenChains}
                         which={"from"}
                         onClick={pickChain}
-                        addClass="translate-x-[50%]"
+                        addClass="translate-x-[calc(50%+8px)]"
                       />
                     </div>
                     <div class="flex">
@@ -152,12 +160,12 @@ export function UI() {
                     <div class="grow border-t border-white" />
                   </div>
 
-                  <div class="flex flex-col">
-                    <div class="flex">
-                      <div class="grow text-sm">
+                  <div class="p-2 flex flex-col">
+                    <div class="flex text-sm font-semibold">
+                      <div class="grow">
                         Mint
                       </div>
-                      <div class="text-sm">
+                      <div>
                         To
                       </div>
                     </div>
@@ -167,7 +175,7 @@ export function UI() {
                         chosen={chosenChains}
                         which={"to"}
                         onClick={pickChain}
-                        addClass="translate-x-[50%]"
+                        addClass="translate-x-[calc(50%+8px)]"
                       />
                     </div>
                     <div class="flex">
@@ -181,6 +189,14 @@ export function UI() {
                 </div>
 
               </div>
+
+              <input
+                class="px-2 py-1 w-full bg-transparent text-center font-mono"
+                placeholder={hexshort('0x'.padEnd(2 + 40, '0'))}
+                onInput={e => recipient.value = e.currentTarget.value}
+                onBlur={e => { recipientFocused.value = false; if (recipient.value && recipient.value !== '0x'.padEnd(2 + 40, '0')) e.currentTarget.value = hexshort(recipient.value) }}
+                onFocus={e => { recipientFocused.value = true; if (recipient.value && recipient.value !== '0x'.padEnd(2 + 40, '0')) e.currentTarget.value = recipient.value }}
+              />
 
               <Button
                 addClass="relative text-[#3d3d3d] dark:text-[#ccb286] z-10"
@@ -197,45 +213,6 @@ export function UI() {
 
             {/* balance */}
             {/* <Balance/> */}
-
-            {/* amount */}
-            {/* <Web3Input placeholder="amount" maxVal={dzhvBalance.value} decimals={18n} val={amount}/> */}
-
-            {/* recipient */}
-            {/* <div class="flex gap-2 mb-5"> */}
-            {/* <ListInput list="addrs" placeholder="receiving address" onInput={e => recipient.value = e.currentTarget.value}/> */}
-
-            {/* 'from -> to' row */}
-            {
-              /* <div class="flex flex-row gap-x-4">
-              <FhChainPicker
-                chosen={chosenChains}
-                which={"from"}
-                onClick={pickChain}
-              />
-
-              <svg onClick={flipChosen} class="hover:scale-[102%] active:scale-[98%] cursor-pointer w-8 h-8 text-[#282828] dark:text-[#d2d2d2]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
-              </svg>
-
-              <FhChainPicker
-                chosen={chosenChains}
-                which={"to"}
-                onClick={pickChain}
-              />
-            </div> */
-            }
-
-            {/* bridge button */}
-            {
-              /* <Button
-              addClass="text-[#3d3d3d] dark:text-[#ccb286]"
-              disabled={disabled.value}
-              onClick={disabled.value ? () => {} : bridge}
-            >
-              Bridge
-            </Button> */
-            }
 
             <a
               class="absolute dark:text-[#d2d2d2] bg-blur4 rounded-xl pr-1 text-[#282828] bottom-0 right-2 text-md font-[Poppins] hover:scale-[102%]"
