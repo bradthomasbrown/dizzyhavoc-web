@@ -29,6 +29,7 @@ export function FhChainPicker(props
                 media="(prefers-color-scheme: dark)"
               />{" "}
               <img
+                draggable={false} 
                 class="w-[52px] h-[52px]"
                 src={getIcon(chosen.value[which].chainId).light}
               />
