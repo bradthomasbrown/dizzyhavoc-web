@@ -11,7 +11,7 @@ export function Button(
       select-none
       text-2xl
       text-center
-      w-[160px]
+      ${props.width ? props.width : "w-[160px]"}
       shadow-lg
       font-[Poppins]
       ${props.rounding ?? "rounded-lg"}
