@@ -171,8 +171,8 @@ export function UI() {
             <div class="w-full sm:px-16 px-8 text-[#282828] dark:text-[#d2d2d2]">
               <div class="bg-blur2 shadow-xl w-auto flex flex-col font-[Poppins]">
                 <div class="flex">
-                  <div class="grow">gas</div>
-                  <div>time</div>
+                  <div class="grow unselectable">gas</div>
+                  <div class="unselectable">time</div>
                 </div>
 
                 <div class="relative">
@@ -197,10 +197,10 @@ export function UI() {
 
                   <div class="p-2 flex flex-col">
                     <div class="flex text-sm font-semibold">
-                      <div class="grow">
+                      <div class="grow unselectable">
                         Burn
                       </div>
-                      <div>
+                      <div class="unselectable">
                         From
                       </div>
                     </div>
@@ -281,10 +281,10 @@ export function UI() {
 
                   <div class="p-2 flex flex-col">
                     <div class="flex text-sm font-semibold">
-                      <div class="grow">
+                      <div class="grow unselectable">
                         Mint
                       </div>
-                      <div>
+                      <div class="unselectable">
                         To
                       </div>
                     </div>
