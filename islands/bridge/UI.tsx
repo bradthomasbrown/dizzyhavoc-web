@@ -38,6 +38,7 @@ async function bridge() {
   //     await p1193.request({ method: 'eth_sendTransaction', params: [tx] })
 }
 
+
 const whichChain = new Signal<undefined | string>(undefined);
 
 const chosenChains = new Signal<Record<string, Chain>>({});
@@ -139,6 +140,7 @@ async function pickChain(which: string) {
   whichChain.value = undefined;
 }
 
+
 const recipient = new Signal<string>("0x".padEnd(2 + 40, "0"));
 
 const recipientFocused = new Signal<boolean>(false);
@@ -202,13 +204,56 @@ export function UI() {
                       </div>
                     </div>
                     <div class="flex">
-                      <input
-                        id="from"
-                        class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
-                        placeholder="0"
-                        oninput={handleInput}
-                        value={from_amount.value}
-                      />
+                    <input
+                      id="from"
+                      type="text"
+                      class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
+                      placeholder="0"
+                      oninput={(e) => {
+                        const value = e.currentTarget.value;
+                        if (value == ('.')) {
+                          e.currentTarget.value = value.replace('.', '0.');
+                        }
+                        handleInput(e);
+                      }}
+                      value={from_amount.value}
+                      onkeypress={(e) => {
+                        const charCode = e.which ? e.which : e.keyCode;
+                        if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
+                          e.preventDefault();
+                        }
+                      }}
+                      ondrop={(e) => {
+                        e.preventDefault();
+                        const text = e.dataTransfer.getData('text/plain');
+                        if (!/^\d*\.?\d*$/.test(text)) {
+                          // Prevent dropping non-numeric characters
+                          e.preventDefault();
+                        } else {
+                          e.currentTarget.value = text;
+                          handleInput(e);
+                        }
+                      }}
+                      onpaste={(e) => {
+                        e.preventDefault();
+                        const text = e.clipboardData.getData('text/plain');
+                        if (!/^\d*\.?\d*$/.test(text)) {
+                          // Prevent pasting non-numeric characters
+                          e.preventDefault();
+                        } else {
+                          e.currentTarget.value = text;
+                          handleInput(e);
+                        }
+                      }}
+                      ondragover={(e) => {
+                        e.preventDefault();
+                        const text = e.dataTransfer.getData('text/plain');
+                        if (!/^\d*\.?\d*$/.test(text)) {
+                          // Prevent dragging non-numeric characters over
+                          e.preventDefault();
+                        }
+                      }}
+                    />
                       <FhChainPicker
                         chosen={chosenChains}
                         which={"from"}
@@ -242,13 +287,57 @@ export function UI() {
                       </div>
                     </div>
                     <div class="flex">
-                      <input
-                        id="to"
-                        class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
-                        placeholder="0"
-                        oninput={handleInput}
-                        value={to_amount.value}
-                      />
+                    <input
+                      id="to"
+                      type="text"
+                      class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
+                      placeholder="0"
+                      oninput={(e) => {
+                        const value = e.currentTarget.value;
+                        if (value == ('.')) {
+                          e.currentTarget.value = value.replace('.', '0.');
+                        }
+                        handleInput(e);
+                      }}
+                      value={to_amount.value}
+                      onkeypress={(e) => {
+                        const charCode = e.which ? e.which : e.keyCode;
+                        if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
+                          e.preventDefault();
+                        }
+                      }}
+                      ondrop={(e) => {
+                        e.preventDefault();
+                        const text = e.dataTransfer.getData('text/plain');
+                        if (!/^\d*\.?\d*$/.test(text)) {
+                          // Prevent dropping non-numeric characters
+                          e.preventDefault();
+                        } else {
+                          e.currentTarget.value = text;
+                          handleInput(e);
+                        }
+                      }}
+                      onpaste={(e) => {
+                        e.preventDefault();
+                        const text = e.clipboardData.getData('text/plain');
+                        if (!/^\d*\.?\d*$/.test(text)) {
+                          // Prevent pasting non-numeric characters
+                          e.preventDefault();
+                        } else {
+                          e.currentTarget.value = text;
+                          handleInput(e);
+                        }
+                      }}
+                      ondragover={(e) => {
+                        e.preventDefault();
+                        const text = e.dataTransfer.getData('text/plain');
+                        if (!/^\d*\.?\d*$/.test(text)) {
+                          // Prevent dragging non-numeric characters over
+                          e.preventDefault();
+                        }
+                      }}
+                    />
+
                       <FhChainPicker
                         chosen={chosenChains}
                         which={"to"}
