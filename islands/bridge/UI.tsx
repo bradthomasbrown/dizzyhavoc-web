@@ -5,6 +5,7 @@ import { Chain } from "../../lib/types/Chain.ts";
 import { ConnectionInfo } from "../common/ConnectionInfo.tsx";
 import { WhichChain } from "../common/WhichChain.tsx";
 import { FhChainPicker } from "../common/FhChainPicker.tsx";
+import { Button } from "../../lib/internal.ts";
 
 async function bridge() {
   //     const addresses = vortex.uState.addresses.value
@@ -106,63 +107,87 @@ export function UI() {
               />
             </svg>
 
-            <div class="bg-blur2 shadow-xl w-auto flex flex-col">
-              <div class="flex">
-                <div class="grow">gas</div>
-                <div>time</div>
-              </div>
+            <div>
 
-              <div class="flex flex-col">
+              <div class="bg-blur2 shadow-xl w-auto flex flex-col">
+
                 <div class="flex">
-                  <div class="grow">burn</div>
-                  <div class="font-[Poppins] text-[#282828] dark:text-[#d2d2d2] text-sm">
-                    From
+                  <div class="grow">gas</div>
+                  <div>time</div>
+                </div>
+
+                <hr/>
+
+                <div class="flex flex-col">
+                  <div class="flex p-1">
+                    <div class="grow font-[Poppins] text-[#282828] dark:text-[#d2d2d2] text-sm">
+                      Burn
+                    </div>
+                    <div class="font-[Poppins] text-[#282828] dark:text-[#d2d2d2] text-sm">
+                      From
+                    </div>
+                  </div>
+                  <div class="flex">
+                    <div class="grow">amount1</div>
+                    <FhChainPicker
+                      chosen={chosenChains}
+                      which={"from"}
+                      onClick={pickChain}
+                      addClass="translate-x-[50%]"
+                    />
+                  </div>
+                  <div class="flex">
+                    <div class="grow">amount2</div>
+                    <div class="font-[Poppins] text-[#282828] dark:text-[#d2d2d2] font-extralight text-sm">
+                      {chosenChains.value["from"]?.shortName ?? ""}
+                    </div>
                   </div>
                 </div>
+
                 <div class="flex">
-                  <div class="grow">amount1</div>
-                  <FhChainPicker
-                    chosen={chosenChains}
-                    which={"from"}
-                    onClick={pickChain}
-                    addClass="translate-x-[50%]"
-                  />
+                  <div class="grow border-t border-white" />
+                  <div class="w-8" />
+                  <div class="grow border-t border-white" />
                 </div>
-                <div class="flex">
-                  <div class="grow">amount2</div>
-                  <div class="font-[Poppins] text-[#282828] dark:text-[#d2d2d2] font-extralight text-sm">
-                    {chosenChains.value["from"]?.name ?? ""}
+
+                <div class="flex flex-col">
+                  <div class="flex p-1">
+                    <div class="grow font-[Poppins] text-[#282828] dark:text-[#d2d2d2] text-sm">
+                      Mint
+                    </div>
+                    <div class="font-[Poppins] text-[#282828] dark:text-[#d2d2d2] text-sm">
+                      To
+                    </div>
+                  </div>
+                  <div class="flex">
+                    <div class="grow">amount1</div>
+                    <FhChainPicker
+                      chosen={chosenChains}
+                      which={"to"}
+                      onClick={pickChain}
+                      addClass="translate-x-[50%]"
+                    />
+                  </div>
+                  <div class="flex">
+                    <div class="grow">amount2</div>
+                    <div>{chosenChains.value["to"]?.shortName ?? ""}</div>
                   </div>
                 </div>
+
+                <hr/>
+
               </div>
 
-              <div class="flex">
-                <div class="grow border-t border-white" />
-                <div class="w-8" />
-                <div class="grow border-t border-white" />
-              </div>
+              <Button
+                addClass="text-[#3d3d3d] dark:text-[#ccb286]"
+                disabled={false}
+                onClick={false ? () => {} : bridge}
+                rounding="rounded-b-lg"
+                wiggle={false}
+              >
+                Bridge
+              </Button>
 
-              <div class="flex flex-col">
-                <div class="flex">
-                  <div class="grow">mint</div>
-                  <div>to</div>
-                </div>
-                <div class="flex">
-                  <div class="grow">amount1</div>
-                  <FhChainPicker
-                    chosen={chosenChains}
-                    which={"to"}
-                    onClick={pickChain}
-                    addClass="translate-x-[50%]"
-                  />
-                </div>
-                <div class="flex">
-                  <div class="grow">amount2</div>
-                  <div>{chosenChains.value["to"]?.name ?? ""}</div>
-                </div>
-              </div>
-
-              <div class="flex justify-center">bridge</div>
             </div>
 
             {/* balance */}
