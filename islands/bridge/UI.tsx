@@ -43,8 +43,7 @@ const whichChain = new Signal<undefined | string>(undefined);
 
 const chosenChains = new Signal<Record<string, Chain>>({});
 
-const from_amount = new Signal<Number | undefined>(undefined);
-const to_amount = new Signal<Number | undefined>(undefined);
+const amount = new Signal<Number | undefined>(undefined);
 
 class quoteSignal<T> extends Signal<T> {
   from: T | undefined;
@@ -74,8 +73,7 @@ function chooseChain(chain: Chain) {
 }
 
 function handleInput(e: JSX.TargetedEvent<HTMLInputElement>) {
-    from_amount.value = Number(e.currentTarget.value);
-    to_amount.value = Number(e.currentTarget.value);
+    amount.value = Number(e.currentTarget.value);
 }
 
 async function getQuotes() {
@@ -217,7 +215,7 @@ export function UI() {
                         }
                         handleInput(e);
                       }}
-                      value={from_amount.value}
+                      value={amount.value}
                       onkeypress={(e) => {
                         const charCode = e.which ? e.which : e.keyCode;
                         if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
@@ -264,7 +262,7 @@ export function UI() {
                     </div>
                     <div class="flex">
                       <div class="grow font-extralight text-sm font-mono">
-                      {Quotes.from&&from_amount.value ? "$"+ (Number(Quotes.from)*Number(from_amount.value)).toFixed(2) : "$0"}
+                      {Quotes.from&&amount.value ? "$"+ (Number(Quotes.from)*Number(amount.value)).toFixed(2) : "$0"}
                       </div>
                       <div class="font-extralight text-sm">
                         {chosenChains.value["from"]?.shortName ?? ""}
@@ -301,7 +299,7 @@ export function UI() {
                         }
                         handleInput(e);
                       }}
-                      value={to_amount.value}
+                      value={amount.value}
                       onkeypress={(e) => {
                         const charCode = e.which ? e.which : e.keyCode;
                         if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
@@ -349,7 +347,7 @@ export function UI() {
                     </div>
                     <div class="flex">
                       <div class="grow font-extralight text-sm font-mono">
-                      {Quotes.to&&to_amount.value ? "$"+ (Number(Quotes.to)*Number(to_amount.value)).toFixed(2) : "$0"}
+                      {Quotes.to&&amount.value ? "$"+ (Number(Quotes.to)*Number(amount.value)).toFixed(2) : "$0"}
                       </div>
                       <div>{chosenChains.value["to"]?.shortName ?? ""}</div>
                     </div>
