@@ -41,17 +41,76 @@ const whichChain = new Signal<undefined | string>(undefined);
 
 const chosenChains = new Signal<Record<string, Chain>>({});
 
+class quoteSignal<T> extends Signal<T> {
+  from: T | undefined;
+  to: T | undefined;
+
+  constructor(initialValue: T) {
+    super(initialValue);
+    this.from = initialValue;
+    this.to = initialValue;
+  }
+}
+
+const Quotes = new quoteSignal<undefined | Number>(undefined);
+
 function flipChosen() {
   chosenChains.value = {
     from: chosenChains.value.to,
     to: chosenChains.value.from,
   };
+  getQuotes()
 }
 
 const chainChoiceGate = new Signal<undefined | Gate<Chain>>(undefined);
 
 function chooseChain(chain: Chain) {
   chainChoiceGate.value?.resolve(chain);
+}
+
+async function getQuotes() {
+  try {
+    const response = await fetch(
+      "https://quick-frog-59.deno.dev/v1/liveprices"
+    );
+    const data = await response.json();
+    switch(chosenChains.value.from.shortName){
+        case "sep":
+          Quotes.from = data[data.length - 1].eth_price
+          break;
+        case "basesep":
+          Quotes.from = data[data.length - 1].base_price
+          break;
+        case "arb-sep":
+          Quotes.from = data[data.length - 1].arb_price
+          break;
+        case "Fuji":
+          Quotes.from = data[data.length - 1].avax_price
+          break;
+        case "bnbt":
+          Quotes.from = data[data.length - 1].bsc_price
+          break;
+    } switch(chosenChains.value.to.shortName){
+        case "sep":
+          Quotes.to = data[data.length - 1].eth_price
+          break;
+        case "basesep":
+          Quotes.to = data[data.length - 1].base_price
+          break;
+        case "arb-sep":
+          Quotes.to = data[data.length - 1].arb_price
+          break;
+        case "Fuji":
+          Quotes.to = data[data.length - 1].avax_price
+          break;
+        case "bnbt":
+          Quotes.to = data[data.length - 1].bsc_price
+          break;
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  console.log("Mainnet from price quote:", Quotes.from, "; to price quote:", Quotes.to)
 }
 
 async function pickChain(which: string) {
@@ -67,6 +126,7 @@ async function pickChain(which: string) {
       [which]: chain,
     };
   });
+  getQuotes() 
   whichChain.value = undefined;
 }
 
