@@ -63,7 +63,7 @@ function flipChosen() {
     from: chosenChains.value.to,
     to: chosenChains.value.from,
   };
-  getQuotes()
+  getQuotes();
 }
 
 const chainChoiceGate = new Signal<undefined | Gate<Chain>>(undefined);
@@ -73,53 +73,59 @@ function chooseChain(chain: Chain) {
 }
 
 function handleInput(e: JSX.TargetedEvent<HTMLInputElement>) {
-    from_amount.value = Number(e.currentTarget.value);
-    to_amount.value = Number(e.currentTarget.value);
+  from_amount.value = Number(e.currentTarget.value);
+  to_amount.value = Number(e.currentTarget.value);
 }
 
 async function getQuotes() {
   try {
     const response = await fetch(
-      "https://quick-frog-59.deno.dev/v1/liveprices"
+      "https://quick-frog-59.deno.dev/v1/liveprices",
     );
     const data = await response.json();
-    switch(chosenChains.value.from.shortName){
-        case "sep":
-          Quotes.from = data[data.length - 1].eth_price
-          break;
-        case "basesep":
-          Quotes.from = data[data.length - 1].base_price
-          break;
-        case "arb-sep":
-          Quotes.from = data[data.length - 1].arb_price
-          break;
-        case "Fuji":
-          Quotes.from = data[data.length - 1].avax_price
-          break;
-        case "bnbt":
-          Quotes.from = data[data.length - 1].bsc_price
-          break;
-    } switch(chosenChains.value.to.shortName){
-        case "sep":
-          Quotes.to = data[data.length - 1].eth_price
-          break;
-        case "basesep":
-          Quotes.to = data[data.length - 1].base_price
-          break;
-        case "arb-sep":
-          Quotes.to = data[data.length - 1].arb_price
-          break;
-        case "Fuji":
-          Quotes.to = data[data.length - 1].avax_price
-          break;
-        case "bnbt":
-          Quotes.to = data[data.length - 1].bsc_price
-          break;
+    switch (chosenChains.value.from.shortName) {
+      case "sep":
+        Quotes.from = data[data.length - 1].eth_price;
+        break;
+      case "basesep":
+        Quotes.from = data[data.length - 1].base_price;
+        break;
+      case "arb-sep":
+        Quotes.from = data[data.length - 1].arb_price;
+        break;
+      case "Fuji":
+        Quotes.from = data[data.length - 1].avax_price;
+        break;
+      case "bnbt":
+        Quotes.from = data[data.length - 1].bsc_price;
+        break;
+    }
+    switch (chosenChains.value.to.shortName) {
+      case "sep":
+        Quotes.to = data[data.length - 1].eth_price;
+        break;
+      case "basesep":
+        Quotes.to = data[data.length - 1].base_price;
+        break;
+      case "arb-sep":
+        Quotes.to = data[data.length - 1].arb_price;
+        break;
+      case "Fuji":
+        Quotes.to = data[data.length - 1].avax_price;
+        break;
+      case "bnbt":
+        Quotes.to = data[data.length - 1].bsc_price;
+        break;
     }
   } catch (error) {
     console.error(error);
   }
-  console.log("Mainnet from price quote:", Quotes.from, "; to price quote:", Quotes.to)
+  console.log(
+    "Mainnet from price quote:",
+    Quotes.from,
+    "; to price quote:",
+    Quotes.to,
+  );
 }
 
 async function pickChain(which: string) {
@@ -135,7 +141,7 @@ async function pickChain(which: string) {
       [which]: chain,
     };
   });
-  await getQuotes() 
+  await getQuotes();
   whichChain.value = undefined;
 }
 
@@ -218,7 +224,11 @@ export function UI() {
                     </div>
                     <div class="flex">
                       <div class="grow font-extralight text-sm font-mono">
-                      {Quotes.from&&from_amount.value ? "$"+ (Number(Quotes.from)*Number(from_amount.value)).toFixed(2) : "$0"}
+                        {Quotes.from && from_amount.value
+                          ? "$" +
+                            (Number(Quotes.from) * Number(from_amount.value))
+                              .toFixed(2)
+                          : "$0"}
                       </div>
                       <div class="font-extralight text-sm">
                         {chosenChains.value["from"]?.shortName ?? ""}
@@ -258,7 +268,11 @@ export function UI() {
                     </div>
                     <div class="flex">
                       <div class="grow font-extralight text-sm font-mono">
-                      {Quotes.to&&to_amount.value ? "$"+ (Number(Quotes.to)*Number(to_amount.value)).toFixed(2) : "$0"}
+                        {Quotes.to && to_amount.value
+                          ? "$" +
+                            (Number(Quotes.to) * Number(to_amount.value))
+                              .toFixed(2)
+                          : "$0"}
                       </div>
                       <div>{chosenChains.value["to"]?.shortName ?? ""}</div>
                     </div>
