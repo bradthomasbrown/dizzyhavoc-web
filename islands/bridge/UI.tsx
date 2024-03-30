@@ -162,17 +162,7 @@ status.subscribe(console.log);
 export function UI() {
   return (
     <>
-      {whichChain.value
-        ? (
-          <Which
-            which={whichChain.value}
-            choices={activeChains}
-            onPick={(choice: Chain) => chooseChain(choice)}
-            compareFn={(a: Chain, b: Chain) =>
-              a.name < b.name ? -1 : a.name == b.name ? 0 : 1}
-          />
-        )
-        : (
+      {which.value ? which.value : (
           <>
             <ConnectionInfo />{" "}
             <div class="w-full sm:px-16 px-8 text-[#282828] dark:text-[#d2d2d2]">
