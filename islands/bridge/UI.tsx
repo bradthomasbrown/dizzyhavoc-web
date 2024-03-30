@@ -21,15 +21,7 @@ const prices: Record<string, Signal<number>> = {
   avax: new Signal(0),
   base: new Signal(0),
 };
-class quoteSignal<T> extends Signal<T> {
-  from: T | undefined;
-  to: T | undefined;
-  constructor(initialValue: T) {
-    super(initialValue);
-    this.from = initialValue;
-    this.to = initialValue;
-  }
-}
+
 const quotes: Record<string, Signal<undefined | number>> = {
   from: new Signal<undefined>,
   to: new Signal<undefined>
@@ -85,6 +77,9 @@ async function getPrices() {
 async function setQuotes(which: string | undefined) {
   await getPrices();
   if (which = "from") {
+    if(chosenChains.value.from==undefined||null){
+      quotes["from"].value = 0;
+    }
     switch (
       chosenChains.value.from ? chosenChains.value.from.shortName : null
     ) {
@@ -106,6 +101,9 @@ async function setQuotes(which: string | undefined) {
     }
   }
   if (which = "to") {
+    if(chosenChains.value.to==undefined||null){
+      quotes["to"].value = 0;
+    }
     switch (
       chosenChains.value.to ? chosenChains.value.to.shortName : null
     ) {
@@ -253,14 +251,14 @@ export function UI() {
                           : "select chain"}
                         class="grow font-extralight text-sm font-mono"
                       >
-                        {quotes["from"] && amount.value
+                        {quotes["from"].value && amount.value
                           ? "$" +
                             (Number(quotes["from"]) * Number(amount.value))
                               .toFixed(2)
                           : "$0"}
                       </div>{" "}
                       <div class="font-extralight text-sm">
-                        {chosenChains.value["from"]?.shortName ?? " "}
+                        {chosenChains.value["from"]?.shortName ?? "‎ "}
                       </div>
                     </div>
                   </div>{" "}
@@ -338,13 +336,13 @@ export function UI() {
                           : "select chain"}
                         class="grow font-extralight text-sm font-mono"
                       >
-                        {quotes["to"] && amount.value
+                        {quotes["to"].value && amount.value
                           ? "$" +
                             (Number(quotes["to"]) * Number(amount.value))
                               .toFixed(2)
                           : "$0"}
                       </div>{" "}
-                      <div>{chosenChains.value["to"]?.shortName ?? " "}</div>
+                      <div>{chosenChains.value["to"]?.shortName ?? "‎ "}</div>
                     </div>
                   </div>
                 </div>
