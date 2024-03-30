@@ -6,12 +6,11 @@ import { ConnectionInfo } from "../common/ConnectionInfo.tsx";
 import { Which } from "../common/Which.tsx";
 import { FhChainPicker } from "../common/FhChainPicker.tsx";
 import { Button } from "../../lib/internal.ts";
-import { Connector, status } from '../common/Connector.tsx'
+import { Connector, status } from "../common/Connector.tsx";
 import { hexshort } from "../../lib/internal.ts";
 import { JSX } from "preact/jsx-runtime";
-import { P6963 } from '../../lib/state2/providers.ts'
-import { bridge } from '../../lib/bridge/bridge.ts'
-
+import { P6963 } from "../../lib/state2/providers.ts";
+import { bridge } from "../../lib/bridge/bridge.ts";
 
 const whichChain = new Signal<undefined | string>(undefined);
 
@@ -50,7 +49,6 @@ function flipChosen() {
   const temp = Quotes.from;
   Quotes.from = Quotes.to;
   Quotes.to = temp;
-
 }
 
 const chainChoiceGate = new Signal<undefined | Gate<Chain>>(undefined);
@@ -60,13 +58,13 @@ function chooseChain(chain: Chain) {
 }
 
 function handleInput(e: JSX.TargetedEvent<HTMLInputElement>) {
-    amount.value = Number(e.currentTarget.value);
+  amount.value = Number(e.currentTarget.value);
 }
 
-async function getPrices(){
+async function getPrices() {
   try {
     const response = await fetch(
-      "https://api.dexscreener.com/latest/dex/tokens/0x3419875B4D3Bca7F3FddA2dB7a476A79fD31B4fE"
+      "https://api.dexscreener.com/latest/dex/tokens/0x3419875B4D3Bca7F3FddA2dB7a476A79fD31B4fE",
     );
     const data = response.body ? await response.json() : {};
     for (let i = 0; i < data.pairs.length; i++) {
@@ -89,51 +87,53 @@ async function getPrices(){
           break;
         default:
           break;
-      } 
+      }
     }
-}
-catch(error){
-  console.log(error)
-}
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-async function setQuotes(which: string|undefined) {
- await getPrices()
- if(which="from"){
-    switch(chosenChains.value.from ? chosenChains.value.from.shortName : null ){
-        case "sep":
-          Quotes.from = eth_price.value
-          break;
-        case "basesep":
-          Quotes.from = base_price.value
-          break;
-        case "arb-sep":
-          Quotes.from = arb_price.value
-          break;
-        case "Fuji":
-          Quotes.from = avax_price.value
-          break;
-        case "bnbt":
-          Quotes.from = bsc_price.value
-          break;
-    } }
-    if(which="to"){
-    switch(chosenChains.value.to ? chosenChains.value.to.shortName : null){
-        case "sep":
-          Quotes.to = eth_price.value
-          break;
-        case "basesep":
-          Quotes.to = base_price.value
-          break;
-        case "arb-sep":
-          Quotes.to = arb_price.value
-          break;
-        case "Fuji":
-          Quotes.to = avax_price.value
-          break;
-        case "bnbt":
-          Quotes.to = bsc_price.value
-          break;
+async function setQuotes(which: string | undefined) {
+  await getPrices();
+  if (which = "from") {
+    switch (
+      chosenChains.value.from ? chosenChains.value.from.shortName : null
+    ) {
+      case "sep":
+        Quotes.from = eth_price.value;
+        break;
+      case "basesep":
+        Quotes.from = base_price.value;
+        break;
+      case "arb-sep":
+        Quotes.from = arb_price.value;
+        break;
+      case "Fuji":
+        Quotes.from = avax_price.value;
+        break;
+      case "bnbt":
+        Quotes.from = bsc_price.value;
+        break;
+    }
+  }
+  if (which = "to") {
+    switch (chosenChains.value.to ? chosenChains.value.to.shortName : null) {
+      case "sep":
+        Quotes.to = eth_price.value;
+        break;
+      case "basesep":
+        Quotes.to = base_price.value;
+        break;
+      case "arb-sep":
+        Quotes.to = arb_price.value;
+        break;
+      case "Fuji":
+        Quotes.to = avax_price.value;
+        break;
+      case "bnbt":
+        Quotes.to = bsc_price.value;
+        break;
     }
   }
 }
@@ -151,16 +151,15 @@ async function pickChain(which: string) {
       [which]: chain,
     };
   });
-  await setQuotes(which) 
+  await setQuotes(which);
   whichChain.value = undefined;
 }
-
 
 const recipient = new Signal<string>("0x".padEnd(2 + 40, "0"));
 
 const recipientFocused = new Signal<boolean>(false);
 
-status.subscribe(console.log)
+status.subscribe(console.log);
 
 export function UI() {
   // const recipient = useSignal<undefined|string|null>(undefined)
@@ -170,13 +169,14 @@ export function UI() {
 
   return (
     <>
-      { whichChain.value
+      {whichChain.value
         ? (
           <Which
             which={whichChain.value}
             choices={activeChains}
-            onPick={(choice:Chain) => chooseChain(choice)}
-            compareFn={(a:Chain, b:Chain) => a.name < b.name ? -1 : a.name == b.name ? 0 : 1}
+            onPick={(choice: Chain) => chooseChain(choice)}
+            compareFn={(a: Chain, b: Chain) =>
+              a.name < b.name ? -1 : a.name == b.name ? 0 : 1}
           />
         )
         : (
@@ -220,57 +220,60 @@ export function UI() {
                       </div>
                     </div>
                     <div class="flex">
-                    <input
-                      autocomplete="off"
-                      id="from"
-                      type="text"
-                      class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
-                      placeholder="0"
-                      oninput={(e) => {
-                        const value = e.currentTarget.value;
-                        if (value == ('.')) {
-                          e.currentTarget.value = value.replace('.', '0.');
-                        }
-                        handleInput(e);
-                      }}
-                      value={amount.value}
-                      onkeypress={(e) => {
-                        const charCode = e.which ? e.which : e.keyCode;
-                        if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
-                          e.preventDefault();
-                        }
-                      }}
-                      ondrop={(e) => {
-                        e.preventDefault();
-                        const text = e.dataTransfer.getData('text/plain');
-                        if (!/^\d*\.?\d*$/.test(text)) {
-                          // Prevent dropping non-numeric characters
-                          e.preventDefault();
-                        } else {
-                          e.currentTarget.value = text;
+                      <input
+                        autocomplete="off"
+                        id="from"
+                        type="text"
+                        class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
+                        placeholder="0"
+                        oninput={(e) => {
+                          const value = e.currentTarget.value;
+                          if (value == (".")) {
+                            e.currentTarget.value = value.replace(".", "0.");
+                          }
                           handleInput(e);
-                        }
-                      }}
-                      onpaste={(e) => {
-                        e.preventDefault();
-                        const text = e.clipboardData.getData('text/plain');
-                        if (!/^\d*\.?\d*$/.test(text)) {
-                          // Prevent pasting non-numeric characters
+                        }}
+                        value={amount.value}
+                        onkeypress={(e) => {
+                          const charCode = e.which ? e.which : e.keyCode;
+                          if (
+                            charCode > 31 && (charCode < 48 || charCode > 57) &&
+                            charCode !== 46
+                          ) {
+                            e.preventDefault();
+                          }
+                        }}
+                        ondrop={(e) => {
                           e.preventDefault();
-                        } else {
-                          e.currentTarget.value = text;
-                          handleInput(e);
-                        }
-                      }}
-                      ondragover={(e) => {
-                        e.preventDefault();
-                        const text = e.dataTransfer.getData('text/plain');
-                        if (!/^\d*\.?\d*$/.test(text)) {
-                          // Prevent dragging non-numeric characters over
+                          const text = e.dataTransfer.getData("text/plain");
+                          if (!/^\d*\.?\d*$/.test(text)) {
+                            // Prevent dropping non-numeric characters
+                            e.preventDefault();
+                          } else {
+                            e.currentTarget.value = text;
+                            handleInput(e);
+                          }
+                        }}
+                        onpaste={(e) => {
                           e.preventDefault();
-                        }
-                      }}
-                    />
+                          const text = e.clipboardData.getData("text/plain");
+                          if (!/^\d*\.?\d*$/.test(text)) {
+                            // Prevent pasting non-numeric characters
+                            e.preventDefault();
+                          } else {
+                            e.currentTarget.value = text;
+                            handleInput(e);
+                          }
+                        }}
+                        ondragover={(e) => {
+                          e.preventDefault();
+                          const text = e.dataTransfer.getData("text/plain");
+                          if (!/^\d*\.?\d*$/.test(text)) {
+                            // Prevent dragging non-numeric characters over
+                            e.preventDefault();
+                          }
+                        }}
+                      />
                       <FhChainPicker
                         chosen={chosenChains}
                         which={"from"}
@@ -279,8 +282,17 @@ export function UI() {
                       />
                     </div>
                     <div class="flex">
-                      <div title={Quotes.from? `price: $${Quotes.from}` : "select chain"} class="grow font-extralight text-sm font-mono">
-                      {Quotes.from&&amount.value ? "$"+ (Number(Quotes.from)*Number(amount.value)).toFixed(2) : "$0"}
+                      <div
+                        title={Quotes.from
+                          ? `price: $${Quotes.from}`
+                          : "select chain"}
+                        class="grow font-extralight text-sm font-mono"
+                      >
+                        {Quotes.from && amount.value
+                          ? "$" +
+                            (Number(Quotes.from) * Number(amount.value))
+                              .toFixed(2)
+                          : "$0"}
                       </div>
                       <div class="font-extralight text-sm">
                         {chosenChains.value["from"]?.shortName ?? "‎ "}
@@ -304,57 +316,60 @@ export function UI() {
                       </div>
                     </div>
                     <div class="flex">
-                    <input
-                      autocomplete="off"
-                      id="to"
-                      type="text"
-                      class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
-                      placeholder="0"
-                      oninput={(e) => {
-                        const value = e.currentTarget.value;
-                        if (value == ('.')) {
-                          e.currentTarget.value = value.replace('.', '0.');
-                        }
-                        handleInput(e);
-                      }}
-                      value={amount.value}
-                      onkeypress={(e) => {
-                        const charCode = e.which ? e.which : e.keyCode;
-                        if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
-                          e.preventDefault();
-                        }
-                      }}
-                      ondrop={(e) => {
-                        e.preventDefault();
-                        const text = e.dataTransfer.getData('text/plain');
-                        if (!/^\d*\.?\d*$/.test(text)) {
-                          // Prevent dropping non-numeric characters
-                          e.preventDefault();
-                        } else {
-                          e.currentTarget.value = text;
+                      <input
+                        autocomplete="off"
+                        id="to"
+                        type="text"
+                        class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
+                        placeholder="0"
+                        oninput={(e) => {
+                          const value = e.currentTarget.value;
+                          if (value == (".")) {
+                            e.currentTarget.value = value.replace(".", "0.");
+                          }
                           handleInput(e);
-                        }
-                      }}
-                      onpaste={(e) => {
-                        e.preventDefault();
-                        const text = e.clipboardData.getData('text/plain');
-                        if (!/^\d*\.?\d*$/.test(text)) {
-                          // Prevent pasting non-numeric characters
+                        }}
+                        value={amount.value}
+                        onkeypress={(e) => {
+                          const charCode = e.which ? e.which : e.keyCode;
+                          if (
+                            charCode > 31 && (charCode < 48 || charCode > 57) &&
+                            charCode !== 46
+                          ) {
+                            e.preventDefault();
+                          }
+                        }}
+                        ondrop={(e) => {
                           e.preventDefault();
-                        } else {
-                          e.currentTarget.value = text;
-                          handleInput(e);
-                        }
-                      }}
-                      ondragover={(e) => {
-                        e.preventDefault();
-                        const text = e.dataTransfer.getData('text/plain');
-                        if (!/^\d*\.?\d*$/.test(text)) {
-                          // Prevent dragging non-numeric characters over
+                          const text = e.dataTransfer.getData("text/plain");
+                          if (!/^\d*\.?\d*$/.test(text)) {
+                            // Prevent dropping non-numeric characters
+                            e.preventDefault();
+                          } else {
+                            e.currentTarget.value = text;
+                            handleInput(e);
+                          }
+                        }}
+                        onpaste={(e) => {
                           e.preventDefault();
-                        }
-                      }}
-                    />
+                          const text = e.clipboardData.getData("text/plain");
+                          if (!/^\d*\.?\d*$/.test(text)) {
+                            // Prevent pasting non-numeric characters
+                            e.preventDefault();
+                          } else {
+                            e.currentTarget.value = text;
+                            handleInput(e);
+                          }
+                        }}
+                        ondragover={(e) => {
+                          e.preventDefault();
+                          const text = e.dataTransfer.getData("text/plain");
+                          if (!/^\d*\.?\d*$/.test(text)) {
+                            // Prevent dragging non-numeric characters over
+                            e.preventDefault();
+                          }
+                        }}
+                      />
 
                       <FhChainPicker
                         chosen={chosenChains}
@@ -364,11 +379,20 @@ export function UI() {
                       />
                     </div>
                     <div class="flex">
-                      <div title={Quotes.to? `price: $${Quotes.to}` : "select chain"} class="grow font-extralight text-sm font-mono">
-                      {Quotes.to&&amount.value ? "$"+ (Number(Quotes.to)*Number(amount.value)).toFixed(2) : "$0"}
+                      <div
+                        title={Quotes.to
+                          ? `price: $${Quotes.to}`
+                          : "select chain"}
+                        class="grow font-extralight text-sm font-mono"
+                      >
+                        {Quotes.to && amount.value
+                          ? "$" +
+                            (Number(Quotes.to) * Number(amount.value)).toFixed(
+                              2,
+                            )
+                          : "$0"}
                       </div>
-                      <div>{chosenChains.value["to"]?.shortName ?? "‎ "}
-                      </div>
+                      <div>{chosenChains.value["to"]?.shortName ?? "‎ "}</div>
                     </div>
                   </div>
                 </div>
@@ -394,8 +418,9 @@ export function UI() {
                 }}
               />
 
-              { status.value == 'Connected'
-                ? <Button
+              {status.value == "Connected"
+                ? (
+                  <Button
                     addClass="relative text-[#3d3d3d] dark:text-[#ccb286] z-10"
                     disabled={false}
                     onClick={bridge}
@@ -405,10 +430,9 @@ export function UI() {
                   >
                     Bridge
                   </Button>
-                : <Connector/> }
-
-              </div>
-
+                )
+                : <Connector />}
+            </div>
 
             {/* balance */}
             {/* <Balance/> */}

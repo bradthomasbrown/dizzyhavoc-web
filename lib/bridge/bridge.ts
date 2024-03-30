@@ -1,5 +1,4 @@
 export async function bridge() {
-
   // vortex.uState.provider
 
   //     const addresses = vortex.uState.addresses.value

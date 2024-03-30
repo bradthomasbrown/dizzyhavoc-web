@@ -3,10 +3,10 @@ import { useState } from "preact/hooks";
 import { useEffect } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
 import {
-  Balance,
-  bridge,
   /*addresses, dzhvBalance, provider, dzhv, state,*/
   activeChains,
+  Balance,
+  bridge,
   Button,
   Chain,
   Connector,
@@ -114,9 +114,11 @@ export function Form() {
               </Button>
             )}
           <datalist id="chains">
-            {!IS_BROWSER
-              ? []
-              : activeChains.map((chain) => <option value={chain?.shortName} />)}
+            {!IS_BROWSER ? [] : activeChains.map((chain) => (
+              <option
+                value={chain?.shortName}
+              />
+            ))}
           </datalist>
           {/* <datalist id="addrs">{!IS_BROWSER ? [] : addresses?.value?.map(address => (<option value={address}></option>))}</datalist> */}
         </div>

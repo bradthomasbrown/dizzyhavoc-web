@@ -4,8 +4,13 @@ import { Input } from "./Input.tsx";
 
 const filter = new Signal<string>("");
 
-export function Which<C extends { name:string }>(
-  props: { which: string; choices: C[]; onPick: (choice: C) => unknown, compareFn:Parameters<C[]['sort']>[0] },
+export function Which<C extends { name: string }>(
+  props: {
+    which: string;
+    choices: C[];
+    onPick: (choice: C) => unknown;
+    compareFn: Parameters<C[]["sort"]>[0];
+  },
 ) {
   const fsChoices = computed(() => {
     return [...props.choices]
