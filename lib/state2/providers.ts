@@ -6,6 +6,16 @@ declare global {
   }
 }
 
+interface Mmsdk {
+  getProvider: () => undefined | (P1193 & Partial<P5749>);
+}
+
+export type MmsdkDefault = {
+  MetaMaskSDK: {
+    new (dappMetaData: { dappMetadata: { name: string; url: string } }): Mmsdk;
+  };
+};
+
 type Tx = {
   from?: string;
   to?: string;
@@ -25,11 +35,11 @@ export const p1193 = z.object({
 
 export type P1193 = z.infer<typeof p1193>;
 
-export type P5749Info = { info: { name: string; icon: string; uuid: string } };
+export type P5749Info = { name: string; icon: string; uuid: string };
 
-export type P5749 = P1193 & P5749Info;
+export type P5749 = P1193 & { info: P5749Info };
 
-export type P6963 = { provider: P1193 } & P5749Info;
+export type P6963 = { provider: P1193 } & { info: P5749Info };
 
 export interface EIP6963AnnounceProviderEvent extends CustomEvent {
   type: "eip6963:announceProvider";
