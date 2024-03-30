@@ -30,7 +30,10 @@ class quoteSignal<T> extends Signal<T> {
     this.to = initialValue;
   }
 }
-const quotes: Record<string, Signal<undefined | number>> = {};
+const quotes: Record<string, Signal<undefined | number>> = {
+  from: new Signal<undefined>,
+  to: new Signal<undefined>
+};
 function flipChosen() {
   chosenChains.value = {
     from: chosenChains.value.to,
