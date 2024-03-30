@@ -1,5 +1,6 @@
 import { z } from "https://deno.land/x/zod@v3.22.4/mod.ts";
 import { Signal } from "@preact/signals";
+import { Controllerton } from "../common/Controllerton.ts";
 
 export type TStateGetContext = {
   tState: TState;
@@ -23,22 +24,19 @@ export type TStateSet = (
 
 export class TStateOperator {
   tState: TState;
-  signal: AbortSignal;
-  controller: AbortController;
+  controller: Controllerton;
   updater: DatumUpdater;
   updaters: Signal<Set<DatumUpdater>>;
   key: string;
 
-  constructor({ tState, key, signal, controller, updater, updaters }: {
+  constructor({ tState, key, controller, updater, updaters }: {
     tState: TState;
-    signal: AbortSignal;
-    controller: AbortController;
+    controller: Controllerton;
     updater: DatumUpdater;
     updaters: Signal<Set<DatumUpdater>>;
     key: string;
   }) {
     this.tState = tState;
-    this.signal = signal;
     this.controller = controller;
     this.updater = updater;
     this.updaters = updaters;
@@ -50,7 +48,7 @@ export class TStateOperator {
   }
 
   set(value: unknown) {
-    if (this.signal.aborted) return new Error("TStateSet: signal aborted");
+    if (this.controller.aborted) return new Error("TStateSet: signal aborted");
     this.tState[this.key] = value;
     const s = new Set(this.updaters.value);
     s.delete(this.updater);
@@ -83,7 +81,7 @@ type UStateSpecific<D extends VortexData> = {
 };
 
 type FlowContext = {
-  controller: { value: AbortController };
+  controller: Controllerton;
   tState: TState;
   dependencies: Map<DatumUpdater, string[]>;
   invalidate: Set<string>;
@@ -105,7 +103,7 @@ type DatumUpdaterContext = {
 
 export type DatumUpdater = (this: DatumUpdaterContext) => void | Promise<void>;
 
-type VortexDatum = {
+export type VortexDatum = {
   invalidatedBy: string[];
   dependsOn: string[];
   updater: DatumUpdater;
@@ -118,7 +116,7 @@ export class Vortex<F extends VortexFlows, D extends VortexData> {
   flows: F;
   data: D;
   tState: TStateSpecific<D>;
-  controller: { value: AbortController };
+  controller: Controllerton;
   updaters: Signal<Set<DatumUpdater>>;
   dependencies: Map<DatumUpdater, string[]>;
   dataKey: Map<DatumUpdater, string>;
@@ -130,7 +128,7 @@ export class Vortex<F extends VortexFlows, D extends VortexData> {
     this.tState = Object.fromEntries(
       Object.entries(data).map(([k]) => [k, undefined]),
     ) as TStateSpecific<D>;
-    this.controller = { value: new AbortController() };
+    this.controller = new Controllerton();
     this.updaters = new Signal(new Set());
     this.dependencies = new Map(
       Object.values(data)
