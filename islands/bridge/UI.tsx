@@ -1,42 +1,16 @@
 import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.0/mod.ts";
 import { batch, Signal } from "@preact/signals";
-import { bridgeable } from "../../lib/chains/bridgeable.ts";
+import { activeChains } from "../../lib/chains/activeChains.ts";
 import { Chain } from "../../lib/types/Chain.ts";
 import { ConnectionInfo } from "../common/ConnectionInfo.tsx";
-import { WhichChain } from "../common/WhichChain.tsx";
+import { Which } from "../common/Which.tsx";
 import { FhChainPicker } from "../common/FhChainPicker.tsx";
 import { Button } from "../../lib/internal.ts";
-import { receipt } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/ejra@0.0.1-toad/schemas/receipt.ts";
+import { Connector, status } from '../common/Connector.tsx'
 import { hexshort } from "../../lib/internal.ts";
 import { JSX } from "preact/jsx-runtime";
-
-async function bridge() {
-  //     const addresses = vortex.uState.addresses.value
-  //     const rpc = vortex.uState.rpc.value
-  //     const p1193 = vortex.uState.p1193.value
-  //     const chain = vortex.uState.chain.value
-
-  //     if (!addresses || addresses instanceof Error) { alert('no selected address'); return }
-  //     if (!rpc || rpc instanceof Error) { alert('no rpc'); return }
-  //     if (!p1193 || p1193 instanceof Error) { alert('no provider'); return }
-
-  //     const result = await ejra.call(rpc, {
-  //         to: '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe',
-  //         input: '0x762ebebc'
-  //     }, 'latest')
-  //     if (result instanceof Error) { alert(result); return }
-  //     const [divider, fee] = result.slice(2).match(/.{64}/g)?.map(s => BigInt(`0x${s}`)) ?? []
-  //     if (!divider || !fee) { alert(`could not find faucet on chain ${chain}, make sure you are connected to a valid testnet (Sepolia ETH/BASE/ARB, tBSC, AVAX Fuji)`); return }
-
-  //     const from = addresses[0]
-  //     const to = '0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe'
-  //     const value = `0x${fee.toString(16)}`
-  //     const data = '0x1a9bbe59'
-
-  //     const tx = { from, to, value, data }
-
-  //     await p1193.request({ method: 'eth_sendTransaction', params: [tx] })
-}
+import { P6963 } from '../../lib/state2/providers.ts'
+import { bridge } from '../../lib/bridge/bridge.ts'
 
 const whichChain = new Signal<undefined | string>(undefined);
 
@@ -149,7 +123,7 @@ const recipient = new Signal<string>("0x".padEnd(2 + 40, "0"));
 
 const recipientFocused = new Signal<boolean>(false);
 
-recipientFocused.subscribe((x) => console.log(x, hexshort(recipient.value)));
+status.subscribe(console.log)
 
 export function UI() {
   // const recipient = useSignal<undefined|string|null>(undefined)
@@ -159,12 +133,13 @@ export function UI() {
 
   return (
     <>
-      {whichChain.value
+      { whichChain.value
         ? (
-          <WhichChain
+          <Which
             which={whichChain.value}
-            chains={bridgeable}
-            onPick={chooseChain}
+            choices={activeChains}
+            onPick={(choice:Chain) => chooseChain(choice)}
+            compareFn={(a:Chain, b:Chain) => a.name < b.name ? -1 : a.name == b.name ? 0 : 1}
           />
         )
         : (
@@ -300,17 +275,21 @@ export function UI() {
                 }}
               />
 
-              <Button
-                addClass="relative text-[#3d3d3d] dark:text-[#ccb286] z-10"
-                disabled={false}
-                onClick={false ? () => {} : bridge}
-                rounding="rounded-b-lg"
-                wiggle={false}
-                width="100%"
-              >
-                Bridge
-              </Button>
-            </div>
+              { status.value == 'Connected'
+                ? <Button
+                    addClass="relative text-[#3d3d3d] dark:text-[#ccb286] z-10"
+                    disabled={false}
+                    onClick={bridge}
+                    rounding="rounded-b-lg"
+                    wiggle={false}
+                    width="100%"
+                  >
+                    Bridge
+                  </Button>
+                : <Connector/> }
+
+              </div>
+
 
             {/* balance */}
             {/* <Balance/> */}
