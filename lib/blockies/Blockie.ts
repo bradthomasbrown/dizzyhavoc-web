@@ -251,6 +251,15 @@ export class Blockie {
 
     return `data:image/gif;base64,${base64.encodeBase64(gifData)}`;
   }
+
+  static randB64() {
+    return new Blockie({
+      scale: 12,
+      seed: [
+        ...crypto.getRandomValues(new Uint8Array(20)),
+      ].map((x) => String.fromCharCode(x)).join(""),
+    }).base64();
+  }
 }
 
 // const blockie = new Blockie({ scale: 16, seed: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' })
