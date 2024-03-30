@@ -54,7 +54,6 @@ let bsc_price = new Signal<Number>(0);
 let avax_price = new Signal<Number>(0);
 
 let base_price = new Signal<Number>(0);
-0
 
 class quoteSignal<T> extends Signal<T> {
   from: T | undefined;
