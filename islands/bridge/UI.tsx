@@ -42,8 +42,8 @@ const whichChain = new Signal<undefined | string>(undefined);
 
 const chosenChains = new Signal<Record<string, Chain>>({});
 
-const from_amount = new Signal<Number | undefined>(undefined);
-const to_amount = new Signal<Number | undefined>(undefined);
+const from_amount = new Signal<number | undefined>(undefined);
+const to_amount = new Signal<number | undefined>(undefined);
 
 class quoteSignal<T> extends Signal<T> {
   from: T | undefined;
@@ -56,7 +56,7 @@ class quoteSignal<T> extends Signal<T> {
   }
 }
 
-const Quotes = new quoteSignal<undefined | Number>(undefined);
+const Quotes = new quoteSignal<undefined | number>(undefined);
 
 function flipChosen() {
   chosenChains.value = {
@@ -206,7 +206,7 @@ export function UI() {
                         id="from"
                         class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
                         placeholder="0"
-                        oninput={handleInput}
+                        onInput={handleInput}
                         value={from_amount.value}
                       />
                       <FhChainPicker
@@ -246,7 +246,7 @@ export function UI() {
                         id="to"
                         class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
                         placeholder="0"
-                        oninput={handleInput}
+                        onInput={handleInput}
                         value={to_amount.value}
                       />
                       <FhChainPicker
