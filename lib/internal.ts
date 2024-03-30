@@ -31,7 +31,7 @@ export * from "./state/dzhvBalance.ts";
 // ## chains/
 export * from "./chains/query.ts";
 export * from "./chains/overrides.ts";
-export * from "./chains/bridgeable.ts";
+export * from "./chains/activeChains.ts";
 // ## utils/
 export * from "./utils/hexshort.ts";
 export * from "./utils/bridge.ts";
