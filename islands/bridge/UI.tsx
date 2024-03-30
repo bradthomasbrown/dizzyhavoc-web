@@ -43,7 +43,18 @@ const whichChain = new Signal<undefined | string>(undefined);
 
 const chosenChains = new Signal<Record<string, Chain>>({});
 
-const amount = new Signal<Number | undefined>(undefined);
+const amount = new Signal<Number>(0);
+
+let eth_price = new Signal<Number>(0);
+
+let arb_price = new Signal<Number>(0);
+
+let bsc_price = new Signal<Number>(0);
+
+let avax_price = new Signal<Number>(0);
+
+let base_price = new Signal<Number>(0);
+0
 
 class quoteSignal<T> extends Signal<T> {
   from: T | undefined;
@@ -79,52 +90,86 @@ function handleInput(e: JSX.TargetedEvent<HTMLInputElement>) {
     amount.value = Number(e.currentTarget.value);
 }
 
-async function getQuotes() {
+async function getPrices(){
   try {
     const response = await fetch(
-      "https://quick-frog-59.deno.dev/v1/liveprices"
+      "https://api.dexscreener.com/latest/dex/tokens/0x3419875B4D3Bca7F3FddA2dB7a476A79fD31B4fE"
     );
-    const data = await response.json();
-    switch(chosenChains.value.from.shortName){
+    const data = response.body ? await response.json() : {};
+    for (let i = 0; i < data.pairs.length; i++) {
+      const fixedvalue = Number(data.pairs[i].priceUsd).toFixed(5);
+      switch (data.pairs[i].url) {
+        case "https://dexscreener.com/ethereum/0xb7a71c2e31920019962cb62aeea1dbf502905b81":
+          eth_price.value = Number(fixedvalue);
+          break;
+        case "https://dexscreener.com/arbitrum/0x05c5bdbc7b3c64109ddcce058ce99f4515fe1c83":
+          arb_price.value = Number(fixedvalue);
+          break;
+        case "https://dexscreener.com/bsc/0x642089a5da2512db761d325a868882ece6e387f5":
+          bsc_price.value = Number(fixedvalue);
+          break;
+        case "https://dexscreener.com/base/0xb64dff20dd5c47e6dbb56ead80d23568006dec1e":
+          base_price.value = Number(fixedvalue);
+          break;
+        case "https://dexscreener.com/avalanche/0x523a04633b6c0c4967824471dda0abbce7c5e643":
+          avax_price.value = Number(fixedvalue);
+          break;
+        default:
+          break;
+      } 
+    }
+    console.log(eth_price.value, arb_price.value, bsc_price.value, base_price.value, avax_price.value);
+}
+catch(error){
+  console.log(error)
+}
+}
+
+async function setQuotes(which: string|undefined) {
+ await getPrices()
+ console.log(which)
+ if(which="from"){
+    switch(chosenChains.value.from ? chosenChains.value.from.shortName : null ){
         case "sep":
-          Quotes.from = data[data.length - 1].eth_price
+          Quotes.from = eth_price.value
           break;
         case "basesep":
-          Quotes.from = data[data.length - 1].base_price
+          Quotes.from = base_price.value
           break;
         case "arb-sep":
-          Quotes.from = data[data.length - 1].arb_price
+          Quotes.from = arb_price.value
           break;
         case "Fuji":
-          Quotes.from = data[data.length - 1].avax_price
+          Quotes.from = avax_price.value
           break;
         case "bnbt":
-          Quotes.from = data[data.length - 1].bsc_price
+          Quotes.from = bsc_price.value
           break;
-    } switch(chosenChains.value.to.shortName){
+    } }
+    if(which="to"){
+    switch(chosenChains.value.to ? chosenChains.value.to.shortName : null){
         case "sep":
-          Quotes.to = data[data.length - 1].eth_price
+          Quotes.to = eth_price.value
           break;
         case "basesep":
-          Quotes.to = data[data.length - 1].base_price
+          Quotes.to = base_price.value
           break;
         case "arb-sep":
-          Quotes.to = data[data.length - 1].arb_price
+          Quotes.to = arb_price.value
           break;
         case "Fuji":
-          Quotes.to = data[data.length - 1].avax_price
+          Quotes.to = avax_price.value
           break;
         case "bnbt":
-          Quotes.to = data[data.length - 1].bsc_price
+          Quotes.to = bsc_price.value
           break;
     }
-  } catch (error) {
-    console.error(error);
   }
-  console.log("Mainnet from price quote:", Quotes.from, "; to price quote:", Quotes.to)
+  console.log("Mainnet from price quote:", Quotes.from ? Quotes.from : 0 , "; to price quote:", Quotes.to ? Quotes.to : 0)
 }
 
 async function pickChain(which: string) {
+  console.log(which)
   chainChoiceGate.value = new Gate<Chain>();
   whichChain.value = which;
   const chain = await chainChoiceGate.value.promise;
@@ -137,7 +182,7 @@ async function pickChain(which: string) {
       [which]: chain,
     };
   });
-  await getQuotes() 
+  await setQuotes(which) 
   whichChain.value = undefined;
 }
 
