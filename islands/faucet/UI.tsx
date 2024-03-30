@@ -10,7 +10,7 @@ import { Button } from "../../components/common/Button.tsx";
 import { Balance } from "../../islands/common/Balance.tsx";
 import { Blockie } from "../../lib/blockies/Blockie.ts";
 import { ejra } from "../../lib/faucet/ejra.ts";
-import { vortex } from "../../lib/faucet/vortex.ts";
+import { evmVortex } from "../../lib/faucet/evmVortex/evmVortex.ts";
 import { status } from "../common/Connector.tsx";
 import { getIcon } from "../../lib/chains/icons.ts";
 import { chain } from "../../lib/schemas/chain.ts";
@@ -18,10 +18,10 @@ import { chain } from "../../lib/schemas/chain.ts";
 const disabled = computed(() => status.value != "Connected");
 
 async function drink() {
-  const addresses = vortex.uState.addresses.value;
-  const rpc = vortex.uState.rpc.value;
-  const p1193 = vortex.uState.p1193.value;
-  const chain = vortex.uState.chain.value;
+  const addresses = evmVortex.uState.addresses.value;
+  const rpc = evmVortex.uState.rpc.value;
+  const p1193 = evmVortex.uState.p1193.value;
+  const chain = evmVortex.uState.chain.value;
 
   if (!addresses || addresses instanceof Error) {
     alert("no selected address");
@@ -66,7 +66,7 @@ async function drink() {
 export function UI() {
   const defaultSeed = "0xa9C5db3e478D8F2E229254ef1d7e3a8ddBf2737c";
   const seed = computed(() => {
-    const addresses = vortex.uState.addresses.value;
+    const addresses = evmVortex.uState.addresses.value;
     return !addresses || addresses instanceof Error
       ? defaultSeed
       : addresses[0];
@@ -76,7 +76,7 @@ export function UI() {
   });
 
   const hexshortSelected = computed(() => {
-    const addresses = vortex.uState.addresses.value;
+    const addresses = evmVortex.uState.addresses.value;
     const zeroAddress = "0x".padEnd(42, "0");
     return hexshort(
       !addresses || addresses instanceof Error ? zeroAddress : addresses[0],
@@ -92,16 +92,16 @@ export function UI() {
             <picture>
               <source
                 srcset={getIcon(
-                  Number(vortex.uState.chain.value),
+                  Number(evmVortex.uState.chain.value),
                 ).dark}
                 media="(prefers-color-scheme: dark)"
               />
               <img
                 title={"chain id: " +
-                  String(vortex.uState.chain.value)}
+                  String(evmVortex.uState.chain.value)}
                 draggable={false}
                 class="w-7 h-7"
-                src={getIcon(Number(vortex.uState.chain.value))
+                src={getIcon(Number(evmVortex.uState.chain.value))
                   .light}
               />
             </picture>
