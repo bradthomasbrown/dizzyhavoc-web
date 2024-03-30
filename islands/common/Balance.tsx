@@ -1,9 +1,9 @@
 import { computed, Signal } from "@preact/signals";
 import { w3LabelConv } from "../../lib/internal.ts";
-import { vortex } from "../../lib/faucet/vortex.ts";
+import { evmVortex } from "../../lib/faucet/evmVortex/evmVortex.ts";
 
 const balance = computed(() => {
-  const balance = vortex.uState.dzhvBalance.value;
+  const balance = evmVortex.uState.dzhvBalance.value;
   const big = !balance || balance instanceof Error ? 0n : balance;
   const dec = 18;
   const sym = "DZHV";

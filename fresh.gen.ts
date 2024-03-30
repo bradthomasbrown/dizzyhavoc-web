@@ -21,8 +21,13 @@ import * as $common_ListInput from "./islands/common/ListInput.tsx";
 import * as $common_Navbar from "./islands/common/Navbar.tsx";
 import * as $common_Receiver from "./islands/common/Receiver.tsx";
 import * as $common_Web3Input from "./islands/common/Web3Input.tsx";
-import * as $common_Which from "./islands/common/Which.tsx";
 import * as $common_menuButton from "./islands/common/menuButton.tsx";
+import * as $common_which_d from "./islands/common/which/.d.ts";
+import * as $common_which_Choice from "./islands/common/which/Choice.tsx";
+import * as $common_which_Which from "./islands/common/which/Which.tsx";
+import * as $common_which_WhichChoices from "./islands/common/which/WhichChoices.tsx";
+import * as $common_which_WhichSearch from "./islands/common/which/WhichSearch.tsx";
+import * as $common_which_WhichTitle from "./islands/common/which/WhichTitle.tsx";
 import * as $faucet_UI from "./islands/faucet/UI.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
@@ -49,8 +54,13 @@ const manifest = {
     "./islands/common/Navbar.tsx": $common_Navbar,
     "./islands/common/Receiver.tsx": $common_Receiver,
     "./islands/common/Web3Input.tsx": $common_Web3Input,
-    "./islands/common/Which.tsx": $common_Which,
     "./islands/common/menuButton.tsx": $common_menuButton,
+    "./islands/common/which/.d.ts": $common_which_d,
+    "./islands/common/which/Choice.tsx": $common_which_Choice,
+    "./islands/common/which/Which.tsx": $common_which_Which,
+    "./islands/common/which/WhichChoices.tsx": $common_which_WhichChoices,
+    "./islands/common/which/WhichSearch.tsx": $common_which_WhichSearch,
+    "./islands/common/which/WhichTitle.tsx": $common_which_WhichTitle,
     "./islands/faucet/UI.tsx": $faucet_UI,
   },
   baseUrl: import.meta.url,

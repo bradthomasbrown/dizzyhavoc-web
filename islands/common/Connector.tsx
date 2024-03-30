@@ -1,14 +1,14 @@
 import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.0/mod.ts";
 import { batch, computed, Signal } from "@preact/signals";
 import { Button } from "../../components/common/Button.tsx";
-import { vortex } from "../../lib/faucet/vortex.ts";
+import { evmVortex } from "../../lib/faucet/evmVortex/evmVortex.ts";
 import { P1193, P6963 } from "../../lib/state2/providers.ts";
 
 export const status = computed(() => {
-  const uAddresses = vortex.uState.addresses.value;
-  const updaters = vortex.updaters.value;
-  const updater = vortex.data.addresses.updater;
-  const tAddresses = vortex.tState.addresses;
+  const uAddresses = evmVortex.uState.addresses.value;
+  const updaters = evmVortex.updaters.value;
+  const updater = evmVortex.data.addresses.updater;
+  const tAddresses = evmVortex.tState.addresses;
   const foo = `?${!uAddresses ? 0 : uAddresses instanceof Error ? 1 : 2}${
     !updaters.has(updater) ? 0 : 2
   }${!tAddresses ? 0 : tAddresses instanceof Error ? 1 : 2}`;
@@ -36,17 +36,8 @@ export function onChoice(p6963: P6963) {
   });
 }
 
-export async function choose(p6963s: P6963[]) {
-  const gate = new Gate<P1193>();
-  batch(() => {
-    choices.value = p6963s;
-    choiceGate.value = gate;
-  });
-  return await gate.promise;
-}
-
 function onConnect() {
-  vortex.flow("init");
+  evmVortex.flow("init");
 }
 
 export function Connector() {
