@@ -246,7 +246,7 @@ export function UI() {
                     </div>{" "}
                     <div class="flex">
                       <div
-                        title={quotes["from"]
+                        title={quotes["from"].value
                           ? `price: $${quotes["from"]}`
                           : "select chain"}
                         class="grow font-extralight text-sm font-mono"
@@ -331,7 +331,7 @@ export function UI() {
                     </div>{" "}
                     <div class="flex">
                       <div
-                        title={quotes["from"]
+                        title={quotes["to"].value
                           ? `price: $${quotes["to"]}`
                           : "select chain"}
                         class="grow font-extralight text-sm font-mono"
