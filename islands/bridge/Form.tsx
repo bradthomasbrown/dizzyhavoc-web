@@ -6,7 +6,7 @@ import {
   Balance,
   bridge,
   /*addresses, dzhvBalance, provider, dzhv, state,*/
-  bridgeable,
+  activeChains,
   Button,
   Chain,
   Connector,
@@ -26,16 +26,16 @@ export function Form() {
   const recipient = useSignal<undefined | string | null>(undefined);
   const amount = useSignal<undefined | bigint | null>(undefined);
   function onDestinationInput(e: JSX.TargetedEvent<HTMLInputElement>) {
-    const chain = bridgeable.find(({ shortName }) =>
+    const chain = activeChains.find(({ shortName }) =>
       e.currentTarget.value == shortName
     );
     destination.value = chain ? BigInt(chain.chainId) : null;
   }
 
   function sendBridge() {
-    // const destChain = bridgeable.find(({ chainId }) => BigInt(chainId) == destination.value)
-    // // if the destination chain isn't in bridgeable, log that and return
-    // if (!destChain) { console.error(new Error(`destination chain ${destination.value} not bridgeable (yet)`)); return }
+    // const destChain = activeChains.find(({ chainId }) => BigInt(chainId) == destination.value)
+    // // if the destination chain isn't in activeChains, log that and return
+    // if (!destChain) { console.error(new Error(`destination chain ${destination.value} not activeChains (yet)`)); return }
     // // const details = { destChain, recipient: recipient.value, amount: amount.value,
     //     // address: addresses.value?.[0], provider: provider.value, dzhv: dzhv.value }
     // // if any details from the from are missing, log that and return
@@ -116,7 +116,7 @@ export function Form() {
           <datalist id="chains">
             {!IS_BROWSER
               ? []
-              : bridgeable.map((chain) => <option value={chain?.shortName} />)}
+              : activeChains.map((chain) => <option value={chain?.shortName} />)}
           </datalist>
           {/* <datalist id="addrs">{!IS_BROWSER ? [] : addresses?.value?.map(address => (<option value={address}></option>))}</datalist> */}
         </div>
