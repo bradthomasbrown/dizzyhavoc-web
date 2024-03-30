@@ -16,7 +16,7 @@ const ids = [
   97, // BSC Testnet
 ];
 
-// an array of bridgeable chains constructed from the above list of chain IDs
-export const bridgeable = !IS_BROWSER
+// an array of activeChains chains constructed from the above list of chain IDs
+export const activeChains = !IS_BROWSER
   ? []
   : await Promise.all(ids.map((id) => query({ id }))) as Chain[];
