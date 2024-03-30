@@ -3,7 +3,7 @@ import { batch, Signal } from "@preact/signals";
 import { activeChains } from "../../lib/chains/activeChains.ts";
 import { Chain } from "../../lib/types/Chain.ts";
 import { ConnectionInfo } from "../common/ConnectionInfo.tsx";
-import { Which } from "../common/Which.tsx";
+import { Which } from "../common/which/Which.tsx";
 import { FhChainPicker } from "../common/FhChainPicker.tsx";
 import { Button } from "../../lib/internal.ts";
 import { Connector, status } from "../common/Connector.tsx";
@@ -11,16 +11,15 @@ import { hexshort } from "../../lib/internal.ts";
 import { JSX } from "preact/jsx-runtime";
 import { P6963 } from "../../lib/state2/providers.ts";
 import { bridge } from "../../lib/bridge/bridge.ts";
+import { which } from "../../lib/faucet/evmVortex/data/p1193.tsx";
 const whichChain = new Signal<undefined | string>(undefined);
 const chosenChains = new Signal<Record<string, Chain>>({});
 const amount = new Signal<number>(0);
-const prices: Record<string, Signal<number>> = {
-  eth: new Signal(0),
-  arb: new Signal(0),
-  bsc: new Signal(0),
-  avax: new Signal(0),
-  base: new Signal(0),
-};
+type Prices = Record<number, Signal<number>>;
+const prices = activeChains.reduce<Prices>(
+  (p, c) => (p[c.chainId] = new Signal(0), p),
+  {},
+);
 class quoteSignal<T> extends Signal<T> {
   from: T | undefined;
   to: T | undefined;
@@ -31,8 +30,8 @@ class quoteSignal<T> extends Signal<T> {
   }
 }
 const quotes: Record<string, Signal<undefined | number>> = {
-  from: new Signal<undefined>,
-  to: new Signal<undefined>
+  from: new Signal<undefined>(),
+  to: new Signal<undefined>(),
 };
 function flipChosen() {
   chosenChains.value = {
@@ -146,255 +145,245 @@ status.subscribe(console.log);
 export function UI() {
   return (
     <>
-      {whichChain.value
-        ? (
-          <Which
-            which={whichChain.value}
-            choices={activeChains}
-            onPick={(choice: Chain) => chooseChain(choice)}
-            compareFn={(a: Chain, b: Chain) =>
-              a.name < b.name ? -1 : a.name == b.name ? 0 : 1}
-          />
-        )
-        : (
-          <>
-            <ConnectionInfo />{" "}
-            <div class="w-full sm:px-16 px-8 text-[#282828] dark:text-[#d2d2d2]">
-              <div class="bg-blur2 shadow-xl w-auto flex flex-col font-[Poppins]">
-                <div class="flex">
-                  <div class="grow unselectable">gas</div>{" "}
-                  <div class="unselectable">time</div>
-                </div>{" "}
-                <div class="relative">
-                  <svg
-                    onClick={flipChosen}
-                    class="z-10 absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] [hover:scale-[105%] active:scale-[95%] cursor-pointer w-8 h-8"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke="currentColor"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
-                    />
-                  </svg>{" "}
-                  <div class="p-2 flex flex-col">
-                    <div class="flex text-sm font-semibold">
-                      <div class="grow unselectable">Burn</div>{" "}
-                      <div class="unselectable">From</div>
-                    </div>{" "}
-                    <div class="flex">
-                      <input
-                        autocomplete="off"
-                        id="from"
-                        type="text"
-                        class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
-                        placeholder="0"
-                        onInput={(e) => {
-                          const value = e.currentTarget.value;
-                          if (value == (".")) {
-                            e.currentTarget.value = value
-                              .replace(".", "0.");
-                          }
-                          handleInput(e);
-                        }}
-                        value={amount.value}
-                        onKeyPress={(e) => {
-                          const charCode = e.which ? e.which : e.keyCode;
-                          if (
-                            charCode > 31 && (charCode < 48 || charCode > 57) &&
-                            charCode !== 46
-                          ) e.preventDefault();
-                        }}
-                        onDrop={(e) => {
-                          e.preventDefault();
-                          const text = e.dataTransfer?.getData("text/plain") ??
-                            "";
-                          if (!/^\d*\.?\d*$/.test(text)) e.preventDefault();
-                          else {
-                            e.currentTarget.value = text;
-                            handleInput(e);
-                          }
-                        }}
-                        onPaste={(e) => {
-                          e.preventDefault();
-                          const text = e.clipboardData?.getData("text/plain") ??
-                            "";
-                          if (!/^\d*\.?\d*$/.test(text)) e.preventDefault();
-                          else {
-                            e.currentTarget.value = text;
-                            handleInput(e);
-                          }
-                        }}
-                        onDragOver={(e) => {
-                          e.preventDefault();
-                          const text = e.dataTransfer?.getData("text/plain") ??
-                            "";
-                          if (!/^\d*\.?\d*$/.test(text)) e.preventDefault();
-                        }}
-                      />{" "}
-                      <FhChainPicker
-                        chosen={chosenChains}
-                        which={"from"}
-                        onClick={pickChain}
-                        addClass="translate-x-[calc(50%+8px)]"
-                      />
-                    </div>{" "}
-                    <div class="flex">
-                      <div
-                        title={quotes["from"]
-                          ? `price: $${quotes["from"]}`
-                          : "select chain"}
-                        class="grow font-extralight text-sm font-mono"
-                      >
-                        {quotes["from"] && amount.value
-                          ? "$" +
-                            (Number(quotes["from"]) * Number(amount.value))
-                              .toFixed(2)
-                          : "$0"}
-                      </div>{" "}
-                      <div class="font-extralight text-sm">
-                        {chosenChains.value["from"]?.shortName ?? " "}
-                      </div>
-                    </div>
+      {which.value ? which.value : (
+        <>
+          <ConnectionInfo />{" "}
+          <div class="w-full sm:px-16 px-8 text-[#282828] dark:text-[#d2d2d2]">
+            <div class="bg-blur2 shadow-xl w-auto flex flex-col font-[Poppins]">
+              <div class="flex">
+                <div class="grow unselectable">gas</div>{" "}
+                <div class="unselectable">time</div>
+              </div>{" "}
+              <div class="relative">
+                <svg
+                  onClick={flipChosen}
+                  class="z-10 absolute top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%] [hover:scale-[105%] active:scale-[95%] cursor-pointer w-8 h-8"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
+                  />
+                </svg>{" "}
+                <div class="p-2 flex flex-col">
+                  <div class="flex text-sm font-semibold">
+                    <div class="grow unselectable">Burn</div>{" "}
+                    <div class="unselectable">From</div>
                   </div>{" "}
                   <div class="flex">
-                    <div class="grow border-t border-white" />{" "}
-                    <div class="w-8" />{" "}
-                    <div class="grow border-t border-white" />
-                  </div>{" "}
-                  <div class="p-2 flex flex-col">
-                    <div class="flex text-sm font-semibold">
-                      <div class="grow unselectable">Mint</div>{" "}
-                      <div class="unselectable">To</div>
-                    </div>{" "}
-                    <div class="flex">
-                      <input
-                        autocomplete="off"
-                        id="to"
-                        type="text"
-                        class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
-                        placeholder="0"
-                        onInput={(e) => {
-                          const value = e.currentTarget.value;
-                          if (value == (".")) {
-                            e.currentTarget.value = value
-                              .replace(".", "0.");
-                          }
+                    <input
+                      autocomplete="off"
+                      id="from"
+                      type="text"
+                      class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
+                      placeholder="0"
+                      onInput={(e) => {
+                        const value = e.currentTarget.value;
+                        if (value == (".")) {
+                          e.currentTarget.value = value
+                            .replace(".", "0.");
+                        }
+                        handleInput(e);
+                      }}
+                      value={amount.value}
+                      onKeyPress={(e) => {
+                        const charCode = e.which ? e.which : e.keyCode;
+                        if (
+                          charCode > 31 && (charCode < 48 || charCode > 57) &&
+                          charCode !== 46
+                        ) e.preventDefault();
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        const text = e.dataTransfer?.getData("text/plain") ??
+                          "";
+                        if (!/^\d*\.?\d*$/.test(text)) e.preventDefault();
+                        else {
+                          e.currentTarget.value = text;
                           handleInput(e);
-                        }}
-                        value={amount.value}
-                        onKeyPress={(e) => {
-                          const charCode = e.which ? e.which : e.keyCode;
-                          if (
-                            charCode > 31 && (charCode < 48 || charCode > 57) &&
-                            charCode !== 46
-                          ) e.preventDefault();
-                        }}
-                        onDrop={(e) => {
-                          e.preventDefault();
-                          const text = e.dataTransfer?.getData("text/plain") ??
-                            "";
-                          if (!/^\d*\.?\d*$/.test(text)) e.preventDefault();
-                          else {
-                            e.currentTarget.value = text;
-                            handleInput(e);
-                          }
-                        }}
-                        onPaste={(e) => {
-                          e.preventDefault();
-                          const text = e.clipboardData?.getData("text/plain") ??
-                            "";
-                          if (!/^\d*\.?\d*$/.test(text)) e.preventDefault();
-                          else {
-                            e.currentTarget.value = text;
-                            handleInput(e);
-                          }
-                        }}
-                        onDragOver={(e) => {
-                          e.preventDefault();
-                          const text = e.dataTransfer?.getData("text/plain") ??
-                            "";
-                          if (!/^\d*\.?\d*$/.test(text)) e.preventDefault();
-                        }}
-                      />{" "}
-                      <FhChainPicker
-                        chosen={chosenChains}
-                        which={"to"}
-                        onClick={pickChain}
-                        addClass="translate-x-[calc(50%+8px)]"
-                      />
+                        }
+                      }}
+                      onPaste={(e) => {
+                        e.preventDefault();
+                        const text = e.clipboardData?.getData("text/plain") ??
+                          "";
+                        if (!/^\d*\.?\d*$/.test(text)) e.preventDefault();
+                        else {
+                          e.currentTarget.value = text;
+                          handleInput(e);
+                        }
+                      }}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        const text = e.dataTransfer?.getData("text/plain") ??
+                          "";
+                        if (!/^\d*\.?\d*$/.test(text)) e.preventDefault();
+                      }}
+                    />{" "}
+                    <FhChainPicker
+                      chosen={chosenChains}
+                      which={"from"}
+                      onClick={pickChain}
+                      addClass="translate-x-[calc(50%+8px)]"
+                    />
+                  </div>{" "}
+                  <div class="flex">
+                    <div
+                      title={quotes["from"]
+                        ? `price: $${quotes["from"]}`
+                        : "select chain"}
+                      class="grow font-extralight text-sm font-mono"
+                    >
+                      {quotes["from"] && amount.value
+                        ? "$" +
+                          (Number(quotes["from"]) * Number(amount.value))
+                            .toFixed(2)
+                        : "$0"}
                     </div>{" "}
-                    <div class="flex">
-                      <div
-                        title={quotes["from"]
-                          ? `price: $${quotes["to"]}`
-                          : "select chain"}
-                        class="grow font-extralight text-sm font-mono"
-                      >
-                        {quotes["to"] && amount.value
-                          ? "$" +
-                            (Number(quotes["to"]) * Number(amount.value))
-                              .toFixed(2)
-                          : "$0"}
-                      </div>{" "}
-                      <div>{chosenChains.value["to"]?.shortName ?? " "}</div>
+                    <div class="font-extralight text-sm">
+                      {chosenChains.value["from"]?.shortName ?? " "}
                     </div>
                   </div>
+                </div>{" "}
+                <div class="flex">
+                  <div class="grow border-t border-white" /> <div class="w-8" />
+                  {" "}
+                  <div class="grow border-t border-white" />
+                </div>{" "}
+                <div class="p-2 flex flex-col">
+                  <div class="flex text-sm font-semibold">
+                    <div class="grow unselectable">Mint</div>{" "}
+                    <div class="unselectable">To</div>
+                  </div>{" "}
+                  <div class="flex">
+                    <input
+                      autocomplete="off"
+                      id="to"
+                      type="text"
+                      class="w-0 grow flex font-mono items-center text-[32px] bg-transparent"
+                      placeholder="0"
+                      onInput={(e) => {
+                        const value = e.currentTarget.value;
+                        if (value == (".")) {
+                          e.currentTarget.value = value
+                            .replace(".", "0.");
+                        }
+                        handleInput(e);
+                      }}
+                      value={amount.value}
+                      onKeyPress={(e) => {
+                        const charCode = e.which ? e.which : e.keyCode;
+                        if (
+                          charCode > 31 && (charCode < 48 || charCode > 57) &&
+                          charCode !== 46
+                        ) e.preventDefault();
+                      }}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        const text = e.dataTransfer?.getData("text/plain") ??
+                          "";
+                        if (!/^\d*\.?\d*$/.test(text)) e.preventDefault();
+                        else {
+                          e.currentTarget.value = text;
+                          handleInput(e);
+                        }
+                      }}
+                      onPaste={(e) => {
+                        e.preventDefault();
+                        const text = e.clipboardData?.getData("text/plain") ??
+                          "";
+                        if (!/^\d*\.?\d*$/.test(text)) e.preventDefault();
+                        else {
+                          e.currentTarget.value = text;
+                          handleInput(e);
+                        }
+                      }}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        const text = e.dataTransfer?.getData("text/plain") ??
+                          "";
+                        if (!/^\d*\.?\d*$/.test(text)) e.preventDefault();
+                      }}
+                    />{" "}
+                    <FhChainPicker
+                      chosen={chosenChains}
+                      which={"to"}
+                      onClick={pickChain}
+                      addClass="translate-x-[calc(50%+8px)]"
+                    />
+                  </div>{" "}
+                  <div class="flex">
+                    <div
+                      title={quotes["from"]
+                        ? `price: $${quotes["to"]}`
+                        : "select chain"}
+                      class="grow font-extralight text-sm font-mono"
+                    >
+                      {quotes["to"] && amount.value
+                        ? "$" +
+                          (Number(quotes["to"]) * Number(amount.value))
+                            .toFixed(2)
+                        : "$0"}
+                    </div>{" "}
+                    <div>{chosenChains.value["to"]?.shortName ?? " "}</div>
+                  </div>
                 </div>
-              </div>{" "}
-              <input
-                class="px-2 py-1 w-full bg-transparent text-center font-mono"
-                placeholder={hexshort("0x".padEnd(2 + 40, "0"))}
-                onInput={(e) => recipient.value = e.currentTarget.value}
-                onBlur={(e) => {
-                  recipientFocused.value = false;
-                  if (
-                    recipient.value &&
-                    recipient.value !== "0x".padEnd(2 + 40, "0")
-                  ) e.currentTarget.value = hexshort(recipient.value);
-                }}
-                onFocus={(e) => {
-                  recipientFocused.value = true;
-                  if (
-                    recipient.value &&
-                    recipient.value !== "0x".padEnd(2 + 40, "0")
-                  ) {
-                    e.currentTarget.value = recipient.value;
-                  }
-                }}
-              />{" "}
-              {status.value == "Connected"
-                ? (
-                  <Button
-                    addClass="relative text-[#3d3d3d] dark:text-[#ccb286] z-10"
-                    disabled={false}
-                    onClick={bridge}
-                    rounding="rounded-b-lg"
-                    wiggle={false}
-                    width="100%"
-                  >
-                    Bridge
-                  </Button>
-                )
-                : <Connector />}
+              </div>
             </div>{" "}
-            {/* balance */} {/* <Balance/> */}{" "}
-            <a
-              class="absolute dark:text-[#d2d2d2] bg-blur4 rounded-xl pr-1 text-[#282828] bottom-0 right-2 text-md font-[Poppins] hover:scale-[102%]"
-              target="_blank"
-              href="/faucet"
-            >
-              💧faucet
-            </a>
-          </>
-        )}
+            <input
+              class="px-2 py-1 w-full bg-transparent text-center font-mono"
+              placeholder={hexshort("0x".padEnd(2 + 40, "0"))}
+              onInput={(e) => recipient.value = e.currentTarget.value}
+              onBlur={(e) => {
+                recipientFocused.value = false;
+                if (
+                  recipient.value &&
+                  recipient.value !== "0x".padEnd(2 + 40, "0")
+                ) e.currentTarget.value = hexshort(recipient.value);
+              }}
+              onFocus={(e) => {
+                recipientFocused.value = true;
+                if (
+                  recipient.value &&
+                  recipient.value !== "0x".padEnd(2 + 40, "0")
+                ) {
+                  e.currentTarget.value = recipient.value;
+                }
+              }}
+            />{" "}
+            {status.value == "Connected"
+              ? (
+                <Button
+                  addClass="relative text-[#3d3d3d] dark:text-[#ccb286] z-10"
+                  disabled={false}
+                  onClick={bridge}
+                  rounding="rounded-b-lg"
+                  wiggle={false}
+                  width="100%"
+                >
+                  Bridge
+                </Button>
+              )
+              : <Connector />}
+          </div>{" "}
+          {/* balance */} {/* <Balance/> */}{" "}
+          <a
+            class="absolute dark:text-[#d2d2d2] bg-blur4 rounded-xl pr-1 text-[#282828] bottom-0 right-2 text-md font-[Poppins] hover:scale-[102%]"
+            target="_blank"
+            href="/faucet"
+          >
+            💧faucet
+          </a>
+        </>
+      )}
     </>
   );
 }
