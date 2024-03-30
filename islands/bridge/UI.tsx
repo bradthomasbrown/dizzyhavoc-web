@@ -117,7 +117,6 @@ async function getPrices(){
           break;
       } 
     }
-    console.log(eth_price.value, arb_price.value, bsc_price.value, base_price.value, avax_price.value);
 }
 catch(error){
   console.log(error)
@@ -126,7 +125,6 @@ catch(error){
 
 async function setQuotes(which: string|undefined) {
  await getPrices()
- console.log(which)
  if(which="from"){
     switch(chosenChains.value.from ? chosenChains.value.from.shortName : null ){
         case "sep":
@@ -164,11 +162,9 @@ async function setQuotes(which: string|undefined) {
           break;
     }
   }
-  console.log("Mainnet from price quote:", Quotes.from ? Quotes.from : 0 , "; to price quote:", Quotes.to ? Quotes.to : 0)
 }
 
 async function pickChain(which: string) {
-  console.log(which)
   chainChoiceGate.value = new Gate<Chain>();
   whichChain.value = which;
   const chain = await chainChoiceGate.value.promise;
