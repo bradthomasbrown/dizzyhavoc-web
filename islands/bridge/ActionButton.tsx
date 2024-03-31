@@ -16,6 +16,5 @@ export function ActionButton() {
       </Button>
     );
   }
-
-  return <Connector />;
+  else return <Connector />;
 }
