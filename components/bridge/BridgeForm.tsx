@@ -2,7 +2,7 @@ import { CurrencyPair } from './CurrencyPair.tsx'
 
 export function BridgeForm() {
   return (
-    <div class="grid grid-cols-2 grid-rows-8">
+    <div>
       {/* <Details/> */}
       <CurrencyPair/>
     </div>
