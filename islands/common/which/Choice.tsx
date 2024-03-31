@@ -27,9 +27,7 @@ export function Choice(
           text-center
           lg:text-sm 
           text-xs
-        text-[#2c2c2c]
-        dark:text-[#EAEAEA]`}
-        >
+        `}>
           {props.id}
         </div>
       </div>

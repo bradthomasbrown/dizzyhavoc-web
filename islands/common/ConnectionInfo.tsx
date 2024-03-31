@@ -29,7 +29,7 @@ export function ConnectionInfo() {
         title={seed}
         alt="blockie image"
       />
-      <div class="font-[Poppins] text-[#2c2c2c] dark:text-[#EAEAEA] font-[14px] mb-2">
+      <div class="font-[14px] mb-2">
         {hexshortSelected}
       </div>
     </div>

@@ -12,8 +12,6 @@ export function Input(
           m-4
           px-2
           lg:text-lg
-          text-[#2c2c2c]
-          dark:text-[#EAEAEA]
           border
           dark:border-1
           border-1
