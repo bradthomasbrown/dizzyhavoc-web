@@ -11,12 +11,12 @@ const filter = new Signal<string>("");
  * @param props.compareFn an optional function to sort the choices by something
  * other than their name
  */
-export function Which(
+export function Which<T extends unknown>(
   props: {
     title: string;
-    choices: Choice[];
-    onPick: (choice: Choice) => unknown;
-    compareFn?: Parameters<Choice[]["sort"]>[0];
+    choices: Choice<T>[];
+    onPick: (choice: Choice<T>) => unknown;
+    compareFn?: Parameters<Choice<T>[]["sort"]>[0];
   },
 ) {
   const fsChoices = computed(() => {

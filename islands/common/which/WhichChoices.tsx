@@ -1,7 +1,7 @@
 import { Choice } from "./Choice.tsx";
 
-export function WhichChoices(
-  props: { choices: Choice[]; onPick: (choice: Choice) => unknown },
+export function WhichChoices<T extends unknown>(
+  props: { choices: Choice<T>[]; onPick: (choice: Choice<T>) => unknown },
 ) {
   return (
     <div
