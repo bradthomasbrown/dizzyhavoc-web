@@ -3,6 +3,7 @@ import { batch, computed, Signal } from "@preact/signals";
 import { Button } from "../../components/common/Button.tsx";
 import { evmVortex } from "../../lib/faucet/evmVortex/evmVortex.ts";
 import { P1193, P6963 } from "../../lib/state2/providers.ts";
+import { Which } from './which/Which.tsx'
 
 export const status = computed(() => {
   const uAddresses = evmVortex.uState.addresses.value;
@@ -36,6 +37,8 @@ export function onChoice(p6963: P6963) {
   });
 }
 
+export const which = new Signal<undefined|ReturnType<typeof Which>>(undefined)
+
 function onConnect() {
   evmVortex.flow("init");
 }
@@ -43,7 +46,7 @@ function onConnect() {
 export function Connector() {
   return (
     <>
-      {choices.value
+      {/* {choices.value
         ? (
           <div class="lg:text-[1.2rem] unselectable text-[1rem] font-[Poppins] font-medium dark:text-[#d2d2d2] text-[#282828] flex flex-col items-center w-[200px] gap-3">
             Choose a provider
@@ -65,16 +68,16 @@ export function Connector() {
               ))}
             </div>
           </div>
-        )
-        : (
-          <Button
-            disabled={disabled.value}
-            addClass="text-[#3d3d3d] dark:text-[#d7d7d7]"
-            onClick={onConnect}
-          >
-            {status}
-          </Button>
-        )}
+        ) */}
+        
+      <Button
+        disabled={disabled.value}
+        addClass="text-[#3d3d3d] dark:text-[#d7d7d7]"
+        onClick={onConnect}
+      >
+        {status}
+      </Button>
+        
     </>
   );
 }
