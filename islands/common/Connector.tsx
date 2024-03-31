@@ -43,36 +43,12 @@ function onConnect() {
   evmVortex.flow("init");
 }
 
-export function Connector() {
+export function Connector(props:{ addClass?:string }) {
   return (
     <>
-      {/* {choices.value
-        ? (
-          <div class="lg:text-[1.2rem] unselectable text-[1rem] font-[Poppins] font-medium dark:text-[#d2d2d2] text-[#282828] flex flex-col items-center w-[200px] gap-3">
-            Choose a provider
-            <div class="flex gap-2 flex-wrap">
-              {choices.value.map((choice) => (
-                <div
-                  class="flex flex-col justify-center items-center h-24 w-24 cursor-pointer grow gap-1"
-                  onClick={() => onChoice(choice)}
-                >
-                  <img
-                    draggable={false}
-                    class="hover:scale-[102%] active:scale-[98%] min-h-16 min-w-16 max-h-16 max-w-16"
-                    src={choice.info.icon}
-                  />
-                  <div class="select-none font-light text-[0.75rem]">
-                    {choice.info.name}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ) */}
-        
       <Button
         disabled={disabled.value}
-        addClass="text-[#3d3d3d] dark:text-[#d7d7d7]"
+        addClass={`text-[#3d3d3d] dark:text-[#d7d7d7] ${props.addClass}`}
         onClick={onConnect}
       >
         {status}
