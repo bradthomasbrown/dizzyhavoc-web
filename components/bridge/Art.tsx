@@ -1,7 +1,7 @@
 export function Art() {
   return (
-      <image
-        class={`
+    <image
+      class={`
           static
           unselectable
           w-96 h-96
@@ -15,9 +15,8 @@ export function Art() {
           brightness-150
           rotate-[45deg]
           translate-x-8 
-          translate-y-[-24px]`
-        }
-        src="/misc/dzhv-art-chevron.jpg"
-      />
+          translate-y-[-24px]`}
+      src="/misc/dzhv-art-chevron.jpg"
+    />
   );
 }

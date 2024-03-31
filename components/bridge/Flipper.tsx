@@ -1,6 +1,6 @@
 import { JSX } from "preact/jsx-runtime";
 
-export function Flipper(props:JSX.DOMAttributes<SVGElement>) {
+export function Flipper(props: JSX.DOMAttributes<SVGElement>) {
   return (
     <svg
       onClick={props.onClick}
@@ -20,5 +20,5 @@ export function Flipper(props:JSX.DOMAttributes<SVGElement>) {
         d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"
       />
     </svg>
-  )
+  );
 }

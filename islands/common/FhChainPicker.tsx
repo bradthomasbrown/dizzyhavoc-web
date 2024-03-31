@@ -19,11 +19,14 @@ export function FhChainPicker(
     },
 ) {
   const { chosenChains, id, onClick } = props;
-  const { src, dsrc } = chainSrc(chosenChains.value[id]?.chainId)
+  const { src, dsrc } = chainSrc(chosenChains.value[id]?.chainId);
   return (
     <div class={`flex flex-row items-center ${props.addClass}`}>
       <div
-        onClick={() => { console.log(id); onClick(id) }}
+        onClick={() => {
+          console.log(id);
+          onClick(id);
+        }}
         class="hover:scale-[102%] active:scale-[98%] sm:w-16 sm:h-16 w-8 h-8 border-2 flex justify-center items-center rounded-full border-[#282828] dark:border-[#d2d2d2] sm:p-3 p-1 cursor-pointer "
       >
         {chosenChains.value[id]

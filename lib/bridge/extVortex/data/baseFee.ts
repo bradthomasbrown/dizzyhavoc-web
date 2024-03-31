@@ -7,8 +7,8 @@ export const chain: VortexDatum = {
   async updater() {
     if (this.operator.get()) return;
     if (!this.operator.knows(this.dependencies)) return;
-    
-    this.operator.set(0)
+
+    this.operator.set(0);
   },
   schema: z.bigint(),
 } as const;

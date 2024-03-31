@@ -16,5 +16,5 @@ export function CurrencyAmountInput() {
         max-w-[200px]
       `}
     />
-  )
+  );
 }

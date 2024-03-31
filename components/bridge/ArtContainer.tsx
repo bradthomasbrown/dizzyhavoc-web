@@ -2,16 +2,17 @@ import { Art } from "./Art.tsx";
 
 export function ArtContainer() {
   return (
-      <div class={`
+    <div
+      class={`
           z-[-1]
           w-full
           h-full
           absolute
           flex
           justify-center
-          items-center`
-      }>
-        <Art/>
-      </div>
+          items-center`}
+    >
+      <Art />
+    </div>
   );
 }

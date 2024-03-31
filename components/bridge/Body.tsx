@@ -1,12 +1,13 @@
 import { ArtContainer } from "./ArtContainer.tsx";
-import { ActiveForm } from '../../islands/bridge/ActiveForm.tsx'
+import { ActiveForm } from "../../islands/bridge/ActiveForm.tsx";
 
 /**
- * The Body of the app where art and interactables are usually located 
+ * The Body of the app where art and interactables are usually located
  */
 export function Body() {
   return (
-    <div className={`
+    <div
+      className={`
       relative
       sm:w-[500px] w-[360px]
       bg-blur2
@@ -16,10 +17,10 @@ export function Body() {
       justify-center
       items-center
       overflow-hidden
-      min-h-[25rem] max-h-[500px] h-[500px]`
-    }>
-      <ArtContainer/>
-      <ActiveForm/>
+      min-h-[25rem] max-h-[500px] h-[500px]`}
+    >
+      <ArtContainer />
+      <ActiveForm />
     </div>
   );
 }

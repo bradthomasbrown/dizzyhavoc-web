@@ -6,7 +6,7 @@ import { BodyContainer } from "./BodyContainer.tsx";
 export function AppContainer() {
   return (
     <div class="flex w-full grow flex-col items-center">
-      <BodyContainer/>
+      <BodyContainer />
     </div>
   );
 }

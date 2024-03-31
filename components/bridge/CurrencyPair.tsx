@@ -1,7 +1,11 @@
-import { CurrencyAmount } from './CurrencyAmount.tsx'
+import { CurrencyAmount } from "./CurrencyAmount.tsx";
 
 export function CurrencyPair() {
-  return <>
-    {['from', 'to'].map(type => <CurrencyAmount label={type == 'to' ? 'mint' : 'burn'} {...{type}}/>)}
-  </>
+  return (
+    <>
+      {["from", "to"].map((type) => (
+        <CurrencyAmount label={type == "to" ? "mint" : "burn"} {...{ type }} />
+      ))}
+    </>
+  );
 }

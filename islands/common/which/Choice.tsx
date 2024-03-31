@@ -19,7 +19,11 @@ export function Choice(
       >
         <picture>
           <source srcset={dsrc} media="(prefers-color-scheme: dark)" />
-          <img draggable={false} class="w-12 h-12" src={props.src ?? Blockie.randB64()} />
+          <img
+            draggable={false}
+            class="w-12 h-12"
+            src={props.src ?? Blockie.randB64()}
+          />
         </picture>
         <div
           class={`
@@ -27,7 +31,8 @@ export function Choice(
           text-center
           lg:text-sm 
           text-xs
-        `}>
+        `}
+        >
           {props.id}
         </div>
       </div>

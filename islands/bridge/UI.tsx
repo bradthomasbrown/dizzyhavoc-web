@@ -10,12 +10,12 @@ import { hexshort } from "../../lib/internal.ts";
 import { bridge } from "../../lib/bridge/bridge.ts";
 import { which as whichProvider } from "../../lib/faucet/evmVortex/data/p1193.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import { extVortex }  from '../../lib/bridge/extVortex/extVortex.ts'
+import { extVortex } from "../../lib/bridge/extVortex/extVortex.ts";
 import { Which } from "../common/which/Which.tsx";
 import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.0/mod.ts";
 import { activeChains } from "../../lib/chains/activeChains.ts";
-import { chainSrc } from '../../lib/chainSrc.ts'
-import { Flipper } from '../../components/bridge/Flipper.tsx'
+import { chainSrc } from "../../lib/chainSrc.ts";
+import { Flipper } from "../../components/bridge/Flipper.tsx";
 // import { Input } from '../../components/bridge/CurrencyAmountInput.tsx'
 import { Divider } from "../../components/common/Divider.tsx";
 import { RecipientInput } from "../../components/common/RecipientInput.tsx";
@@ -132,12 +132,18 @@ const chainChoiceGate = new Signal<undefined | Gate<Chain>>(undefined);
 // }
 async function pickChain(direction: string) {
   const gate = new Gate<Chain>();
-  chainChoiceGate.value = gate
-  whichChain.value = <Which
-    title={direction}
-    choices={activeChains.map(chain => ({ id: chain.name, value: chain, ...chainSrc(chain.chainId) }))}
-    onPick={(choice:Choice) => gate.resolve(choice.value as Chain)}
-  />;
+  chainChoiceGate.value = gate;
+  whichChain.value = (
+    <Which
+      title={direction}
+      choices={activeChains.map((chain) => ({
+        id: chain.name,
+        value: chain,
+        ...chainSrc(chain.chainId),
+      }))}
+      onPick={(choice: Choice) => gate.resolve(choice.value as Chain)}
+    />
+  );
   const chain = await chainChoiceGate.value.promise;
   const [key] =
     Object.entries(chosenChains.value).find(([k, v]) => v === chain) ?? [];
@@ -150,37 +156,36 @@ async function pickChain(direction: string) {
 }
 // status.subscribe(console.log);
 export function UI() {
-
-  if (whichChain.value) return whichChain.value
+  if (whichChain.value) return whichChain.value;
 
   return (
     <>
       {whichProvider.value ? whichProvider.value : (
-          <>
-            
-            <div class="w-full sm:px-16 px-8 text-[#282828] dark:text-[#d2d2d2]">
-              <div class="bg-blur2 shadow-xl w-auto flex flex-col font-[Poppins]">
-                <div class="flex">
-                  <div class="grow unselectable">gas</div>
-                  <div class="unselectable">time</div>
-                </div>
-                <div class="relative">
-                  <Flipper onClick={flipChosen}/>
-                  <div class="p-2 flex flex-col">
-                    <div class="flex text-sm font-semibold">
-                      <div class="grow unselectable">Burn</div>
-                      <div class="unselectable">From</div>
-                    </div>
-                    <div class="flex">
-                      <Input/>
-                      <FhChainPicker
-                        chosen={chosenChains}
-                        id={"from"}
-                        onClick={pickChain}
-                        addClass="translate-x-[calc(50%+8px)]"
-                      />
-                    </div>
-                    {/* <div class="flex">
+        <>
+          <div class="w-full sm:px-16 px-8 text-[#282828] dark:text-[#d2d2d2]">
+            <div class="bg-blur2 shadow-xl w-auto flex flex-col font-[Poppins]">
+              <div class="flex">
+                <div class="grow unselectable">gas</div>
+                <div class="unselectable">time</div>
+              </div>
+              <div class="relative">
+                <Flipper onClick={flipChosen} />
+                <div class="p-2 flex flex-col">
+                  <div class="flex text-sm font-semibold">
+                    <div class="grow unselectable">Burn</div>
+                    <div class="unselectable">From</div>
+                  </div>
+                  <div class="flex">
+                    <Input />
+                    <FhChainPicker
+                      chosen={chosenChains}
+                      id={"from"}
+                      onClick={pickChain}
+                      addClass="translate-x-[calc(50%+8px)]"
+                    />
+                  </div>
+                  {
+                    /* <div class="flex">
                       <div
                         title={quotes["from"].value
                           ? `price: $${quotes["from"]}`
@@ -196,27 +201,29 @@ export function UI() {
                       <div class="font-extralight text-sm">
                         {chosenChains.value["from"]?.shortName ?? "‎ "}
                       </div>
-                    </div> */}
-                  </div>
+                    </div> */
+                  }
                 </div>
+              </div>
 
-                <Divider/>
+              <Divider />
 
-                <div class="p-2 flex flex-col">
-                  <div class="flex text-sm font-semibold">
-                    <div class="grow unselectable">Mint</div>
-                    <div class="unselectable">To</div>
-                  </div>
-                  <div class="flex">
-                    <Input/>
-                    <FhChainPicker
-                      chosen={chosenChains}
-                      id={"to"}
-                      onClick={pickChain}
-                      addClass="translate-x-[calc(50%+8px)]"
-                    />
-                  </div>
-                  {/* <div class="flex">
+              <div class="p-2 flex flex-col">
+                <div class="flex text-sm font-semibold">
+                  <div class="grow unselectable">Mint</div>
+                  <div class="unselectable">To</div>
+                </div>
+                <div class="flex">
+                  <Input />
+                  <FhChainPicker
+                    chosen={chosenChains}
+                    id={"to"}
+                    onClick={pickChain}
+                    addClass="translate-x-[calc(50%+8px)]"
+                  />
+                </div>
+                {
+                  /* <div class="flex">
                     <div
                       title={quotes["from"]
                         ? `price: $${quotes["to"]}`
@@ -230,13 +237,14 @@ export function UI() {
                         : "$0"}
                     </div>
                     <div>{chosenChains.value["to"]?.shortName ?? " "}</div>
-                  </div> */}
-                </div>
+                  </div> */
+                }
               </div>
             </div>
-            <RecipientInput/>
-            <ActionButton/>
-          <FaucetLink/>
+          </div>
+          <RecipientInput />
+          <ActionButton />
+          <FaucetLink />
         </>
       )}
     </>

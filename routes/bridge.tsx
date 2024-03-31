@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div class="text-[#2c2c2c] dark:text-[#EAEAEA] font-[Poppins]">
       <LegalsPopup />
-      <AppContainer/>
+      <AppContainer />
     </div>
   );
 }

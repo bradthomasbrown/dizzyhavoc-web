@@ -1,7 +1,7 @@
 import { Gate } from "https://deno.land/x/gate@0.0.0/mod.ts";
 import { batch } from "@preact/signals";
 import { TStateOperator, VortexFlow } from "../../../state2/Vortex.ts";
-import { extVortex } from '../extVortex.ts'
+import { extVortex } from "../extVortex.ts";
 
 export const interval: VortexFlow = async function () {
   // trigger and refresh the abort controller
@@ -12,7 +12,6 @@ export const interval: VortexFlow = async function () {
 
   // while there are updaters that need to complete, run all updaters
   while (this.updaters.value.size) {
-
     await Promise.all([...this.updaters.value].map((updater) => {
       const { tState, updaters, flow } = this;
       const key = this.dataKey.get(updater) as string;
@@ -40,5 +39,5 @@ export const interval: VortexFlow = async function () {
   });
   await gate.promise;
 
-  extVortex.flow('interval')
+  extVortex.flow("interval");
 };

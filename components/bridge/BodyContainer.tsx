@@ -6,7 +6,8 @@ import { BodyTitle } from "./BodyTitle.tsx";
  */
 export function BodyContainer() {
   return (
-    <div className={`
+    <div
+      className={`
       min-w-[360px]
       flex-col
       sm:min-w-[500px]
@@ -15,10 +16,10 @@ export function BodyContainer() {
       rounded-xl
       flex
       min-h-[25rem]
-      my-auto`
-    }>
-      <BodyTitle/>
-      <Body/>
+      my-auto`}
+    >
+      <BodyTitle />
+      <Body />
     </div>
   );
 }

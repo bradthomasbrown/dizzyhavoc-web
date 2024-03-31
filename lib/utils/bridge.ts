@@ -35,7 +35,8 @@ import { Signal } from "@preact/signals";
 // })
 // }
 
-export function bridge(/*{
+export function bridge(
+  /*{
   // recipient,
   // amount,
   // address,
@@ -49,7 +50,8 @@ export function bridge(/*{
   // provider: InjectedProvider;
   // dzhv: { address: string };
   // destChain: Chain;
-}*/) {
+}*/
+) {
   // const data = `0x9eea5f66${destChain.chainId.toString(16).padStart(64, "0")}${
   //   recipient.substring(2).padStart(64, "0")
   // }${amount.toString(16).padStart(64, "0")}`;

@@ -7,5 +7,5 @@ export function FaucetLink() {
     >
       💧faucet
     </a>
-  )
+  );
 }

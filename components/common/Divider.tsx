@@ -5,5 +5,5 @@ export function Divider() {
       <div class="w-8" />
       <div class="grow border-t border-white" />
     </div>
-  )
+  );
 }
