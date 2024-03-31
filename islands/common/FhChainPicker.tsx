@@ -4,35 +4,39 @@ import { Signal } from "@preact/signals";
 import { getIcon } from "../../lib/chains/icons.ts";
 import { Chain } from "../../lib/internal.ts";
 import { JSX } from "preact/jsx-runtime";
+import { chainSrc } from "../../lib/chainSrc.ts";
+import { Blockie } from "../../lib/blockies/Blockie.ts";
+import { Block } from "https://deno.land/x/ts_morph@21.0.1/ts_morph.js";
 
 export function FhChainPicker(
   props:
     & Omit<JSX.DOMAttributes<HTMLDivElement>, "onClick">
     & {
       chosen: Signal<Record<string, Chain>>;
-      which: string;
-      onClick: (which: string) => unknown;
+      id: string;
+      onClick: (id: string) => unknown;
       addClass?: string;
     },
 ) {
-  const { chosen, which, onClick } = props;
+  const { chosen, id, onClick } = props;
+  const { src, dsrc } = chainSrc(chosen.value[id]?.chainId)
   return (
     <div class={`flex flex-row items-center ${props.addClass}`}>
       <div
-        onClick={() => onClick(which)}
+        onClick={() => { console.log(id); onClick(id) }}
         class="hover:scale-[102%] active:scale-[98%] sm:w-16 sm:h-16 w-8 h-8 border-2 flex justify-center items-center rounded-full border-[#282828] dark:border-[#d2d2d2] sm:p-3 p-1 cursor-pointer "
       >
-        {chosen.value[which]
+        {chosen.value[id]
           ? (
-            <picture title={chosen.value[which].name}>
+            <picture title={chosen.value[id].name}>
               <source
-                srcset={getIcon(chosen.value[which].chainId).dark}
+                srcset={dsrc ?? src ?? Blockie.randB64()}
                 media="(prefers-color-scheme: dark)"
               />{" "}
               <img
                 draggable={false}
                 class="w-full h-full"
-                src={getIcon(chosen.value[which].chainId).light}
+                src={src ?? Blockie.randB64()}
               />
             </picture>
           )
@@ -46,7 +50,7 @@ export function FhChainPicker(
               fill="none"
               viewBox="0 0 24 24"
             >
-              <title>{which}</title>
+              <title>{id}</title>
               <path
                 stroke="currentColor"
                 stroke-linecap="round"
