@@ -8,7 +8,7 @@
  */
 type Choice = {
   id: string;
-  src: string;
+  src?: string;
   dsrc?: string;
   value: unknown;
   space?: string;
