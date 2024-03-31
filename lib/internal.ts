@@ -45,7 +45,7 @@ export * from "../components/common/Button.tsx";
 export * from "../components/common/Footer.tsx";
 
 // ## bridge/
-export * from "../components/bridge/UI.tsx";
+// export * from "../components/bridge/UI.tsx";
 // # islands/
 import {
   Balance,
