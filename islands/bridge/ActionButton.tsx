@@ -11,7 +11,6 @@ export function ActionButton() {
       onClick={() => bridge()}
       rounding="rounded-b-lg"
       wiggle={false}
-      width="100%"
     >
       Bridge
     </Button>
