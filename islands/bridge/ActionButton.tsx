@@ -9,7 +9,7 @@ export function ActionButton() {
         addClass="relative text-[#3d3d3d] dark:text-[#ccb286] z-10"
         disabled={false}
         onClick={() => bridge()}
-        rounding="rounded-b-lg"
+        rounding="rounded-lg"
         wiggle={false}
       >
         Bridge
