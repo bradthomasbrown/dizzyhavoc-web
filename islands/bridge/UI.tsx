@@ -22,7 +22,6 @@ import { RecipientInput } from "../../components/common/RecipientInput.tsx";
 import { ActionButton } from "./ActionButton.tsx";
 import { FaucetLink } from "../../components/bridge/FaucetLink.tsx";
 // if (IS_BROWSER) extVortex.flow('init')
-const whichChain = new Signal<undefined | ReturnType<typeof Which>>(undefined);
 export const chosenChains = new Signal<Record<string, Chain>>({});
 
 // const prices: Record<string, Signal<number>> = {
@@ -158,7 +157,7 @@ export function UI() {
     <>
       {whichProvider.value ? whichProvider.value : (
           <>
-            <ConnectionInfo />
+            
             <div class="w-full sm:px-16 px-8 text-[#282828] dark:text-[#d2d2d2]">
               <div class="bg-blur2 shadow-xl w-auto flex flex-col font-[Poppins]">
                 <div class="flex">
