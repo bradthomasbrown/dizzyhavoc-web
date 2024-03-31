@@ -19,7 +19,9 @@ import { Flipper } from '../../components/bridge/Flipper.tsx'
 import { Input } from '../../components/bridge/Input.tsx'
 import { Divider } from "../../components/common/Divider.tsx";
 import { RecipientInput } from "../../components/common/RecipientInput.tsx";
-if (IS_BROWSER) extVortex.flow('init')
+import { ActionButton } from "./ActionButton.tsx";
+import { FaucetLink } from "../../components/bridge/FaucetLink.tsx";
+// if (IS_BROWSER) extVortex.flow('init')
 const whichChain = new Signal<undefined | ReturnType<typeof Which>>(undefined);
 export const chosenChains = new Signal<Record<string, Chain>>({});
 
@@ -234,29 +236,8 @@ export function UI() {
               </div>
             </div>
             <RecipientInput/>
-            {status.value == "Connected"
-              ? (
-                <Button
-                  addClass="relative text-[#3d3d3d] dark:text-[#ccb286] z-10"
-                  disabled={false}
-                  onClick={bridge}
-                  rounding="rounded-b-lg"
-                  wiggle={false}
-                  width="100%"
-                >
-                  Bridge
-                </Button>
-              )
-              : <Connector />}
-          {/* </div> */}
-          
-          <a
-            class="absolute dark:text-[#d2d2d2] bg-blur4 rounded-xl pr-1 text-[#282828] bottom-0 right-2 text-md font-[Poppins] hover:scale-[102%]"
-            target="_blank"
-            href="/faucet"
-          >
-            💧faucet
-          </a>
+            <ActionButton/>
+          <FaucetLink/>
         </>
       )}
     </>
