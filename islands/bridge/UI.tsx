@@ -16,7 +16,7 @@ import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.0/mod.t
 import { activeChains } from "../../lib/chains/activeChains.ts";
 import { chainSrc } from '../../lib/chainSrc.ts'
 import { Flipper } from '../../components/bridge/Flipper.tsx'
-import { Input } from '../../components/bridge/Input.tsx'
+// import { Input } from '../../components/bridge/CurrencyAmountInput.tsx'
 import { Divider } from "../../components/common/Divider.tsx";
 import { RecipientInput } from "../../components/common/RecipientInput.tsx";
 import { ActionButton } from "./ActionButton.tsx";
