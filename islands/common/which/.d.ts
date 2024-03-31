@@ -6,10 +6,10 @@
  * @prop {unknown} value the value to be returned upon a choice being picked
  * @prop {string} space the string that is used to filter this choice
  */
-type Choice = {
+type Choice<T> = {
   id: string;
   src?: string;
   dsrc?: string;
-  value: unknown;
+  value: T;
   space?: string;
 };
