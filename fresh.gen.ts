@@ -9,6 +9,7 @@ import * as $faucet from "./routes/faucet.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $bridge_ActionButton from "./islands/bridge/ActionButton.tsx";
 import * as $bridge_ActiveForm from "./islands/bridge/ActiveForm.tsx";
+import * as $bridge_CurrencyAmount from "./islands/bridge/CurrencyAmount.tsx";
 import * as $bridge_Form from "./islands/bridge/Form.tsx";
 import * as $bridge_LegalsPopup from "./islands/bridge/LegalsPopup.tsx";
 import * as $bridge_Toast from "./islands/bridge/Toast.tsx";
@@ -44,6 +45,7 @@ const manifest = {
   islands: {
     "./islands/bridge/ActionButton.tsx": $bridge_ActionButton,
     "./islands/bridge/ActiveForm.tsx": $bridge_ActiveForm,
+    "./islands/bridge/CurrencyAmount.tsx": $bridge_CurrencyAmount,
     "./islands/bridge/Form.tsx": $bridge_Form,
     "./islands/bridge/LegalsPopup.tsx": $bridge_LegalsPopup,
     "./islands/bridge/Toast.tsx": $bridge_Toast,

@@ -1,5 +1,6 @@
 import { CurrencyPair } from "./CurrencyPair.tsx";
 import { ActionButton } from "../../islands/bridge/ActionButton.tsx";
+import { Flipper } from "./Flipper.tsx";
 
 export function BridgeForm() {
   return (
@@ -7,6 +8,7 @@ export function BridgeForm() {
       {/* <Details/> */}
       <CurrencyPair />
       <ActionButton />
+      <Flipper/>
     </div>
     // <div class="w-full sm:px-16 px-8 text-[#282828] dark:text-[#d2d2d2]">
     //   <div class="bg-blur2 shadow-xl w-auto flex flex-col font-[Poppins]">
