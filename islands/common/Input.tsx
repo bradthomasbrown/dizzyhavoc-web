@@ -1,7 +1,7 @@
 import { JSX } from "preact/jsx-runtime";
 
 export function Input(
-  props: JSX.DOMAttributes<HTMLInputElement> & { clearClick: boolean },
+  props: JSX.DOMAttributes<HTMLInputElement> & { clearClick?: boolean },
 ) {
   return (
     <input
