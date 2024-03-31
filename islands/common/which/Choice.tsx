@@ -1,5 +1,7 @@
+import { Blockie } from "../../../lib/blockies/Blockie.ts";
+
 export function Choice(
-  props: { src: string; id: string; onPick: () => void; dsrc?: string },
+  props: { src?: string; id: string; onPick: () => void; dsrc?: string },
 ) {
   const dsrc = props.dsrc ?? props.src;
   return (
@@ -17,7 +19,7 @@ export function Choice(
       >
         <picture>
           <source srcset={dsrc} media="(prefers-color-scheme: dark)" />
-          <img draggable={false} class="w-12 h-12" src={props.src} />
+          <img draggable={false} class="w-12 h-12" src={props.src ?? Blockie.randB64()} />
         </picture>
         <div
           class={`
