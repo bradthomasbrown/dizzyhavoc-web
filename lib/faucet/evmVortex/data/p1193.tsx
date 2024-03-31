@@ -3,12 +3,8 @@ import { Blockie } from "../../../blockies/Blockie.ts";
 import * as providers from "../../../state2/providers.ts";
 import { evmVortex } from "../evmVortex.ts";
 import { Which } from "../../../../islands/common/which/Which.tsx";
-import { Signal } from "@preact/signals";
 import { VortexDatum } from "../../../state2/Vortex.ts";
-
-export const which = new Signal<undefined | ReturnType<typeof Which>>(
-  undefined,
-);
+import { which } from '../../../../islands/common/Connector.tsx'
 
 export const p1193: VortexDatum = {
   invalidatedBy: ["init"],
@@ -136,8 +132,7 @@ class ProviderFinder {
           value: p6963,
           space: p6963.info.name,
         }))}
-        onPick={(choice: Choice) =>
-          gate.resolve(choice.value as providers.P6963)}
+        onPick={choice => gate.resolve(choice.value)}
       />
     );
   }
