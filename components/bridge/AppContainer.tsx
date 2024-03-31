@@ -1,4 +1,4 @@
-import { FormContainer } from "./FormContainer.tsx";
+import { BodyContainer } from "./BodyContainer.tsx";
 
 /**
  * The container for everything between the navbar and the footer
@@ -6,7 +6,7 @@ import { FormContainer } from "./FormContainer.tsx";
 export function AppContainer() {
   return (
     <div class="flex w-full grow flex-col items-center">
-      <FormContainer/>
+      <BodyContainer/>
     </div>
   );
 }
