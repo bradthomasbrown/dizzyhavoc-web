@@ -6,7 +6,7 @@ export function ActionButton() {
   if (status.value == "Connected") {
     return (
       <Button
-        addClass="relative text-[#3d3d3d] dark:text-[#ccb286] z-10"
+        addClass="text-[#3d3d3d] dark:text-[#ccb286] order-3"
         disabled={false}
         onClick={() => bridge()}
         rounding="rounded-lg"
@@ -16,5 +16,5 @@ export function ActionButton() {
       </Button>
     );
   }
-  else return <Connector />;
+  else return <Connector addClass="order-3"/>;
 }
