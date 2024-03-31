@@ -12,7 +12,6 @@ export const init: VortexFlow = async function () {
 
   // while there are updaters that need to complete, run all updaters
   while (this.updaters.value.size) {
-    const { signal } = this.controller;
 
     await Promise.all([...this.updaters.value].map((updater) => {
       const { tState, updaters, flow } = this;
