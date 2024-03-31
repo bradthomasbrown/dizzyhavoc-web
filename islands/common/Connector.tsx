@@ -45,15 +45,12 @@ function onConnect() {
 
 export function Connector(props:{ addClass?:string }) {
   return (
-    <>
-      <Button
-        disabled={disabled.value}
-        addClass={`text-[#3d3d3d] dark:text-[#d7d7d7] ${props.addClass}`}
-        onClick={onConnect}
-      >
-        {status}
-      </Button>
-        
-    </>
+    <Button
+      disabled={disabled.value}
+      addClass={`text-[#3d3d3d] dark:text-[#d7d7d7] ${props.addClass}`}
+      onClick={onConnect}
+    >
+      {status}
+    </Button>
   );
 }
