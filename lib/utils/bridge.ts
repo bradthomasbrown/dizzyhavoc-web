@@ -35,32 +35,32 @@ import { Signal } from "@preact/signals";
 // })
 // }
 
-export function bridge({
-  recipient,
-  amount,
-  address,
-  provider,
-  dzhv,
-  destChain,
-}: {
-  recipient: string;
-  amount: bigint;
-  address: string;
-  provider: InjectedProvider;
-  dzhv: { address: string };
-  destChain: Chain;
-}) {
-  const data = `0x9eea5f66${destChain.chainId.toString(16).padStart(64, "0")}${
-    recipient.substring(2).padStart(64, "0")
-  }${amount.toString(16).padStart(64, "0")}`;
-  const from = address;
-  const to = "0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe";
-  const tx = { from, to, data };
-  console.log(`bridge params: ${JSON.stringify(tx)} (amount: ${amount})`);
-  provider.request({ method: "eth_sendTransaction", params: [{ ...tx }] })
-    .then(z.string().parseAsync)
-    .then(async (hash) => {
-      const status: Signal<"0x1" | "0x0" | null> = new Signal(null);
-      statuses.set(hash, status);
-    });
+export function bridge(/*{
+  // recipient,
+  // amount,
+  // address,
+  // provider,
+  // dzhv,
+  // destChain,
+// }: {
+  // recipient: string;
+  // amount: bigint;
+  // address: string;
+  // provider: InjectedProvider;
+  // dzhv: { address: string };
+  // destChain: Chain;
+}*/) {
+  // const data = `0x9eea5f66${destChain.chainId.toString(16).padStart(64, "0")}${
+  //   recipient.substring(2).padStart(64, "0")
+  // }${amount.toString(16).padStart(64, "0")}`;
+  // const from = address;
+  // const to = "0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe";
+  // const tx = { from, to, data };
+  // console.log(`bridge params: ${JSON.stringify(tx)} (amount: ${amount})`);
+  // provider.request({ method: "eth_sendTransaction", params: [{ ...tx }] })
+  //   .then(z.string().parseAsync)
+  //   .then(async (hash) => {
+  //     const status: Signal<"0x1" | "0x0" | null> = new Signal(null);
+  //     statuses.set(hash, status);
+  //   });
 }
