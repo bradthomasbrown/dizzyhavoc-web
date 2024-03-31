@@ -8,7 +8,7 @@ import { Connector, status } from "../common/Connector.tsx";
 import { hexshort } from "../../lib/internal.ts";
 // import { JSX } from "preact/jsx-runtime";
 import { bridge } from "../../lib/bridge/bridge.ts";
-import { which as whichProvider } from "../../lib/faucet/evmVortex/data/p1193.tsx";
+// import { which as whichProvider } from "../../lib/faucet/evmVortex/data/p1193.tsx";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { extVortex } from "../../lib/bridge/extVortex/extVortex.ts";
 import { Which } from "../common/which/Which.tsx";
