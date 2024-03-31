@@ -6,8 +6,8 @@ import { BridgeForm } from '../../components/bridge/BridgeForm.tsx'
  * For the bridge, this is either the provider picker, chain picker, or bridge form
  */
 export function ActiveForm() {
-  if (which.value) return which
-  return (
+  if (which.value) return which.value
+  else return (
     <>
       <ConnectionInfo/>
       <BridgeForm/>
