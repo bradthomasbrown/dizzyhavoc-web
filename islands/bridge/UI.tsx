@@ -17,6 +17,8 @@ import { activeChains } from "../../lib/chains/activeChains.ts";
 import { chainSrc } from '../../lib/chainSrc.ts'
 import { Flipper } from '../../components/bridge/Flipper.tsx'
 import { Input } from '../../components/bridge/Input.tsx'
+import { Divider } from "../../components/common/Divider.tsx";
+import { RecipientInput } from "../../components/common/RecipientInput.tsx";
 if (IS_BROWSER) extVortex.flow('init')
 const whichChain = new Signal<undefined | ReturnType<typeof Which>>(undefined);
 export const chosenChains = new Signal<Record<string, Chain>>({});
@@ -145,8 +147,6 @@ async function pickChain(direction: string) {
   // await setQuotes(which);
   whichChain.value = undefined;
 }
-const recipient = new Signal<string>("0x".padEnd(2 + 40, "0"));
-const recipientFocused = new Signal<boolean>(false);
 // status.subscribe(console.log);
 export function UI() {
 
@@ -199,11 +199,7 @@ export function UI() {
                   </div>
                 </div>
 
-                <div class="flex">
-                  <div class="grow border-t border-white" />
-                  <div class="w-8" />
-                  <div class="grow border-t border-white" />
-                </div>
+                <Divider/>
 
                 <div class="p-2 flex flex-col">
                   <div class="flex text-sm font-semibold">
@@ -237,27 +233,7 @@ export function UI() {
                 </div>
               </div>
             </div>
-            <input
-              class="px-2 py-1 w-full bg-transparent text-center font-mono"
-              placeholder={hexshort("0x".padEnd(2 + 40, "0"))}
-              onInput={(e) => recipient.value = e.currentTarget.value}
-              onBlur={(e) => {
-                recipientFocused.value = false;
-                if (
-                  recipient.value &&
-                  recipient.value !== "0x".padEnd(2 + 40, "0")
-                ) e.currentTarget.value = hexshort(recipient.value);
-              }}
-              onFocus={(e) => {
-                recipientFocused.value = true;
-                if (
-                  recipient.value &&
-                  recipient.value !== "0x".padEnd(2 + 40, "0")
-                ) {
-                  e.currentTarget.value = recipient.value;
-                }
-              }}
-            />
+            <RecipientInput/>
             {status.value == "Connected"
               ? (
                 <Button
