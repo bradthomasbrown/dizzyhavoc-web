@@ -1,3 +1,6 @@
+/**
+ * A function that maps chain IDs to image sources
+ */
 export function chainSrc(chainId:number):{ src?:string, dsrc?:string } {
   switch(chainId) {
     case 11155111: return { src: '/chains/eth.svg', dsrc: '/chains/eth-color.svg' }
