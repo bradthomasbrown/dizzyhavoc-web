@@ -76,7 +76,7 @@ export function Web3Input(
   return (
     <div class="flex flex-col mr-4">
        <input
-         type="number"
+         type="decimals"
          class="max-w-[200px] px-2 text-[32px] font-[monospace] bg-transparent [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
          {...{ disabled }}
          value={numberValue}
