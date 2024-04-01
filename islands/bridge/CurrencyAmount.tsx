@@ -7,14 +7,14 @@ import { extVortex } from "../../lib/bridge/extVortex/extVortex.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { Signal, computed } from "@preact/signals";
 import { chainToPrice } from "../../lib/bridge/chainToPrice.ts";
+import { amounts } from './CurrencyPair.tsx'
 
 chosenChains.subscribe(() => extVortex.flow('priceCheck'))
-
-const amount = new Signal<number>(0)
 
 export function CurrencyAmount(
   { type: id, label, addClass }: { type: string; label?: string, addClass?:string },
 ) {
+  
   const usdDisplayValue = computed<undefined|string>(() => {
     if (!IS_BROWSER) return undefined
     const chain = chosenChains.value[id]
@@ -22,7 +22,9 @@ export function CurrencyAmount(
     if (!chain || !dsData) return undefined
     const price = chainToPrice(chain, dsData)
     if (!price) return undefined
-    return (price * amount.value).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+    const amount = amounts.value[id] ?? 0
+    if (amount === undefined) return undefined
+    return (price * amount).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
   })
   const chainId = chosenChains.value[id]?.chainId;
   return (
@@ -30,7 +32,7 @@ export function CurrencyAmount(
       <div>{label}</div>
       <div class="text-right">{id}</div>
       <div class="flex col-span-2">
-        <CurrencyAmountInput signal={amount} />
+        <CurrencyAmountInput {...{id}}/>
         <FhChainPicker {...{ chosenChains, id, onClick }} />
       </div>
       <div>{usdDisplayValue.value ?? <>&nbsp;</>}</div>
