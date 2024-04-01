@@ -1,4 +1,4 @@
-import { CurrencyPair } from "../../islands/bridge/CurrencyPair.tsx";
+import { CurrencyPair } from "./CurrencyPair.tsx";
 import { ActionButton } from "../../islands/bridge/ActionButton.tsx";
 import { Flipper } from "./Flipper.tsx";
 

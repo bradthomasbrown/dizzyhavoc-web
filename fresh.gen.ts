@@ -30,12 +30,9 @@ import * as $index from "./routes/index.tsx";
 import * as $bridge_ActionButton from "./islands/bridge/ActionButton.tsx";
 import * as $bridge_ActiveForm from "./islands/bridge/ActiveForm.tsx";
 import * as $bridge_CurrencyAmount from "./islands/bridge/CurrencyAmount.tsx";
-import * as $bridge_CurrencyPair from "./islands/bridge/CurrencyPair.tsx";
-import * as $bridge_Form from "./islands/bridge/Form.tsx";
 import * as $bridge_LegalsPopup from "./islands/bridge/LegalsPopup.tsx";
 import * as $bridge_Toast from "./islands/bridge/Toast.tsx";
 import * as $bridge_Toaster from "./islands/bridge/Toaster.tsx";
-import * as $bridge_UI from "./islands/bridge/UI.tsx";
 import * as $common_Balance from "./islands/common/Balance.tsx";
 import * as $common_ConnectionInfo from "./islands/common/ConnectionInfo.tsx";
 import * as $common_Connector from "./islands/common/Connector.tsx";
@@ -89,12 +86,9 @@ const manifest = {
     "./islands/bridge/ActionButton.tsx": $bridge_ActionButton,
     "./islands/bridge/ActiveForm.tsx": $bridge_ActiveForm,
     "./islands/bridge/CurrencyAmount.tsx": $bridge_CurrencyAmount,
-    "./islands/bridge/CurrencyPair.tsx": $bridge_CurrencyPair,
-    "./islands/bridge/Form.tsx": $bridge_Form,
     "./islands/bridge/LegalsPopup.tsx": $bridge_LegalsPopup,
     "./islands/bridge/Toast.tsx": $bridge_Toast,
     "./islands/bridge/Toaster.tsx": $bridge_Toaster,
-    "./islands/bridge/UI.tsx": $bridge_UI,
     "./islands/common/Balance.tsx": $common_Balance,
     "./islands/common/ConnectionInfo.tsx": $common_ConnectionInfo,
     "./islands/common/Connector.tsx": $common_Connector,
