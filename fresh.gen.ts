@@ -4,12 +4,33 @@
 
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
+import * as $api_index from "./routes/api/index.ts";
+import * as $api_lib_errors_badMethod from "./routes/api/lib/errors/badMethod.ts";
+import * as $api_lib_errors_badParse from "./routes/api/lib/errors/badParse.ts";
+import * as $api_lib_errors_invalidParams from "./routes/api/lib/errors/invalidParams.ts";
+import * as $api_lib_errors_mod from "./routes/api/lib/errors/mod.ts";
+import * as $api_lib_errors_rateLimit from "./routes/api/lib/errors/rateLimit.ts";
+import * as $api_lib_jsonRpc_error from "./routes/api/lib/jsonRpc/error.ts";
+import * as $api_lib_jsonRpc_mod from "./routes/api/lib/jsonRpc/mod.ts";
+import * as $api_lib_jsonRpc_response from "./routes/api/lib/jsonRpc/response.ts";
+import * as $api_lib_kv from "./routes/api/lib/kv.ts";
+import * as $api_lib_methods_getActiveChains from "./routes/api/lib/methods/getActiveChains.ts";
+import * as $api_lib_methods_getBurnStatus from "./routes/api/lib/methods/getBurnStatus.ts";
+import * as $api_lib_methods_getConfirmations from "./routes/api/lib/methods/getConfirmations.ts";
+import * as $api_lib_methods_getEconConf from "./routes/api/lib/methods/getEconConf.ts";
+import * as $api_lib_methods_mod from "./routes/api/lib/methods/mod.ts";
+import * as $api_lib_rateLimit from "./routes/api/lib/rateLimit.ts";
+import * as $api_lib_schemas_api from "./routes/api/lib/schemas/api.ts";
+import * as $api_lib_schemas_jsonRpc from "./routes/api/lib/schemas/jsonRpc.ts";
+import * as $api_lib_schemas_mod from "./routes/api/lib/schemas/mod.ts";
+import * as $api_lib_types_mod from "./routes/api/lib/types/mod.ts";
 import * as $bridge from "./routes/bridge.tsx";
 import * as $faucet from "./routes/faucet.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $bridge_ActionButton from "./islands/bridge/ActionButton.tsx";
 import * as $bridge_ActiveForm from "./islands/bridge/ActiveForm.tsx";
 import * as $bridge_CurrencyAmount from "./islands/bridge/CurrencyAmount.tsx";
+import * as $bridge_CurrencyPair from "./islands/bridge/CurrencyPair.tsx";
 import * as $bridge_Form from "./islands/bridge/Form.tsx";
 import * as $bridge_LegalsPopup from "./islands/bridge/LegalsPopup.tsx";
 import * as $bridge_Toast from "./islands/bridge/Toast.tsx";
@@ -38,6 +59,28 @@ const manifest = {
   routes: {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
+    "./routes/api/index.ts": $api_index,
+    "./routes/api/lib/errors/badMethod.ts": $api_lib_errors_badMethod,
+    "./routes/api/lib/errors/badParse.ts": $api_lib_errors_badParse,
+    "./routes/api/lib/errors/invalidParams.ts": $api_lib_errors_invalidParams,
+    "./routes/api/lib/errors/mod.ts": $api_lib_errors_mod,
+    "./routes/api/lib/errors/rateLimit.ts": $api_lib_errors_rateLimit,
+    "./routes/api/lib/jsonRpc/error.ts": $api_lib_jsonRpc_error,
+    "./routes/api/lib/jsonRpc/mod.ts": $api_lib_jsonRpc_mod,
+    "./routes/api/lib/jsonRpc/response.ts": $api_lib_jsonRpc_response,
+    "./routes/api/lib/kv.ts": $api_lib_kv,
+    "./routes/api/lib/methods/getActiveChains.ts":
+      $api_lib_methods_getActiveChains,
+    "./routes/api/lib/methods/getBurnStatus.ts": $api_lib_methods_getBurnStatus,
+    "./routes/api/lib/methods/getConfirmations.ts":
+      $api_lib_methods_getConfirmations,
+    "./routes/api/lib/methods/getEconConf.ts": $api_lib_methods_getEconConf,
+    "./routes/api/lib/methods/mod.ts": $api_lib_methods_mod,
+    "./routes/api/lib/rateLimit.ts": $api_lib_rateLimit,
+    "./routes/api/lib/schemas/api.ts": $api_lib_schemas_api,
+    "./routes/api/lib/schemas/jsonRpc.ts": $api_lib_schemas_jsonRpc,
+    "./routes/api/lib/schemas/mod.ts": $api_lib_schemas_mod,
+    "./routes/api/lib/types/mod.ts": $api_lib_types_mod,
     "./routes/bridge.tsx": $bridge,
     "./routes/faucet.tsx": $faucet,
     "./routes/index.tsx": $index,
@@ -46,6 +89,7 @@ const manifest = {
     "./islands/bridge/ActionButton.tsx": $bridge_ActionButton,
     "./islands/bridge/ActiveForm.tsx": $bridge_ActiveForm,
     "./islands/bridge/CurrencyAmount.tsx": $bridge_CurrencyAmount,
+    "./islands/bridge/CurrencyPair.tsx": $bridge_CurrencyPair,
     "./islands/bridge/Form.tsx": $bridge_Form,
     "./islands/bridge/LegalsPopup.tsx": $bridge_LegalsPopup,
     "./islands/bridge/Toast.tsx": $bridge_Toast,

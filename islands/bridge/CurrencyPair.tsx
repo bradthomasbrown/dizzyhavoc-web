@@ -1,4 +1,7 @@
-import { CurrencyAmount } from "../../islands/bridge/CurrencyAmount.tsx";
+import { Signal } from "@preact/signals";
+import { CurrencyAmount } from "./CurrencyAmount.tsx";
+
+export const amounts = new Signal<Record<string,number>>({})
 
 export function CurrencyPair() {
   return (
