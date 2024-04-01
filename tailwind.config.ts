@@ -6,9 +6,6 @@ export default {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "dzhv-wallpaper-0": "url('/dzhv-wallpaper-0.jpg')",
-      },
       fontFamily: {
         "mono": ["Roboto Mono", "monospace"],
       },
