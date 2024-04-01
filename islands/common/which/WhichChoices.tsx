@@ -1,8 +1,22 @@
+import { Signal, computed } from "@preact/signals";
 import { Choice } from "./Choice.tsx";
 
 export function WhichChoices<T extends unknown>(
-  props: { choices: Choice<T>[]; onPick: (choice: Choice<T>) => unknown },
+  { filter, choices, onPick, compareFn }: {
+    filter: Signal<string>
+    choices: Choice<T>[]
+    onPick: (choice: Choice<T>) => unknown
+    compareFn?: Parameters<Choice<T>[]["sort"]>[0];
+  },
 ) {
+  const fsChoices = computed(() => {
+    console.log(filter.value.toLocaleLowerCase())
+    return [...choices].filter((choice) =>
+      JSON.stringify(choice.space ?? choice.value).toLowerCase().match(
+        filter.value.toLowerCase(),
+      )
+    ).sort(compareFn);
+  });
   return (
     <div
       class={`
@@ -14,8 +28,8 @@ export function WhichChoices<T extends unknown>(
         max-w-full
         overflow-auto`}
     >
-      {props.choices.map((choice) => (
-        <Choice onPick={() => props.onPick(choice)} {...choice} />
+      {fsChoices.value.map((choice) => (
+        <Choice onPick={() => onPick(choice)} {...choice} />
       ))}
     </div>
   );
