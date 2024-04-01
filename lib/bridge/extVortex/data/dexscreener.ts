@@ -3,7 +3,7 @@ import { VortexDatum } from "../../../state2/Vortex.ts";
 import { toad } from "../toad.ts";
 import { Lazy } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/lazy@0.0.0/mod.ts";
 import { Snail } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/snail@0.0.2/mod.ts";
-import { chosenChains } from '../../chosenChains.ts'
+import { chosenChains } from "../../chosenChains.ts";
 
 const pairSchema = z.object({
   chainId: z.string(),

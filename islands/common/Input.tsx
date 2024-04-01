@@ -19,9 +19,9 @@ export function Input(
           dark:border-[#eaeaea2a]
           font-mono
       `}
-      onClick={e => {
-        if (props.clearClick) e.currentTarget.value = ""
-        props.onClick?.(e)
+      onClick={(e) => {
+        if (props.clearClick) e.currentTarget.value = "";
+        props.onClick?.(e);
       }}
       onInput={props.onInput}
     />

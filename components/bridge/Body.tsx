@@ -18,8 +18,7 @@ export function Body() {
         justify-center
         items-center
         overflow-hidden
-        min-h-[25rem] max-h-[500px] h-[500px]`
-      }
+        min-h-[25rem] max-h-[500px] h-[500px]`}
     >
       <ArtContainer />
       <ActiveForm />

@@ -1,5 +1,5 @@
-import { lastRequestTimeMap, rateLimit } from "../../lib/vertinfo/rateLimit.ts"
-import * as errors from "../../lib/vertinfo/errors/mod.ts"
+import { lastRequestTimeMap, rateLimit } from "../../lib/vertinfo/rateLimit.ts";
+import * as errors from "../../lib/vertinfo/errors/mod.ts";
 import * as schemas from "../../lib/vertinfo/schemas/mod.ts";
 import * as methods from "../../lib/vertinfo/methods/mod.ts";
 import { Handlers } from "$fresh/server.ts";

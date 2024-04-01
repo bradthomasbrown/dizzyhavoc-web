@@ -7,7 +7,7 @@ import { IS_BROWSER } from "$fresh/runtime.ts";
 import { computed } from "@preact/signals";
 import { chainToPrice } from "../../lib/bridge/chainToPrice.ts";
 import { amounts } from "../../lib/bridge/amounts.ts";
-import { CurrencyAmountInput } from "../../components/bridge/CurrencyAmountInput.tsx"
+import { CurrencyAmountInput } from "../../components/bridge/CurrencyAmountInput.tsx";
 
 chosenChains.subscribe(() => extVortex.flow("priceCheck"));
 
@@ -16,10 +16,9 @@ export function CurrencyAmount(
     id: string;
     label?: string;
     order?: string;
-    disabled?: boolean
+    disabled?: boolean;
   },
 ) {
-
   const usdDisplayValue = computed<undefined | string>(() => {
     if (!IS_BROWSER) return undefined;
     const chain = chosenChains.value[id];
@@ -45,9 +44,16 @@ export function CurrencyAmount(
         <CurrencyAmountInput {...{ id, disabled }} />
         <FhChainPicker {...{ chosenChains, id, onClick }} />
       </div>
-      <div class={`font-mono text-sm font-thin brightness-75 ${usdDisplayValue.value ? '' : 'select-none'}`}>{usdDisplayValue.value ?? <>&nbsp;</>}</div>
-      <div class="text-right font-mono text-sm font-thin brightness-75">{chainAbrv(chainId)}</div>
+      <div
+        class={`font-mono text-sm font-thin brightness-75 ${
+          usdDisplayValue.value ? "" : "select-none"
+        }`}
+      >
+        {usdDisplayValue.value ?? <>&nbsp;</>}
+      </div>
+      <div class="text-right font-mono text-sm font-thin brightness-75">
+        {chainAbrv(chainId)}
+      </div>
     </div>
   );
-
 }

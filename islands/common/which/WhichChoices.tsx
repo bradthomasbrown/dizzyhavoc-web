@@ -1,16 +1,16 @@
-import { Signal, computed } from "@preact/signals";
+import { computed, Signal } from "@preact/signals";
 import { Choice } from "./Choice.tsx";
 
 export function WhichChoices<T extends unknown>(
   { filter, choices, onPick, compareFn }: {
-    filter: Signal<string>
-    choices: Choice<T>[]
-    onPick: (choice: Choice<T>) => unknown
+    filter: Signal<string>;
+    choices: Choice<T>[];
+    onPick: (choice: Choice<T>) => unknown;
     compareFn?: Parameters<Choice<T>[]["sort"]>[0];
   },
 ) {
   const fsChoices = computed(() => {
-    console.log(filter.value.toLocaleLowerCase())
+    console.log(filter.value.toLocaleLowerCase());
     return [...choices].filter((choice) =>
       JSON.stringify(choice.space ?? choice.value).toLowerCase().match(
         filter.value.toLowerCase(),
