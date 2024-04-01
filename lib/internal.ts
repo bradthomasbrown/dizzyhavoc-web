@@ -67,5 +67,5 @@ export * from "../islands/common/ListInput.tsx";
 export * from "../islands/common/Navbar.tsx";
 // ## bridge/
 export * from "../islands/bridge/LegalsPopup.tsx";
-export * from "../islands/bridge/Form.tsx";
+// export * from "../islands/bridge/Form.tsx";
 export * from "../islands/bridge/Toaster.tsx";
