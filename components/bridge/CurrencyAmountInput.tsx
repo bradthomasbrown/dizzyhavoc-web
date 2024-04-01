@@ -1,9 +1,17 @@
-import { Signal } from "@preact/signals";
+import { amounts } from '../../islands/bridge/CurrencyPair.tsx'
+import { JSX } from "preact/jsx-runtime";
 
-export function CurrencyAmountInput(props:{ signal:Signal<number> }) {
+export function CurrencyAmountInput(props:{ id:string }) {
+
+  function onInput(e:JSX.TargetedEvent<HTMLInputElement>) {
+    amounts.value = { ...amounts.value, [props.id]: Number(e.currentTarget.value) }
+  }
+
   return (
     <input
-      onInput={e => props.signal.value = Number(e.currentTarget.value)}
+      disabled={props.id == 'to' ? true : false}
+      value={amounts.value[props.id]}
+      onInput={onInput}
       autoComplete="off"
       type="number" // this handles most validation for us
       placeholder="0"
