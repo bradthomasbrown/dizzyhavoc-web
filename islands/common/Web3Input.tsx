@@ -1,67 +1,90 @@
+// import { IS_BROWSER } from "$fresh/runtime.ts";
+import { Signal, batch } from "@preact/signals";
 import { IS_BROWSER } from "$fresh/runtime.ts";
-import { Signal, useSignal } from "@preact/signals";
 import { JSX } from "preact/jsx-runtime";
+import { number } from "https://deno.land/x/zod@v3.22.4/types.ts";
+
+type Web3InputPropsBase = { decimals: bigint, maxVal: Error|bigint, disabled?: boolean }
+
+type Web3InputPropsWithAmount = Web3InputPropsBase & {
+  amount: Signal<undefined|bigint>
+  amounts?: never
+  id?: never
+}
+
+type Web3InputPropsWithAmounts = Web3InputPropsBase & {
+  amounts: Signal<Map<string,bigint>>
+  id: string
+  amount?: never
+}
+
+type Web3InputProps = Web3InputPropsWithAmount|Web3InputPropsWithAmounts
 
 export function Web3Input(
-  props: {
-    decimals: bigint;
-    maxVal: bigint | null | undefined;
-    val: Signal<undefined | bigint | null>;
-  } & JSX.HTMLAttributes<HTMLInputElement>,
+  { maxVal, decimals, amount, amounts, id, disabled }: Web3InputProps,
 ) {
-  const decimals = 18;
-  const numValue = useSignal("0");
-  const rangeValue = useSignal(0n);
 
-  function onTextInput(e: JSX.TargetedEvent<HTMLInputElement>) {
-    const { maxVal } = props;
-    if (maxVal === undefined || maxVal === null) return;
-    numValue.value = e.currentTarget.value;
-    let tmp = `${numValue}`;
-    if (tmp.match(/[^\d\.]|\..*\.|^\.?$/)) {
-      return props.val.value = rangeValue.value = 0n;
-    }
+  const amount_ = amount?.value ?? amounts?.value.get(id)
+
+  let initialNumberValue = ''
+  if (amount_ !== undefined) initialNumberValue = String(amount_  / 10n ** decimals)
+  if (amount_ !== undefined && amount_ % 10n ** decimals) initialNumberValue += `.${amount_ % 10n ** decimals}`.replace(/0*$/, '')
+  const numberValue = new Signal(initialNumberValue)
+  
+  let initialRangeValue = '0'
+  if (amount_ !== undefined && !(maxVal instanceof Error)) initialRangeValue = String(amount_ * 100n / maxVal)
+  const rangeValue = new Signal(initialRangeValue)
+
+  function onNumberInput(e: JSX.TargetedEvent<HTMLInputElement>) {
+    let tmp = String(Number(e.currentTarget.value))
+    if (!tmp.match(/^\d*\.?\d*$/)) return
     const index = tmp.match(/\./)?.index ?? tmp.length - 1;
     const fracs = tmp.length - 1 - index;
-    const zeros = Array(Math.max(decimals - fracs, 0)).fill("0").join("");
-    if (fracs > decimals) tmp = tmp.slice(0, decimals - fracs);
+    const zeros = Array(Math.max(Number(decimals) - fracs, 0)).fill("0").join("");
+    if (fracs > decimals) tmp = tmp.slice(0, Number(decimals) - fracs);
     tmp = tmp.replace(/\./, "");
-    props.val.value = BigInt(`${tmp}${zeros}`);
-    rangeValue.value = props.val.value * 100n / maxVal;
+    const value = BigInt(`${tmp}${zeros}`)
+    batch(() => {
+      if (amount) amount.value = value
+      if (amounts) amounts.value = new Map([...amounts.value, [id, value]])
+      if (!(maxVal instanceof Error)) rangeValue.value = String(value * 100n / maxVal)
+    })
   }
 
   function onRangeInput(e: JSX.TargetedEvent<HTMLInputElement>) {
-    const { maxVal } = props;
-    if (maxVal === undefined || maxVal === null) return;
-    rangeValue.value = BigInt(e.currentTarget.value);
-    props.val.value = BigInt(rangeValue.value) * maxVal / 100n;
-    let tmp = `${props.val.value}`.padStart(decimals, "0");
-    if (tmp.length == decimals) tmp = `0.${tmp}`;
-    else {tmp = `${tmp.slice(0, tmp.length - decimals)}.${
-        tmp.slice(tmp.length - decimals)
-      }`;}
-    tmp = tmp.replace(/\.?0*$/, "");
-    numValue.value = tmp;
+    if (maxVal instanceof Error) return
+    let tmp = String(amount_ ?? 0n).padStart(Number(decimals), '0')
+    if (tmp.length == Number(decimals)) tmp = `0.${tmp}` 
+    else tmp = `${tmp.slice(0, tmp.length - Number(decimals))}.${tmp.slice(tmp.length - Number(decimals))}`
+    tmp = tmp.replace(/\.?0*$/, '')
+    console.log(tmp)
+    const value = BigInt(e.currentTarget.value) * maxVal / 100n
+    batch(() => {
+      if (amount) amount.value = value
+      if (amounts) amounts.value = new Map([...amounts.value, [id, value]])
+      numberValue.value =  tmp
+    })
   }
 
+  const RangeInput = disabled ? <></> : (
+    <input
+      type="range"
+      class="dark:accent-[#EAEAEA] accent-[#2c2c2c]"
+      value={rangeValue.value}
+      onInput={onRangeInput}
+    />
+  )
   return (
-    <div class="flex flex-col">
-      <input
-        type="text"
-        {...props}
-        disabled={!IS_BROWSER || props.disabled}
-        class="h-[9mm] py-2 px-3 text-xl bg-blur4 rounded-lg border-solid border-b-2 border-[#8d8d8d] dark:caret-[#EAEAEA] caret-[#2c2c2c] text-[#2c2c2c] dark:text-[#EAEAEA] font-[monospace]"
-        value={numValue}
-        onInput={onTextInput}
-      />
-      <input
-        type="range"
-        {...props}
-        disabled={!IS_BROWSER || props.disabled}
-        class="h-[9mm] text-xl dark:accent-[#EAEAEA] accent-[#222222]"
-        value={rangeValue.value.toString()}
-        onInput={onRangeInput}
-      />
+    <div class="flex flex-col mr-4">
+       <input
+         type="number"
+         class="max-w-[200px] px-2 text-[32px] font-[monospace] bg-transparent [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+         {...{ disabled }}
+         value={numberValue}
+         onInput={onNumberInput}
+         placeholder="0"
+       />
+      {RangeInput}
     </div>
   );
 }
