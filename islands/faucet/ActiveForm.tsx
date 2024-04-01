@@ -39,7 +39,8 @@ export function UI() {
    (
            <>
           {/* chain icon */}
-          <div class="absolute top-2 left-2">
+      {evmVortex.uState.chain.value?
+       <div class="absolute top-2 left-2">
           <picture class="w-7 h-7" title={Number(evmVortex.uState.chain.value)}>
               <source
                 srcset={dsrc ?? src ?? Blockie.randB64()}
@@ -52,6 +53,9 @@ export function UI() {
               />
             </picture>
           </div>
+          :
+          <></>
+          }
 
           {/* blockie */}
           <img
