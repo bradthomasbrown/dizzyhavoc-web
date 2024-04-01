@@ -52,6 +52,7 @@ export function Connector(props: { addClass?: string }) {
       addClass={`text-[#3d3d3d] dark:text-[#d7d7d7] ${props.addClass}`}
       onClick={onConnect}
       onTouchStart={onConnect}
+      onPointerDown={onConnect}
     >
       {status}
     </Button>
