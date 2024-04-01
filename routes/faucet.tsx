@@ -1,4 +1,4 @@
-import { Form } from "../components/faucet/Form.tsx";
+import { Body } from "../components/faucet/Body.tsx";
 
 export default function Faucet() {
   return (
@@ -10,7 +10,7 @@ export default function Faucet() {
             testnet faucet
           </div>
 
-          <Form />
+          <Body />
         </div>
       </div>
     </>

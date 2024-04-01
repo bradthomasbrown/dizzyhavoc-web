@@ -1,6 +1,6 @@
-import { UI } from "../../islands/faucet/UI.tsx";
+import { UI } from "../../islands/faucet/ActiveForm.tsx";
 
-export function Form() {
+export function Body() {
   return (
     <>
       {/* app form */}
