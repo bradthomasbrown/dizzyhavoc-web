@@ -1,4 +1,4 @@
-import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.0/mod.ts";
+import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.1/mod.ts";
 import { batch, computed, Signal } from "@preact/signals";
 import { Button } from "../../components/common/Button.tsx";
 import { evmVortex } from "../../lib/faucet/evmVortex/evmVortex.ts";
@@ -48,12 +48,12 @@ function onConnect() {
 export function Connector(props: { addClass?: string }) {
   return (
     <Button
-      disabled={disabled.value}
+      disabled={false}
       wiggle={true}
       addClass={`text-[#3d3d3d] dark:text-[#d7d7d7] ${props.addClass}`}
-      onClick={() => { alert('onConnect!'); onConnect() }}
+      onClick={onConnect}
     >
-      {status}
+      {status.value}
     </Button>
   );
 }

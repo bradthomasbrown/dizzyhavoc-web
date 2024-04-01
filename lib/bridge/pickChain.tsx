@@ -1,6 +1,6 @@
 import { which } from "./which.ts";
 import { chosenChains } from "./chosenChains.ts";
-import { Gate } from "https://deno.land/x/gate@0.0.0/mod.ts";
+import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.1/mod.ts";
 import { chainSrc } from "../chainSrc.ts";
 import { activeChains, Chain } from "../internal.ts";
 import { Which } from "../../islands/common/which/Which.tsx";

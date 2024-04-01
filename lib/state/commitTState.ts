@@ -1,4 +1,4 @@
-import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.0/mod.ts";
+import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.1/mod.ts";
 import { batch, Signal } from "@preact/signals-core";
 import { DAppState, state, TState } from "../internal.ts";
 

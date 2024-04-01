@@ -1,4 +1,4 @@
-import { Gate } from "https://deno.land/x/gate@0.0.0/mod.ts";
+import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.1/mod.ts";
 import { batch } from "@preact/signals";
 import { TStateOperator, VortexFlow } from "../../../state2/Vortex.ts";
 import { extVortex } from "../extVortex.ts";

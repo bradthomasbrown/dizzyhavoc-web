@@ -1,5 +1,5 @@
-import { Toad } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/toad@0.0.3/mod.ts";
-import { Ejra } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/ejra@0.0.1-toad/lib/Ejra.ts";
+import { Toad } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/toad@0.0.7/mod.ts";
+import { Ejra } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/ejra@0.0.2-toad/lib/Ejra.ts";
 
 const toad = new Toad(250);
 
