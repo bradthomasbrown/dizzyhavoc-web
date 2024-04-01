@@ -1,6 +1,9 @@
-export function CurrencyAmountInput() {
+import { Signal } from "@preact/signals";
+
+export function CurrencyAmountInput(props:{ signal:Signal<number> }) {
   return (
     <input
+      onInput={e => props.signal.value = Number(e.currentTarget.value)}
       autoComplete="off"
       type="number" // this handles most validation for us
       placeholder="0"
