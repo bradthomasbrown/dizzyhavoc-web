@@ -24,17 +24,17 @@ export const p1193: VortexDatum = {
     if (this.operator.get()) return;
     const g1193 = providers.getG1193();
     const pFinder = new ProviderFinder();
-    console.log(pFinder.providers.size)
+    alert(pFinder.providers.size)
     pFinder.check5749();
-    console.log(pFinder.providers.size)
+    alert(pFinder.providers.size)
     pFinder.checkTw5749();
-    console.log(pFinder.providers.size)
+    alert(pFinder.providers.size)
     pFinder.checkTw();
-    console.log(pFinder.providers.size)
+    alert(pFinder.providers.size)
     pFinder.check6963();
-    console.log(pFinder.providers.size)
+    alert(pFinder.providers.size)
     await pFinder.checkMmsdk();
-    console.log(pFinder.providers.size)
+    alert(pFinder.providers.size)
     for(const p6963 of pFinder.providers.values()) {
       alert(`${p6963.info.name}:${p6963.info.uuid}${p6963.info.icon}`)
     }
