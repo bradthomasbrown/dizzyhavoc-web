@@ -11,7 +11,7 @@ import { Balance } from "../../islands/common/Balance.tsx";
 import { Blockie } from "../../lib/blockies/Blockie.ts";
 import { ejra } from "../../lib/faucet/ejra.ts";
 import { evmVortex } from "../../lib/faucet/evmVortex/evmVortex.ts";
-import { status } from "../../islands/common/Connector.tsx"
+import { status } from "../../islands/common/Connector.tsx";
 import { getIcon } from "../../lib/chains/icons.ts";
 import { chain } from "../../lib/schemas/chain.ts";
 

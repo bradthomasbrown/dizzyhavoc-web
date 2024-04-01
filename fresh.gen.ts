@@ -33,7 +33,6 @@ import * as $common_which_WhichSearch from "./islands/common/which/WhichSearch.t
 import * as $common_which_WhichTitle from "./islands/common/which/WhichTitle.tsx";
 import * as $faucet_ActionButton from "./islands/faucet/ActionButton.tsx";
 import * as $faucet_ActiveForm from "./islands/faucet/ActiveForm.tsx";
-import * as $faucet_UI from "./islands/faucet/UI.tsx";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -71,7 +70,6 @@ const manifest = {
     "./islands/common/which/WhichTitle.tsx": $common_which_WhichTitle,
     "./islands/faucet/ActionButton.tsx": $faucet_ActionButton,
     "./islands/faucet/ActiveForm.tsx": $faucet_ActiveForm,
-    "./islands/faucet/UI.tsx": $faucet_UI,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

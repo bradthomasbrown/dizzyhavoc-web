@@ -10,12 +10,12 @@ export function BridgeForm() {
       <ActionButton />
       <Flipper />
       <a
-          class="absolute bottom-0 left-0 ml-1 text-md font-[Poppins] hover:scale-[102%]"
-          target="_blank"
-          href="/faucet"
-        >
-          💧testnet faucet
-        </a>
+        class="absolute bottom-0 left-0 ml-1 text-md font-[Poppins] hover:scale-[102%]"
+        target="_blank"
+        href="/faucet"
+      >
+        💧testnet faucet
+      </a>
     </div>
     // <div class="w-full sm:px-16 px-8 text-[#282828] dark:text-[#d2d2d2]">
     //   <div class="bg-blur2 shadow-xl w-auto flex flex-col font-[Poppins]">
