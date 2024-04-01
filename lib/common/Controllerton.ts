@@ -4,13 +4,13 @@ export class Controllerton {
     this.value = new AbortController();
   }
   reset() {
-    this.abort()
+    this.abort();
     const controller = new AbortController();
     this.value = controller;
     return controller;
   }
   abort() {
-    if (!this.signal.aborted) this.value.abort()
+    if (!this.signal.aborted) this.value.abort();
   }
   get signal() {
     return this.value.signal;

@@ -1,8 +1,8 @@
 import { chosenChains } from "../../lib/bridge/chosenChains.ts";
 
 function flip() {
-  const { from, to } = chosenChains.value
-  chosenChains.value = { from: to, to: from }
+  const { from, to } = chosenChains.value;
+  chosenChains.value = { from: to, to: from };
 }
 
 export function Flipper() {

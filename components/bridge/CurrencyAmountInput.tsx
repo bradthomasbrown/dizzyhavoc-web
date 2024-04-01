@@ -1,15 +1,17 @@
-import { amounts } from '../../islands/bridge/CurrencyPair.tsx'
+import { amounts } from "../../islands/bridge/CurrencyPair.tsx";
 import { JSX } from "preact/jsx-runtime";
 
-export function CurrencyAmountInput(props:{ id:string }) {
-
-  function onInput(e:JSX.TargetedEvent<HTMLInputElement>) {
-    amounts.value = { ...amounts.value, [props.id]: Number(e.currentTarget.value) }
+export function CurrencyAmountInput(props: { id: string }) {
+  function onInput(e: JSX.TargetedEvent<HTMLInputElement>) {
+    amounts.value = {
+      ...amounts.value,
+      [props.id]: Number(e.currentTarget.value),
+    };
   }
 
   return (
     <input
-      disabled={props.id == 'to' ? true : false}
+      disabled={props.id == "to" ? true : false}
       value={amounts.value[props.id]}
       onInput={onInput}
       autoComplete="off"

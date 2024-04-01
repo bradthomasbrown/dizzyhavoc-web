@@ -15,6 +15,5 @@ export function ActionButton() {
         Bridge
       </Button>
     );
-  }
-  else return <Connector addClass="order-3"/>;
+  } else return <Connector addClass="order-3" />;
 }

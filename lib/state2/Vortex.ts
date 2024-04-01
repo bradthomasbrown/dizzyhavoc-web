@@ -48,7 +48,9 @@ export class TStateOperator {
   }
 
   set(value: unknown) {
-    if (this.controller.signal.aborted) return new Error("TStateSet: signal aborted");
+    if (this.controller.signal.aborted) {
+      return new Error("TStateSet: signal aborted");
+    }
     this.tState[this.key] = value;
     const s = new Set(this.updaters.value);
     s.delete(this.updater);
@@ -56,9 +58,9 @@ export class TStateOperator {
   }
 
   noop() {
-    const s = new Set(this.updaters.value)
-    s.delete(this.updater)
-    this.updaters.value = s
+    const s = new Set(this.updaters.value);
+    s.delete(this.updater);
+    this.updaters.value = s;
   }
 
   knows(dependencies: string[]): boolean {

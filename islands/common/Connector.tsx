@@ -3,7 +3,7 @@ import { batch, computed, Signal } from "@preact/signals";
 import { Button } from "../../components/common/Button.tsx";
 import { evmVortex } from "../../lib/faucet/evmVortex/evmVortex.ts";
 import { P1193, P6963 } from "../../lib/state2/providers.ts";
-import { Which } from './which/Which.tsx'
+import { Which } from "./which/Which.tsx";
 
 export const status = computed(() => {
   const uAddresses = evmVortex.uState.addresses.value;
@@ -37,13 +37,15 @@ export function onChoice(p6963: P6963) {
   });
 }
 
-export const which = new Signal<undefined|ReturnType<typeof Which>>(undefined)
+export const which = new Signal<undefined | ReturnType<typeof Which>>(
+  undefined,
+);
 
 function onConnect() {
   evmVortex.flow("init");
 }
 
-export function Connector(props:{ addClass?:string }) {
+export function Connector(props: { addClass?: string }) {
   return (
     <Button
       disabled={disabled.value}

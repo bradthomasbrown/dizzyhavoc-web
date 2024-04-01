@@ -8,7 +8,7 @@ import { chosenChains } from "../../../../islands/bridge/UI.tsx";
 const pairSchema = z.object({
   chainId: z.string(),
   priceUsd: z.string().transform(Number),
-  liquidity: z.object({ usd: z.number() }).passthrough()
+  liquidity: z.object({ usd: z.number() }).passthrough(),
 }).passthrough();
 export const responseSchema = z.object({ pairs: pairSchema.array() });
 
@@ -16,23 +16,23 @@ export const dexscreener: VortexDatum = {
   invalidatedBy: ["priceCheck"],
   dependsOn: [],
   async updater() {
-
     if (this.operator.get()) return;
     if (!this.operator.knows(this.dependencies)) return;
 
     // if no chains are chosen, NOOP and don't call dexscreener
-    if (!chosenChains.value.from && !chosenChains.value.to)
+    if (!chosenChains.value.from && !chosenChains.value.to) {
       this.operator.noop();
+    }
 
-    const { signal } = this.operator.controller
+    const { signal } = this.operator.controller;
     const lazy: Lazy<Error | z.infer<typeof responseSchema>> = async () =>
       await fetch(
         "https://api.dexscreener.com/latest/dex/tokens/0x3419875B4D3Bca7F3FddA2dB7a476A79fD31B4fE",
-        { signal }
+        { signal },
       )
-        .then(response => response.json())
+        .then((response) => response.json())
         .then(responseSchema.parseAsync)
-        .catch(reason => new Error(reason))
+        .catch((reason) => new Error(reason));
     const snail = new Snail({ lazy, signal });
     snail.died.catch((reason) => new Error(reason));
     const response = await toad.feed(snail).catch((reason) =>
@@ -45,7 +45,6 @@ export const dexscreener: VortexDatum = {
     }
 
     this.operator.set(response);
-    
   },
   schema: responseSchema,
 } as const;

@@ -4,7 +4,7 @@ import * as providers from "../../../state2/providers.ts";
 import { evmVortex } from "../evmVortex.ts";
 import { Which } from "../../../../islands/common/which/Which.tsx";
 import { VortexDatum } from "../../../state2/Vortex.ts";
-import { which } from '../../../../islands/common/Connector.tsx'
+import { which } from "../../../../islands/common/Connector.tsx";
 
 export const p1193: VortexDatum = {
   invalidatedBy: ["init"],
@@ -132,7 +132,7 @@ class ProviderFinder {
           value: p6963,
           space: p6963.info.name,
         }))}
-        onPick={choice => gate.resolve(choice.value)}
+        onPick={(choice) => gate.resolve(choice.value)}
       />
     );
   }

@@ -9,9 +9,9 @@ export const priceCheck: VortexFlow = async function () {
   const controller = this.controller.reset();
 
   if (!chosenChains.value.from && !chosenChains.value.to) {
-    controller.abort()
-    this.updaters.value.clear()
-    return
+    controller.abort();
+    this.updaters.value.clear();
+    return;
   }
 
   // invalidate values in tState as specified by this flow
@@ -47,9 +47,9 @@ export const priceCheck: VortexFlow = async function () {
   await gate.promise;
 
   if (
-    !controller.signal.aborted
-    && (chosenChains.value.from || chosenChains.value.to)
-  )
-    setTimeout(() => extVortex.flow('priceCheck'), 0)
-
+    !controller.signal.aborted &&
+    (chosenChains.value.from || chosenChains.value.to)
+  ) {
+    setTimeout(() => extVortex.flow("priceCheck"), 0);
+  }
 };
