@@ -51,7 +51,7 @@ export function Connector(props: { addClass?: string }) {
       disabled={disabled.value}
       wiggle={true}
       addClass={`text-[#3d3d3d] dark:text-[#d7d7d7] ${props.addClass}`}
-      onPointerDown={onConnect}
+      onClick={() => { alert('onConnect!'); onConnect() }}
     >
       {status}
     </Button>
