@@ -24,20 +24,11 @@ export const p1193: VortexDatum = {
     if (this.operator.get()) return;
     const g1193 = providers.getG1193();
     const pFinder = new ProviderFinder();
-    alert(pFinder.providers.size)
     pFinder.check5749();
-    alert(pFinder.providers.size)
     pFinder.checkTw5749();
-    alert(pFinder.providers.size)
     pFinder.checkTw();
-    alert(pFinder.providers.size)
     pFinder.check6963();
-    alert(pFinder.providers.size)
     await pFinder.checkMmsdk();
-    alert(pFinder.providers.size)
-    for(const p6963 of pFinder.providers.values()) {
-      alert(`${p6963.info.name}:${p6963.info.uuid}${p6963.info.icon}`)
-    }
     let provider: undefined | providers.P1193;
     if (pFinder.count > 1) {
       const gate = new Gate<providers.P6963>();
@@ -104,7 +95,7 @@ class ProviderFinder {
     globalThis.dispatchEvent(new Event("eip6963:requestProvider"));
   }
   async checkMmsdk() {
-    if (navigator.maxTouchPoints > 0) {
+    if (navigator.maxTouchPoints > 0 && ![...this.providers.values()].find(p6963 => p6963.info.name == 'MetaMask')) {
       const { MetaMaskSDK } = (await import(
         "https://unpkg.com/@metamask/sdk@0.18.1/dist/browser/umd/metamask-sdk.js"
       )).default as providers.MmsdkDefault;
