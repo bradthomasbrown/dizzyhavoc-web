@@ -1,3 +1,5 @@
+/// <reference lib="deno.unstable" />
+
 const ISLOCAL = Deno.env.get("ISLOCAL");
 let VERTPUBINFOKVPATH: undefined | string;
 if (ISLOCAL) {
