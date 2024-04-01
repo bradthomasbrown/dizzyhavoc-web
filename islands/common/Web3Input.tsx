@@ -13,7 +13,7 @@ type Web3InputPropsWithAmount = Web3InputPropsBase & {
 }
 
 type Web3InputPropsWithAmounts = Web3InputPropsBase & {
-  amounts: Signal<Map<string,bigint>>
+  amounts: Map<string,Signal<undefined|bigint>>
   id: string
   amount?: never
 }
@@ -24,7 +24,7 @@ export function Web3Input(
   { maxVal, decimals, amount, amounts, id, disabled }: Web3InputProps,
 ) {
 
-  const amount_ = amount?.value ?? amounts?.value.get(id)
+  const amount_ = amount?.value ?? amounts?.get(id)?.value
 
   let initialNumberValue = ''
   if (amount_ !== undefined) initialNumberValue = String(amount_  / 10n ** decimals)
@@ -46,7 +46,7 @@ export function Web3Input(
     const value = BigInt(`${tmp}${zeros}`)
     batch(() => {
       if (amount) amount.value = value
-      if (amounts) amounts.value = new Map([...amounts.value, [id, value]])
+      if (amounts) amounts.get(id)!.value = value
       if (!(maxVal instanceof Error)) rangeValue.value = String(value * 100n / maxVal)
     })
   }
@@ -57,11 +57,10 @@ export function Web3Input(
     if (tmp.length == Number(decimals)) tmp = `0.${tmp}` 
     else tmp = `${tmp.slice(0, tmp.length - Number(decimals))}.${tmp.slice(tmp.length - Number(decimals))}`
     tmp = tmp.replace(/\.?0*$/, '')
-    console.log(tmp)
     const value = BigInt(e.currentTarget.value) * maxVal / 100n
     batch(() => {
       if (amount) amount.value = value
-      if (amounts) amounts.value = new Map([...amounts.value, [id, value]])
+      if (amounts) amounts.get(id)!.value = value
       numberValue.value =  tmp
     })
   }
