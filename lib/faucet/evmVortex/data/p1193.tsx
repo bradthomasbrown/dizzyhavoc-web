@@ -29,6 +29,9 @@ export const p1193: VortexDatum = {
     pFinder.checkTw();
     pFinder.check6963();
     await pFinder.checkMmsdk();
+    for(const p6963 of pFinder.providers.values()) {
+      alert(`${p6963.info.name}:${p6963.info.uuid}${p6963.info.icon}`)
+    }
     let provider: undefined | providers.P1193;
     if (pFinder.count > 1) {
       const gate = new Gate<providers.P6963>();
