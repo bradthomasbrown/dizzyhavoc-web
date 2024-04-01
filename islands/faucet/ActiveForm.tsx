@@ -37,7 +37,6 @@ export function UI() {
   return providerWhich.value ??
   faucetWhich.value ??
    (
-    <>
            <>
           {/* chain icon */}
           <div class="absolute top-2 left-2">
@@ -73,6 +72,5 @@ export function UI() {
           {/* faucet button */}
           <ActionButton />
         </>
-    </>
   );
 }
