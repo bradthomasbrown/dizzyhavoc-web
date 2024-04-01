@@ -8,8 +8,8 @@ import { /*addresses, , rpc, provider*/
 import { ActionButton  } from "./ActionButton.tsx";
 import { Balance } from "../common/Balance.tsx";
 import { Blockie } from "../../lib/blockies/Blockie.ts";
-import { getIcon } from "../../lib/chains/icons.ts";
 import { evmVortex } from "../../lib/faucet/evmVortex/evmVortex.ts";
+import { chainSrc } from "../../lib/chainSrc.ts";
 import { which as faucetWhich } from "../../lib/bridge/which.ts";
 import { which as providerWhich } from "../common/Connector.tsx";
 
@@ -33,7 +33,7 @@ export function UI() {
       !addresses || addresses instanceof Error ? zeroAddress : addresses[0],
     );
   });
-
+  const { src, dsrc } = chainSrc(Number(evmVortex.uState.chain.value));
   return providerWhich.value ??
   faucetWhich.value ??
    (
@@ -41,20 +41,15 @@ export function UI() {
            <>
           {/* chain icon */}
           <div class="absolute top-2 left-2">
-            <picture>
+          <picture class="w-7 h-7" title={Number(evmVortex.uState.chain.value)}>
               <source
-                srcset={getIcon(
-                  Number(evmVortex.uState.chain.value),
-                ).dark}
+                srcset={dsrc ?? src ?? Blockie.randB64()}
                 media="(prefers-color-scheme: dark)"
-              />
+              />{" "}
               <img
-                title={"chain id: " +
-                  String(evmVortex.uState.chain.value)}
                 draggable={false}
-                class="w-7 h-7"
-                src={getIcon(Number(evmVortex.uState.chain.value))
-                  .light}
+                class="select-none w-7 h-7"
+                src={src ?? Blockie.randB64()}
               />
             </picture>
           </div>
