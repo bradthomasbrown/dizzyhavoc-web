@@ -2,7 +2,6 @@ import { computed, Signal } from "@preact/signals";
 import { WhichTitle } from "./WhichTitle.tsx";
 import { WhichSearch } from "./WhichSearch.tsx";
 import { WhichChoices } from "./WhichChoices.tsx";
-const filter = new Signal<string>("");
 /**
  * <Which/> is an island representing a "pick one from many" screen\
  * @param props.title the title of <Which/>
@@ -12,24 +11,19 @@ const filter = new Signal<string>("");
  * other than their name
  */
 export function Which<T extends unknown>(
-  props: {
+  { title, choices, onPick, compareFn }: {
     title: string;
     choices: Choice<T>[];
     onPick: (choice: Choice<T>) => unknown;
     compareFn?: Parameters<Choice<T>[]["sort"]>[0];
   },
 ) {
-  const fsChoices = computed(() => {
-    return [...props.choices].filter((choice) =>
-      JSON.stringify(choice.space ?? choice.value).toLowerCase().match(
-        filter.value.toLowerCase(),
-      )
-    ).sort(props.compareFn);
-  });
+  const filter = new Signal<string>("");
   return (
     <div class="w-full h-full max-h-full flex flex-col grow">
-      <WhichTitle {...props} /> <WhichSearch {...{ filter }} />{" "}
-      <WhichChoices choices={fsChoices.value} onPick={props.onPick} />
+      <WhichTitle {...{ title }} />
+      <WhichSearch {...{ filter }} />
+      <WhichChoices {...{ choices, filter, onPick, compareFn }} />
     </div>
   );
 }
