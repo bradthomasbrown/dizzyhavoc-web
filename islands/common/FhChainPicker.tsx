@@ -1,12 +1,10 @@
 // inspiration from fabianhortiguela's chain selector button
 
 import { Signal } from "@preact/signals";
-import { getIcon } from "../../lib/chains/icons.ts";
 import { Chain } from "../../lib/internal.ts";
 import { JSX } from "preact/jsx-runtime";
 import { chainSrc } from "../../lib/chainSrc.ts";
 import { Blockie } from "../../lib/blockies/Blockie.ts";
-import { Block } from "https://deno.land/x/ts_morph@21.0.1/ts_morph.js";
 
 export function FhChainPicker(
   props:
@@ -35,7 +33,7 @@ export function FhChainPicker(
               />{" "}
               <img
                 draggable={false}
-                class="w-full h-full"
+                class="select-none w-full h-full"
                 src={src ?? Blockie.randB64()}
               />
             </picture>

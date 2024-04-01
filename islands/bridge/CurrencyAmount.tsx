@@ -39,13 +39,13 @@ export function CurrencyAmount(
 
   return (
     <div class={`grid grid-rows-[auto,1fr] grid-cols-2 ${order}`}>
-      <div class="brightness-90">{label}</div>
-      <div class="text-right brightness-90">{id}</div>
+      <div class="select-none brightness-90">{label}</div>
+      <div class="select-none text-right brightness-90">{id}</div>
       <div class="flex col-span-2">
         <CurrencyAmountInput {...{ id, disabled }} />
         <FhChainPicker {...{ chosenChains, id, onClick }} />
       </div>
-      <div class="font-mono text-sm font-thin brightness-75">{usdDisplayValue.value ?? <>&nbsp;</>}</div>
+      <div class={`font-mono text-sm font-thin brightness-75 ${usdDisplayValue.value ? '' : 'select-none'}`}>{usdDisplayValue.value ?? <>&nbsp;</>}</div>
       <div class="text-right font-mono text-sm font-thin brightness-75">{chainAbrv(chainId)}</div>
     </div>
   );

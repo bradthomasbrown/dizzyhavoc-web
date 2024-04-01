@@ -24,7 +24,7 @@ export function ConnectionInfo() {
   return (
     <div class="absolute top-3 left-3 flex flex-row">
       <img
-        class="size-[1.4rem] rounded-sm mr-1"
+        class="select-none size-[1.4rem] rounded-sm mr-1"
         src={blockieData}
         title={seed}
         alt="blockie image"

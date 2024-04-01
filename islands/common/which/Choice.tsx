@@ -21,7 +21,7 @@ export function Choice(
           <source srcset={dsrc} media="(prefers-color-scheme: dark)" />
           <img
             draggable={false}
-            class="w-12 h-12"
+            class="w-12 h-12 select-none"
             src={props.src ?? Blockie.randB64()}
           />
         </picture>

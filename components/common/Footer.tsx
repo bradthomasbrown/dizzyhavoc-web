@@ -9,7 +9,7 @@ export function Footer() {
           <a target="_blank" href="https://t.me/dizzyhavoc_portal">
             <img
               src="/socials/telegram.png"
-              class="sm:size-8 size-6 hover:scale-[110%] dark:invert invert-0"
+              class="select-none sm:size-8 size-6 hover:scale-[110%] dark:invert invert-0"
               title="telegram"
               alt="telegram"
             />
@@ -21,7 +21,7 @@ export function Footer() {
           >
             <img
               src="/socials/discord.png"
-              class="sm:w-8 sm:h-6 w-6 h-4 hover:scale-[110%] dark:invert invert-0"
+              class="select-none sm:w-8 sm:h-6 w-6 h-4 hover:scale-[110%] dark:invert invert-0"
               title="discord"
               alt="discord"
             />
@@ -33,7 +33,7 @@ export function Footer() {
           >
             <img
               src="/socials/x.png"
-              class="sm:size-7 size-5 hover:scale-[110%] dark:invert invert-0"
+              class="select-none sm:size-7 size-5 hover:scale-[110%] dark:invert invert-0"
               title="x"
               alt="x"
             />
@@ -44,7 +44,7 @@ export function Footer() {
           >
             <img
               src="/socials/git.png"
-              class="sm:size-8 size-6 hover:scale-[110%] dark:invert invert-0"
+              class="select-none sm:size-8 size-6 hover:scale-[110%] dark:invert invert-0"
               title="github"
               alt="github"
             />
@@ -56,7 +56,7 @@ export function Footer() {
           >
             <img
               src="/socials/GitBook.png"
-              class="sm:size-8 size-6 hover:scale-[110%] dark:invert invert-0"
+              class="select-none sm:size-8 size-6 hover:scale-[110%] dark:invert invert-0"
               title="gitbook"
               alt="whitepaper"
             />
@@ -68,7 +68,7 @@ export function Footer() {
           >
             <img
               src="/socials/cg.png"
-              class="sm:size-8 size-6 hover:scale-[110%] dark:invert invert-0"
+              class="select-none sm:size-8 size-6 hover:scale-[110%] dark:invert invert-0"
               title="coingecko"
               alt="coingecko"
             />

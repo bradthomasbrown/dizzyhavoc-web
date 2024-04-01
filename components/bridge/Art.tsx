@@ -1,6 +1,7 @@
 export function Art() {
   return (
     <image
+      draggable={false}
       class={`
           static
           unselectable

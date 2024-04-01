@@ -2,6 +2,7 @@ export function WhichTitle(props: { title: string }) {
   return (
     <div
       class={`
+      select-none
       text-center
       pt-4
     `}
