@@ -1,40 +1,40 @@
 // inspiration from fabianhortiguela's chain selector button
 
 import { Signal } from "@preact/signals";
-import { Chain } from "../../lib/internal.ts";
+import { chosenChains } from "../../lib/bridge/chosenChains.ts";
 import { JSX } from "preact/jsx-runtime";
 import { chainSrc } from "../../lib/chainSrc.ts";
 import { Blockie } from "../../lib/blockies/Blockie.ts";
+import { pickChain } from '../../lib/bridge/pickChain.tsx'
+import { extVortex } from "../../lib/bridge/extVortex/extVortex.ts";
 
 export function FhChainPicker(
   props:
-    & Omit<JSX.DOMAttributes<HTMLDivElement>, "onClick">
+    & JSX.DOMAttributes<HTMLDivElement>
     & {
-      chosenChains: Signal<Record<string, Chain>>;
-      id: string;
-      onClick: (id: string) => unknown;
+      id: "from"|"to";
       addClass?: string;
     },
 ) {
-  const { chosenChains, id, onClick } = props;
-  const { src, dsrc } = chainSrc(chosenChains.value[id]?.chainId);
+  const { id } = props;
+  const chain = chosenChains.get(id)!.value
   return (
     <div class={`flex flex-row items-center ${props.addClass}`}>
       <div
-        onClick={() => onClick(id)}
+        onClick={() => { extVortex.flow('chainsCheck'); pickChain(id) }}
         class="hover:scale-[102%] active:scale-[98%] sm:w-16 sm:h-16 w-8 h-8 border-2 flex justify-center items-center rounded-full border-[#282828] dark:border-[#d2d2d2] sm:p-3 p-1 cursor-pointer "
       >
-        {chosenChains.value[id]
+        {chain
           ? (
-            <picture title={chosenChains.value[id].name}>
+            <picture title={chain.name}>
               <source
-                srcset={dsrc ?? src ?? Blockie.randB64()}
+                srcset={chainSrc(chain.chainId).dsrc ?? chainSrc(chain.chainId).src ?? Blockie.randB64()}
                 media="(prefers-color-scheme: dark)"
               />{" "}
               <img
                 draggable={false}
                 class="select-none w-full h-full"
-                src={src ?? Blockie.randB64()}
+                src={chainSrc(chain.chainId).src ?? Blockie.randB64()}
               />
             </picture>
           )

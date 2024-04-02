@@ -4,35 +4,29 @@ import { toad } from "../toad.ts";
 import { Lazy } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/lazy@0.0.0/mod.ts";
 import { Snail } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/snail@0.0.3/mod.ts";
 import { chosenChains } from "../../chosenChains.ts";
+import * as vertigo from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/vertigo@0.0.14/mod.ts'
+import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.0/mod.ts'
+import * as chainlist from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.1/mod.ts'
 
-const pairSchema = z.object({
-  chainId: z.string(),
-  priceUsd: z.string().transform(Number),
-  liquidity: z.object({ usd: z.number() }).passthrough(),
-}).passthrough();
-export const responseSchema = z.object({ pairs: pairSchema.array() });
+const schema = z.map(chainlist.schemas.chain, vertigo.schemas.econConf)
 
-export const dexscreener: VortexDatum = {
+export const econConf = {
   invalidatedBy: ["priceCheck"],
   dependsOn: [],
   async updater() {
     if (this.operator.get()) return;
     if (!this.operator.knows(this.dependencies)) return;
 
-    // if no chains are chosen, NOOP and don't call dexscreener
-    if (!chosenChains.get('from') && !chosenChains.get('to')) {
-      this.operator.noop();
-      return
-    }
+    const chain = chosenChains.get('to')!.value
+    if (!chain) { this.operator.noop(); return }
+    const { chainId } = chain
 
     const { signal } = this.operator.controller;
-    const lazy: Lazy<Error | z.infer<typeof responseSchema>> = async () =>
-      await fetch(
-        "https://api.dexscreener.com/latest/dex/tokens/0x3419875B4D3Bca7F3FddA2dB7a476A79fD31B4fE",
-        { signal },
-      )
+    const lazy: Lazy<Error|vertigo.types.EconConf> = () =>
+      vertigo.api.econConf({ url: '/api', signal, chainId })
         .then((response) => response.json())
-        .then(responseSchema.parseAsync)
+        .then(jra.response.parseAsync)
+        .then(({ result }) => vertigo.schemas.econConf.parseAsync(result))
         .catch((reason) => new Error(reason));
     const snail = new Snail({ lazy, signal });
     snail.died.catch((reason) => new Error(reason));
@@ -44,8 +38,11 @@ export const dexscreener: VortexDatum = {
       this.operator.noop();
       return;
     }
+    
+    const map = this.operator.get() as undefined|z.infer<typeof schema> ?? new Map()
 
-    this.operator.set(response);
+    this.operator.set(new Map([...map, [chosenChains.get('to')!.value, response]]));
+
   },
-  schema: responseSchema,
-} as const;
+  schema,
+} as const satisfies VortexDatum

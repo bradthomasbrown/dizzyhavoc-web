@@ -1,4 +1,4 @@
-import { computed, Signal } from "@preact/signals";
+import { Signal } from "@preact/signals";
 import { WhichTitle } from "./WhichTitle.tsx";
 import { WhichSearch } from "./WhichSearch.tsx";
 import { WhichChoices } from "./WhichChoices.tsx";
@@ -13,7 +13,7 @@ import { WhichChoices } from "./WhichChoices.tsx";
 export function Which<T extends unknown>(
   { title, choices, onPick, compareFn }: {
     title: string;
-    choices: Choice<T>[];
+    choices: Signal<Choice<T>[]>;
     onPick: (choice: Choice<T>) => unknown;
     compareFn?: Parameters<Choice<T>[]["sort"]>[0];
   },

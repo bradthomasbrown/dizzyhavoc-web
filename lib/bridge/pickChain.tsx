@@ -2,23 +2,54 @@ import { which } from "./which.ts";
 import { chosenChains } from "./chosenChains.ts";
 import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.1/mod.ts";
 import { chainSrc } from "../chainSrc.ts";
-import { activeChains, Chain } from "../internal.ts";
+import { extVortex } from "./extVortex/extVortex.ts";
 import { Which } from "../../islands/common/which/Which.tsx";
+import { Chain } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/types/mod.ts";
+import { query } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/mod.ts";
+import { Signal, computed, effect } from "@preact/signals";
 
 function chainToChoice(chain: Chain): Choice<Chain> {
   return { id: chain.name, value: chain, ...chainSrc(chain.chainId) };
 }
 
-export async function pickChain(key: string) {
+const pureActiveChainIds = computed(() => {
+  const activeChains = extVortex.uState.activeChains.value
+  if (activeChains instanceof Error || activeChains === undefined) return []
+  else return activeChains
+})
+
+const idToChain = new Map<number,Chain>()
+
+const pureActiveChains:Signal<Chain[]> = new Signal([])
+effect(async () => {
+  const chains:Chain[] = []
+  for (const chainId of pureActiveChainIds.value) {
+    if (idToChain.has(chainId)) chains.push(idToChain.get(chainId)!)
+    else {
+      // we can toad this at some point
+      const result = await query(chainId)
+      if (!(result instanceof Error)) {
+        chains.push(result)
+        idToChain.set(chainId, result)
+      }
+    }
+  }
+  pureActiveChains.value = chains
+})
+
+const choices:Signal<Choice<Chain>[]> = new Signal([])
+effect(() => { choices.value = pureActiveChains.value.map(chainToChoice) })
+
+export async function pickChain(key:'from'|'to') {
   const gate = new Gate<Chain>();
   const title = key;
-  const choices = activeChains.map(chainToChoice);
   const onPick = (choice: Choice<Chain>) => gate.resolve(choice.value);
   which.value = <Which {...{ title, choices, onPick }} />;
   const chain = await gate.promise;
-  for (const key2 of Object.keys(chosenChains.value)) {
-    if (chosenChains.value[key2] === chain) delete chosenChains.value[key2];
+  for (const key2 of chosenChains.keys() as IterableIterator<'from'|'to'>) {
+    if (chosenChains.get(key2)!.value === chain)
+      chosenChains.get(key2)!.value = undefined
   }
-  chosenChains.value = { ...chosenChains.value, [key]: chain };
+  chosenChains.get(key)!.value = chain
   which.value = undefined;
 }

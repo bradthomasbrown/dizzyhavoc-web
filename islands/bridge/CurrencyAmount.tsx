@@ -9,19 +9,22 @@ import { chainToPrice } from "../../lib/bridge/chainToPrice.ts";
 import { amounts } from "../../lib/bridge/amounts.ts";
 import { CurrencyAmountInput } from "../../components/bridge/CurrencyAmountInput.tsx";
 
-chosenChains.subscribe(() => extVortex.flow("priceCheck"));
+for (const signal of chosenChains.values()) {
+  signal.subscribe(() => extVortex.flow("priceCheck"));
+}
 
 export function CurrencyAmount(
   { id, label, disabled, order }: {
-    id: string;
+    id: 'from'|'to';
     label?: string;
     order?: string;
     disabled?: boolean;
   },
 ) {
+
   const usdDisplayValue = computed<undefined | string>(() => {
     if (!IS_BROWSER) return undefined;
-    const chain = chosenChains.value[id];
+    const chain = chosenChains.get(id)!.value;
     const dsData = extVortex.uState.dexscreener.value;
     if (!chain || !dsData) return undefined;
     const price = chainToPrice(chain, dsData);
@@ -34,7 +37,7 @@ export function CurrencyAmount(
     });
   });
 
-  const chainId = chosenChains.value[id]?.chainId;
+  const chain = chosenChains.get(id)!.value
 
   return (
     <div class={`grid grid-rows-[auto,1fr] grid-cols-2 ${order}`}>
@@ -42,7 +45,7 @@ export function CurrencyAmount(
       <div class="select-none text-right brightness-90">{id}</div>
       <div class="flex col-span-2">
         <CurrencyAmountInput {...{ id, disabled }} />
-        <FhChainPicker {...{ chosenChains, id, onClick }} />
+        <FhChainPicker {...{ id }} />
       </div>
       <div
         class={`font-mono text-sm font-thin brightness-75 ${
@@ -52,7 +55,7 @@ export function CurrencyAmount(
         {usdDisplayValue.value ?? <>&nbsp;</>}
       </div>
       <div class="text-right font-mono text-sm font-thin brightness-75">
-        {chainAbrv(chainId)}
+        {chain ? chainAbrv(chain.chainId) : ''}
       </div>
     </div>
   );

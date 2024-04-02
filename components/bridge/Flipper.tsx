@@ -1,8 +1,13 @@
+import { batch } from "@preact/signals";
 import { chosenChains } from "../../lib/bridge/chosenChains.ts";
 
 function flip() {
-  const { from, to } = chosenChains.value;
-  chosenChains.value = { from: to, to: from };
+  const from = chosenChains.get('from')!.value
+  const to = chosenChains.get('to')!.value
+  batch(() => {
+    chosenChains.get('from')!.value = to
+    chosenChains.get('to')!.value = from
+  })
 }
 
 export function Flipper() {

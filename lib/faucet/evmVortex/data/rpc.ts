@@ -1,5 +1,5 @@
 import z from "https://deno.land/x/zod@v3.22.4/index.ts";
-import { query } from "../../../chains/query.ts";
+import * as chainlist from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/mod.ts";
 import { VortexDatum } from "../../../state2/Vortex.ts";
 
 export const rpc: VortexDatum = {
@@ -15,9 +15,7 @@ export const rpc: VortexDatum = {
       this.operator.set(error);
       return;
     }
-    const chain = await query({
-      id: this.operator.get("chain") as number,
-    });
+    const chain = await chainlist.lib.query(this.operator.get("chain") as number);
     this.operator.set(
       chain instanceof Error
         ? chain
