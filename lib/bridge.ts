@@ -5,10 +5,6 @@
 // import { Signal } from "@preact/signals";
 // const bar = e.receipt({ hash: '' }).ejrrq.schema
 
-import z from "https://deno.land/x/zod@v3.22.4/index.ts";
-import { Chain, InjectedProvider } from "../internal.ts";
-import { Signal } from "@preact/signals";
-
 // export async function bridge() {
 // if (!state.value.provider) { alert('provider undefined'); return }
 // if (!state.value.addresses || !state.value.addresses.length) { alert('no connected addresses'); return }

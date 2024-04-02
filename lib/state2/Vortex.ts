@@ -118,7 +118,7 @@ export type VortexDatum = {
   schema: z.ZodTypeAny;
 };
 
-export type VortexData = Record<string, VortexDatum>;
+export type VortexData = Record<string,VortexDatum>;
 
 export class Vortex<F extends VortexFlows, D extends VortexData> {
   flows: F;
