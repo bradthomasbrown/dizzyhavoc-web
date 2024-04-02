@@ -1,12 +1,9 @@
-// import { IS_BROWSER } from "$fresh/runtime.ts";
 import { batch, Signal } from "@preact/signals";
-import { IS_BROWSER } from "$fresh/runtime.ts";
 import { JSX } from "preact/jsx-runtime";
-import { number } from "https://deno.land/x/zod@v3.22.4/types.ts";
 
 type Web3InputPropsBase = {
   decimals: bigint;
-  maxVal: Error | bigint;
+  maxVal: undefined| Error | bigint;
   disabled?: boolean;
 };
 
@@ -39,7 +36,7 @@ export function Web3Input(
   const numberValue = new Signal(initialNumberValue);
 
   let initialRangeValue = "0";
-  if (amount_ !== undefined && !(maxVal instanceof Error)) {
+  if (amount_ !== undefined && !(maxVal instanceof Error) && maxVal !== undefined) {
     initialRangeValue = String(amount_ * 100n / maxVal);
   }
   const rangeValue = new Signal(initialRangeValue);
@@ -58,14 +55,14 @@ export function Web3Input(
     batch(() => {
       if (amount) amount.value = value;
       if (amounts) amounts.get(id)!.value = value;
-      if (!(maxVal instanceof Error)) {
+      if (!(maxVal instanceof Error) && maxVal !== undefined) {
         rangeValue.value = String(value * 100n / maxVal);
       }
     });
   }
 
   function onRangeInput(e: JSX.TargetedEvent<HTMLInputElement>) {
-    if (maxVal instanceof Error) return;
+    if (maxVal instanceof Error || maxVal === undefined) return;
     let tmp = String(amount_ ?? 0n).padStart(Number(decimals), "0");
     if (tmp.length == Number(decimals)) tmp = `0.${tmp}`;
     else {tmp = `${tmp.slice(0, tmp.length - Number(decimals))}.${
