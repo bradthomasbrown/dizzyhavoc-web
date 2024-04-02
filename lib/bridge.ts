@@ -31,7 +31,7 @@
 // })
 // }
 
-export function bridge(
+// export function bridge(
   /*{
   // recipient,
   // amount,
@@ -46,8 +46,7 @@ export function bridge(
   // provider: InjectedProvider;
   // dzhv: { address: string };
   // destChain: Chain;
-}*/
-) {
+}){*/
   // const data = `0x9eea5f66${destChain.chainId.toString(16).padStart(64, "0")}${
   //   recipient.substring(2).padStart(64, "0")
   // }${amount.toString(16).padStart(64, "0")}`;
@@ -61,4 +60,21 @@ export function bridge(
   //     const status: Signal<"0x1" | "0x0" | null> = new Signal(null);
   //     statuses.set(hash, status);
   //   });
+// }
+
+
+import { evmVortex } from "./faucet/evmVortex/evmVortex.ts";
+import { chosenChains } from './bridge/chosenChains.ts'
+
+export async function bridge() {
+
+  const p1193 = evmVortex.uState.p1193.value
+  if (p1193 instanceof Error || p1193 === undefined) return
+
+  const chain = chosenChains.get('from')!.value
+  if (chain === undefined) return
+  const { chainId } = chain
+
+  await p1193.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: `0x${chainId.toString(16)}` }] })
+
 }
