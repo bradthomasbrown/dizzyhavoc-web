@@ -1,11 +1,11 @@
 /// <reference lib="deno.unstable" />
 
 const ISLOCAL = Deno.env.get("ISLOCAL");
-let VERTPUBINFOKVPATH: undefined | string;
+let BETA_DZHV_KV_PATH: undefined | string;
 if (ISLOCAL) {
-  VERTPUBINFOKVPATH = Deno.env.get("DENO_KV_PATH");
-  if (!VERTPUBINFOKVPATH) {
-    throw new Error(`missing required env var 'VERTPUBINFOKVPATH'`);
+  BETA_DZHV_KV_PATH = Deno.env.get("BETA_DZHV_KV_PATH");
+  if (!BETA_DZHV_KV_PATH) {
+    throw new Error(`missing required env var 'BETA_DZHV_KV_PATH'`);
   }
 }
-export const kv = await Deno.openKv(ISLOCAL ? VERTPUBINFOKVPATH : undefined);
+export const kv = await Deno.openKv(ISLOCAL ? BETA_DZHV_KV_PATH : undefined);
