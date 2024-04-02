@@ -1,4 +1,4 @@
-import { LegalsPopup } from "../lib/internal.ts";
+import { LegalsPopup } from "../islands/bridge/LegalsPopup.tsx";
 import { AppContainer } from "../components/bridge/AppContainer.tsx";
 
 export default function Home() {
