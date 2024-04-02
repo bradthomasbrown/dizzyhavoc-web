@@ -15,9 +15,7 @@ export function FhChainPicker(
     & { id: "from"|"to"; },
 ) {
   const down = new Signal<boolean>(false)
-  down.subscribe(console.log)
   const over = new Signal<boolean>(false)
-  over.subscribe(console.log)
   return (
     <div
       onClick={() => { extVortex.flow('chainsCheck'); pickChain(props.id) }}
@@ -38,7 +36,6 @@ function FhChainPickerInternal(props:{ id: 'from'|'to', over:Signal<boolean>, do
     if (props.over.value) return 'scale-[102%]'
     return ''
   })
-  scale.subscribe(console.log)
   const chain = chosenChains.get(props.id)!.value
   return(
     <div class={`sm:w-16 sm:h-16 w-8 h-8 border-2 flex justify-center items-center rounded-full ${props.down.value ? 'border-[#ccb286]' : 'border-[#282828] dark:border-[#d2d2d2]'} sm:p-3 p-1 ${scale.value}`}>
