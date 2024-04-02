@@ -1,7 +1,7 @@
 import { computed } from "@preact/signals";
 import { Blockie } from "../../lib/blockies/Blockie.ts";
 import { evmVortex } from "../../lib/faucet/evmVortex/evmVortex.ts";
-import { hexshort } from "../../lib/internal.ts";
+import { hexshort } from '../../lib/hexshort.ts'
 
 const defaultSeed = "0xa9C5db3e478D8F2E229254ef1d7e3a8ddBf2737c";
 const seed = computed(() => {

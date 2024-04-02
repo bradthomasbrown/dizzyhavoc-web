@@ -1,11 +1,5 @@
-import { IS_BROWSER } from "$fresh/runtime.ts";
-import { useEffect } from "preact/hooks";
-import { useState } from "preact/hooks";
-import { computed, Signal } from "@preact/signals";
-import {
-  /*addresses, , rpc, provider*/
-  hexshort,
-} from "../../lib/internal.ts";
+import { computed } from "@preact/signals";
+import { hexshort } from "../../lib/hexshort.ts";
 import { ActionButton } from "./ActionButton.tsx";
 import { Balance } from "../common/Balance.tsx";
 import { Blockie } from "../../lib/blockies/Blockie.ts";
@@ -13,7 +7,6 @@ import { evmVortex } from "../../lib/faucet/evmVortex/evmVortex.ts";
 import { chainSrc } from "../../lib/chainSrc.ts";
 import { which as faucetWhich } from "../../lib/bridge/which.ts";
 import { which as providerWhich } from "../common/Connector.tsx";
-import { getIcon } from "../../lib/chains/icons.ts";
 
 export function ActiveForm() {
   const defaultSeed = "0xa9C5db3e478D8F2E229254ef1d7e3a8ddBf2737c";

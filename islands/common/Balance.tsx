@@ -1,5 +1,5 @@
 import { computed, Signal } from "@preact/signals";
-import { w3LabelConv } from "../../lib/internal.ts";
+import { w3LabelConv } from "../../lib/w3LabelConv.ts";
 import { evmVortex } from "../../lib/faucet/evmVortex/evmVortex.ts";
 
 const balance = computed(() => {

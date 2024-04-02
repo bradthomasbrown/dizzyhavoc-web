@@ -1,5 +1,5 @@
 import { Signal } from "@preact/signals";
-import { hexshort } from "../../lib/utils/hexshort.ts";
+import { hexshort } from "../../lib/hexshort.ts";
 
 export const recipient = new Signal<string>("0x".padEnd(2 + 40, "0"));
 const recipientFocused = new Signal<boolean>(false);

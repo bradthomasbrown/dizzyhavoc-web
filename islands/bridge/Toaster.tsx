@@ -1,5 +1,5 @@
 import { JSX } from "preact/jsx-runtime";
-import { toasts } from "../../lib/utils/toasts.ts";
+import { toasts } from "../../lib/toasts.ts";
 
 export function Toaster(props: JSX.HTMLAttributes<HTMLButtonElement>) {
   return (
