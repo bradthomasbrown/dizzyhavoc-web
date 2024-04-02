@@ -18,7 +18,7 @@ function randomUUID() {
     );
 }
 
-export const p1193: VortexDatum = {
+export const p1193 = {
   invalidatedBy: ["init"],
   dependsOn: [],
   async updater() {
@@ -53,7 +53,9 @@ export const p1193: VortexDatum = {
     }
   },
   schema: providers.p1193,
-} as const;
+} as const satisfies VortexDatum
+
+
 
 class ProviderFinder {
   providers: Map<string, providers.P6963>;
