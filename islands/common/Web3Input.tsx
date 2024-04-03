@@ -27,8 +27,10 @@ export function Web3Input(
   const amount_ = amount?.value ?? amounts?.get(id)?.value;
 
   let initialNumberValue = "";
-  if (amount_ !== undefined) {
-    initialNumberValue = String(amount_ / 10n ** decimals);
+  if (amount_ !== undefined && !(maxVal instanceof Error) && maxVal !== undefined && maxVal !== 0n) {
+    initialNumberValue = amount_ > maxVal
+      ? String(maxVal / 10n ** decimals)
+      : String(amount_ / 10n ** decimals);
   }
   if (amount_ !== undefined && amount_ % 10n ** decimals) {
     initialNumberValue += `.${amount_ % 10n ** decimals}`.replace(/0*$/, "");
