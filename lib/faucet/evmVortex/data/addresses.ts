@@ -3,7 +3,7 @@ import { P1193 } from "../../../state2/providers.ts";
 import { evmVortex } from "../evmVortex.ts";
 import { VortexDatum } from "../../../state2/Vortex.ts";
 
-export const addresses: VortexDatum = {
+export const addresses = {
   invalidatedBy: ["init", "account"],
   dependsOn: ["p1193"],
   async updater() {
@@ -44,4 +44,4 @@ export const addresses: VortexDatum = {
     );
   },
   schema: z.string().array(),
-} as const;
+} as const satisfies VortexDatum;
