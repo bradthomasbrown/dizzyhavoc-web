@@ -3,7 +3,7 @@ import { CurrencyAmount } from "../../islands/bridge/CurrencyAmount.tsx";
 export function CurrencyPair() {
   return (
     <>
-      {["from", "to"].map((id, i) => (
+      {(["from", "to"] as const).map((id, i) => (
         <CurrencyAmount
           label={id == "to" ? "mint" : "burn"}
           {...{ id }}
