@@ -7,6 +7,7 @@ import { chosenChains } from "../../chosenChains.ts";
 import * as vertigo from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/vertigo@0.0.14/mod.ts'
 import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.0/mod.ts'
 import * as chainlist from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.1/mod.ts'
+import { viVortex } from '../viVortex.ts'
 
 const schema = z.map(chainlist.schemas.chain, vertigo.schemas.econConf)
 
@@ -39,8 +40,10 @@ export const econConf = {
       return;
     }
     
-    const map = this.operator.get() as undefined|z.infer<typeof schema> ?? new Map()
-
+    const econConf = viVortex.uState.econConf.value
+    const map = econConf instanceof Error || econConf === undefined
+      ? new Map()
+      : econConf
     this.operator.set(new Map([...map, [chosenChains.get('to')!.value, response]]));
 
   },
