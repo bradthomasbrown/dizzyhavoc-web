@@ -36,7 +36,7 @@ export function Web3Input(
   const numberValue = new Signal(initialNumberValue);
 
   let initialRangeValue = "0";
-  if (amount_ !== undefined && !(maxVal instanceof Error) && maxVal !== undefined) {
+  if (amount_ !== undefined && !(maxVal instanceof Error) && maxVal !== undefined && maxVal !== 0n) {
     initialRangeValue = String(amount_ * 100n / maxVal);
   }
   const rangeValue = new Signal(initialRangeValue);
@@ -55,9 +55,8 @@ export function Web3Input(
     batch(() => {
       if (amount) amount.value = value;
       if (amounts) amounts.get(id)!.value = value;
-      if (!(maxVal instanceof Error) && maxVal !== undefined) {
-        rangeValue.value = String(value * 100n / maxVal);
-      }
+      if (maxVal instanceof Error || maxVal === undefined || maxVal === 0n) return
+      rangeValue.value = String(value * 100n / maxVal);
     });
   }
 
