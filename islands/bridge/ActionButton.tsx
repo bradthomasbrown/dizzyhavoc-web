@@ -1,5 +1,5 @@
 import { Button } from "../../components/common/Button.tsx";
-import { bridge } from "../../lib/bridge.ts";
+import { bridge } from "../../lib/bridge/bridge.ts";
 import { Connector, status } from "../common/Connector.tsx";
 
 export function ActionButton() {

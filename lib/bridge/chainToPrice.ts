@@ -1,5 +1,5 @@
 import z from "https://deno.land/x/zod@v3.22.4/index.ts";
-import { responseSchema } from "./extVortex/data/dexscreener.ts";
+import { responseSchema } from "./dsVortex/data/dexscreener.ts";
 import { Chain } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/types/mod.ts";
 
 type ArrayElement<ArrayType extends readonly unknown[]> = ArrayType extends
