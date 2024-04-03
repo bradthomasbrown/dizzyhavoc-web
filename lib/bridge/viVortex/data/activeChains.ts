@@ -12,12 +12,16 @@ export const activeChains = {
   invalidatedBy: ["chainsCheck"],
   dependsOn: [],
   async updater() {
+
     if (this.operator.get()) return;
     if (!this.operator.knows(this.dependencies)) return;
 
+    const { hostname, port, protocol } = globalThis.location
+    const url = `${protocol}//${hostname}${port ? `:${port}` : ''}/api`
+
     const { signal } = this.operator.controller;
     const lazy: Lazy<Error|z.infer<typeof schema>> = () =>
-      vertigo.api.activeChains({ url: '/api', signal })
+      vertigo.api.activeChains({ url, signal })
         .then((response) => response.json())
         .then(jra.response.parseAsync)
         .then(({ result }) => schema.parseAsync(result))
