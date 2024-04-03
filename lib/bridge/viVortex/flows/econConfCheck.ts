@@ -1,14 +1,14 @@
 import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.1/mod.ts";
 import { batch } from "@preact/signals";
 import { TStateOperator, VortexFlow } from "../../../state2/Vortex.ts";
-import { extVortex } from "../extVortex.ts";
 import { chosenChains } from "../../chosenChains.ts";
+import { viVortex } from "../viVortex.ts";
 
-export const priceCheck: VortexFlow = async function () {
+export const econConfCheck: VortexFlow = async function () {
   // trigger and refresh the abort controller
   const controller = this.controller.reset();
 
-  if (!chosenChains.get('from')!.value && !chosenChains.get('to')!.value) {
+  if (!chosenChains.get('to')!.value) {
     controller.abort();
     this.updaters.value.clear();
     return;
@@ -47,9 +47,10 @@ export const priceCheck: VortexFlow = async function () {
   await gate.promise;
 
   if (
-    !controller.signal.aborted &&
-    (chosenChains.get('from')!.value || chosenChains.get('to')!.value)
+    !controller.signal.aborted
+    && chosenChains.get('to')!.value
   ) {
-    setTimeout(() => extVortex.flow("priceCheck"), 0);
+    setTimeout(() => viVortex.flow("econConfCheck"), 0);
   }
+  
 };

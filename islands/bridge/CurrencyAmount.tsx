@@ -1,8 +1,7 @@
 import { FhChainPicker } from "../common/FhChainPicker.tsx";
 import { chosenChains } from "../../lib/bridge/chosenChains.ts";
-import { pickChain as onClick } from "../../lib/bridge/pickChain.tsx";
 import { chainAbrv } from "../../lib/chainAbrv.ts";
-import { extVortex } from "../../lib/bridge/extVortex/extVortex.ts";
+import { dsVortex } from "../../lib/bridge/dsVortex/dsVortex.ts";
 import { IS_BROWSER } from "$fresh/runtime.ts";
 import { computed } from "@preact/signals";
 import { chainToPrice } from "../../lib/bridge/chainToPrice.ts";
@@ -10,7 +9,7 @@ import { amounts } from "../../lib/bridge/amounts.ts";
 import { CurrencyAmountInput } from "../../components/bridge/CurrencyAmountInput.tsx";
 
 for (const signal of chosenChains.values()) {
-  signal.subscribe(() => extVortex.flow("priceCheck"));
+  signal.subscribe(() => dsVortex.flow("priceCheck"));
 }
 
 export function CurrencyAmount(
@@ -25,7 +24,7 @@ export function CurrencyAmount(
   const usdDisplayValue = computed<undefined | string>(() => {
     if (!IS_BROWSER) return undefined;
     const chain = chosenChains.get(id)!.value;
-    const dsData = extVortex.uState.dexscreener.value;
+    const dsData = dsVortex.uState.dexscreener.value;
     if (!chain || !dsData) return undefined;
     const price = chainToPrice(chain, dsData);
     if (!price) return undefined;

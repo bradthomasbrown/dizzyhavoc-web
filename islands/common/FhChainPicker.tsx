@@ -6,19 +6,18 @@ import { JSX } from "preact/jsx-runtime";
 import { chainSrc } from "../../lib/chainSrc.ts";
 import { Blockie } from "../../lib/blockies/Blockie.ts";
 import { pickChain } from '../../lib/bridge/pickChain.tsx'
-import { extVortex } from "../../lib/bridge/extVortex/extVortex.ts";
-import { RefObject, createRef } from "preact";
+import { viVortex } from "../../lib/bridge/viVortex/viVortex.ts";
 
 export function FhChainPicker(
   props:
     & JSX.DOMAttributes<HTMLDivElement>
-    & { id: "from"|"to"; },
+    & { id: string; },
 ) {
   const down = new Signal<boolean>(false)
   const over = new Signal<boolean>(false)
   return (
     <div
-      onClick={() => { extVortex.flow('chainsCheck'); pickChain(props.id) }}
+      onClick={() => { viVortex.flow('chainsCheck'); pickChain(props.id) }}
       class="sm:w-[calc(4rem*1.02)] sm:h-[calc(4rem*1.02)] w-[calc(2rem*1.02)] h-[calc(2rem*1.02)] rounded-full cursor-pointer"
       onPointerDown={() => down.value = true}
       onPointerOver={() => over.value = true}
@@ -30,7 +29,7 @@ export function FhChainPicker(
   );
 }
 
-function FhChainPickerInternal(props:{ id: 'from'|'to', over:Signal<boolean>, down:Signal<boolean> }) {
+function FhChainPickerInternal(props:{ id: string, over:Signal<boolean>, down:Signal<boolean> }) {
   const scale = computed(() => {
     if (props.down.value) return 'scale-[98%]'
     if (props.over.value) return 'scale-[102%]'

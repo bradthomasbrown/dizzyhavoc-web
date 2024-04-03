@@ -7,4 +7,4 @@ data satisfies VortexData;
 // the idea for bundling all external data into a vortex is that,
 // otherwise, the user might have too many concurrent requests
 
-export const extVortex = new Vortex(flows, data);
+export const dsVortex = new Vortex(flows, data);

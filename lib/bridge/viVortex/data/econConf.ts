@@ -11,7 +11,7 @@ import * as chainlist from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@
 const schema = z.map(chainlist.schemas.chain, vertigo.schemas.econConf)
 
 export const econConf = {
-  invalidatedBy: ["priceCheck"],
+  invalidatedBy: ["econConfCheck"],
   dependsOn: [],
   async updater() {
     if (this.operator.get()) return;
