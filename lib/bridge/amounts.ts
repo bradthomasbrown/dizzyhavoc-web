@@ -12,11 +12,10 @@ export const amounts:Map<string,Signal<undefined|bigint>> = new Map([
 
     dummy.value
 
-    if (amounts.get('from')!.value === undefined) return
-
     const econConfs = viVortex.uState.econConf.value
-    console.log(econConfs)
     if (econConfs === undefined || econConfs instanceof Error) return
+
+    if (amounts.get('from')!.value === undefined) return
     
     const chain = toChain.value
     if (chain === undefined) return
