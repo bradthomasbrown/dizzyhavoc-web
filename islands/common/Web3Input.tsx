@@ -94,7 +94,7 @@ export function Web3Input(
     : (
       <div class="flex items-end justify-end w-full mx-auto ml-1 mt-2 gap-3 flex-row">
         <div
-          class="cursor-pointer text-[10px] px-1 unselectable border border-white rounded-md"
+          class="cursor-pointer text-[10px] px-1 unselectable dark:text-white text-black border border-1 dark:border-[#939393] border-[#4c4c4c] rounded-md"
           onClick={() => {
             setPercent("25");
           }}
@@ -102,7 +102,7 @@ export function Web3Input(
           25%
         </div>
         <div
-          class="cursor-pointer text-[10px] px-1 unselectable border border-white rounded-md"
+          class="cursor-pointer text-[10px] px-1 unselectable dark:text-white text-black border border-1 dark:border-[#939393] border-[#4c4c4c] rounded-md"
           onClick={() => {
             setPercent("50");
           }}
@@ -110,7 +110,7 @@ export function Web3Input(
           50%
         </div>
         <div
-          class="cursor-pointer text-[10px] px-1 unselectable border border-white rounded-md"
+          class="cursor-pointer text-[10px] px-1 unselectable dark:text-white text-black border border-1 dark:border-[#939393] border-[#4c4c4c] rounded-md"
           onClick={() => {
             setPercent("75");
           }}
@@ -118,7 +118,7 @@ export function Web3Input(
           75%
         </div>
         <div
-          class="cursor-pointer text-[10px] px-1 unselectable border border-white rounded-md"
+          class="cursor-pointer text-[10px] px-1 unselectable dark:text-white text-black border border-1 dark:border-[#939393] border-[#4c4c4c] rounded-md"
           onClick={() => {
             setPercent("100");
           }}
