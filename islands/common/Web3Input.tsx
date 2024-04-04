@@ -92,9 +92,9 @@ export function Web3Input(
   const PercentInput = disabled
     ? <></>
     : (
-      <div class="flex items-end justify-end w-full mx-auto ml-1 mt-2 gap-3 flex-row">
+      <div class="flex items-end justify-end w-full mx-auto ml-2 mt-2 gap-[15px] flex-row">
         <div
-          class="cursor-pointer text-[10px] px-1 unselectable dark:text-white text-black border border-1 dark:border-[#939393] border-[#4c4c4c] rounded-md"
+          class="cursor-pointer active:scale-95 text-[10px] font-medium font-[Poppins] px-1 unselectable dark:text-white text-black border border-t-transparent dark:border-t-transparent border-s-transparent dark:border-s-transparent border-1 dark:border-[#939393] border-[#4c4c4c] rounded-sm"
           onClick={() => {
             setPercent("25");
           }}
@@ -102,7 +102,7 @@ export function Web3Input(
           25%
         </div>
         <div
-          class="cursor-pointer text-[10px] px-1 unselectable dark:text-white text-black border border-1 dark:border-[#939393] border-[#4c4c4c] rounded-md"
+          class="cursor-pointer active:scale-95 text-[10px] font-medium font-[Poppins] px-1 unselectable dark:text-white text-black border border-t-transparent dark:border-t-transparent border-s-transparent dark:border-s-transparent border-1 dark:border-[#939393] border-[#4c4c4c] rounded-sm"
           onClick={() => {
             setPercent("50");
           }}
@@ -110,7 +110,7 @@ export function Web3Input(
           50%
         </div>
         <div
-          class="cursor-pointer text-[10px] px-1 unselectable dark:text-white text-black border border-1 dark:border-[#939393] border-[#4c4c4c] rounded-md"
+          class="cursor-pointer active:scale-95 text-[10px] font-medium font-[Poppins] px-1 unselectable dark:text-white text-black border border-t-transparent dark:border-t-transparent border-s-transparent dark:border-s-transparent border-1 dark:border-[#939393] border-[#4c4c4c] rounded-sm"
           onClick={() => {
             setPercent("75");
           }}
@@ -118,7 +118,7 @@ export function Web3Input(
           75%
         </div>
         <div
-          class="cursor-pointer text-[10px] px-1 unselectable dark:text-white text-black border border-1 dark:border-[#939393] border-[#4c4c4c] rounded-md"
+          class="cursor-pointer active:scale-95 text-[10px] font-medium font-[Poppins] px-1 unselectable dark:text-white text-black border border-t-transparent dark:border-t-transparent border-s-transparent dark:border-s-transparent border-1 dark:border-[#939393] border-[#4c4c4c] rounded-sm"
           onClick={() => {
             setPercent("100");
           }}
@@ -133,7 +133,7 @@ export function Web3Input(
         draggable={false}
         id="range"
         type="range"
-        class="dark:accent-[#EAEAEA] appearance-none h-1 rounded-lg accent-[#2c2c2c]"
+        class="dark:accent-[#EAEAEA] h-1 rounded-lg accent-[#2c2c2c]"
         value={rangeValue.value}
         onInput={onRangeInput}
       />
