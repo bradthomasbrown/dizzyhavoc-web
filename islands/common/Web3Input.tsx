@@ -130,6 +130,7 @@ export function Web3Input(
   const RangeInput = disabled ? <></> : (
     <>
       <input
+        draggable={false}
         id="range"
         type="range"
         class="dark:accent-[#EAEAEA] appearance-none h-1 rounded-lg accent-[#2c2c2c]"
