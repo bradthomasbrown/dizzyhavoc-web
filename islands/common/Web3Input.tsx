@@ -3,7 +3,7 @@ import { JSX } from "preact/jsx-runtime";
 
 type Web3InputPropsBase = {
   decimals: bigint;
-  maxVal: undefined| Error | bigint;
+  maxVal: undefined | Error | bigint;
   disabled?: boolean;
 };
 
@@ -27,7 +27,10 @@ export function Web3Input(
   const amount_ = amount?.value ?? amounts?.get(id)?.value;
 
   let initialNumberValue = "";
-  if (amount_ !== undefined && !(maxVal instanceof Error) && maxVal !== undefined && maxVal !== 0n) {
+  if (
+    amount_ !== undefined && !(maxVal instanceof Error) &&
+    maxVal !== undefined && maxVal !== 0n
+  ) {
     initialNumberValue = amount_ > maxVal
       ? String(maxVal / 10n ** decimals)
       : String(amount_ / 10n ** decimals);
@@ -38,7 +41,10 @@ export function Web3Input(
   const numberValue = new Signal(initialNumberValue);
 
   let initialRangeValue = "0";
-  if (amount_ !== undefined && !(maxVal instanceof Error) && maxVal !== undefined && maxVal !== 0n) {
+  if (
+    amount_ !== undefined && !(maxVal instanceof Error) &&
+    maxVal !== undefined && maxVal !== 0n
+  ) {
     initialRangeValue = String(amount_ * 100n / maxVal);
   }
   const rangeValue = new Signal(initialRangeValue);
@@ -57,7 +63,9 @@ export function Web3Input(
     batch(() => {
       if (amount) amount.value = value;
       if (amounts) amounts.get(id)!.value = value;
-      if (maxVal instanceof Error || maxVal === undefined || maxVal === 0n) return
+      if (maxVal instanceof Error || maxVal === undefined || maxVal === 0n) {
+        return;
+      }
       rangeValue.value = String(value * 100n / maxVal);
     });
   }
@@ -78,13 +86,58 @@ export function Web3Input(
     });
   }
 
+  function setPercent(value: string) {
+    onRangeInput({ currentTarget: { value } });
+  }
+  const PercentInput = disabled
+    ? <></>
+    : (
+      <div class="flex items-end justify-end w-full mx-auto ml-1 mt-2 gap-3 flex-row">
+        <div
+          class="cursor-pointer text-[10px] px-1 unselectable border border-white rounded-md"
+          onClick={() => {
+            setPercent("25");
+          }}
+        >
+          25%
+        </div>
+        <div
+          class="cursor-pointer text-[10px] px-1 unselectable border border-white rounded-md"
+          onClick={() => {
+            setPercent("50");
+          }}
+        >
+          50%
+        </div>
+        <div
+          class="cursor-pointer text-[10px] px-1 unselectable border border-white rounded-md"
+          onClick={() => {
+            setPercent("75");
+          }}
+        >
+          75%
+        </div>
+        <div
+          class="cursor-pointer text-[10px] px-1 unselectable border border-white rounded-md"
+          onClick={() => {
+            setPercent("100");
+          }}
+        >
+          100%
+        </div>
+      </div>
+    );
   const RangeInput = disabled ? <></> : (
-    <input
-      type="range"
-      class="dark:accent-[#EAEAEA] accent-[#2c2c2c]"
-      value={rangeValue.value}
-      onInput={onRangeInput}
-    />
+    <>
+      <input
+        id="range"
+        type="range"
+        class="dark:accent-[#EAEAEA] appearance-none h-1 rounded-lg accent-[#2c2c2c]"
+        value={rangeValue.value}
+        onInput={onRangeInput}
+      />
+      {PercentInput}
+    </>
   );
   return (
     <div class="flex flex-col mr-4">
