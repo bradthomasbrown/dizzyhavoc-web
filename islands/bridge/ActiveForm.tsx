@@ -1,18 +1,11 @@
-import { which as bridgeWhich } from "../../lib/bridge/which.ts";
-import { which as providerWhich } from "../common/Connector.tsx";
-import { ConnectionInfo } from "../common/ConnectionInfo.tsx";
-import { BridgeForm } from "../../components/bridge/BridgeForm.tsx";
+import { Form } from "components.bridge";
+import { dzkv } from "lib";
+import { Signal } from "@preact/signals";
+import { JSX } from "preact/jsx-runtime";
 
-/**
- * For the bridge, this is either the provider picker, chain picker, or bridge form
- */
+dzkv.set<Signal<null|JSX.Element>>(['which'], new Signal(null))
+
 export function ActiveForm() {
-  return providerWhich.value ??
-    bridgeWhich.value ??
-    (
-      <>
-        <ConnectionInfo />
-        <BridgeForm />
-      </>
-    );
+  return dzkv.get<Signal<null|JSX.Element>>(['which'])!.value
+    ?? <Form/>
 }
