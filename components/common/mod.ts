@@ -4,4 +4,4 @@ export * from "./Body.tsx";
 export * from "./BodyContainer.tsx";
 export * from "./BodyTitle.tsx";
 export * from "./Button.tsx";
-export * from './Input.tsx'
+export * from "./Input.tsx";

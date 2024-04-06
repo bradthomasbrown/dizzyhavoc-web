@@ -1,4 +1,4 @@
-import { Blockie } from "lib";
+import { Blockie } from "lib/mod.ts";
 
 export function WhichChoice(
   props: { src?: string; id: string; onPick: () => void; dsrc?: string },

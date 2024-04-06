@@ -1,5 +1,5 @@
 import { Signal } from "@preact/signals";
-import { Input } from "components.common";
+import { Input } from "components/common/mod.ts";
 
 export function WhichSearch(props: { filter: Signal<string> }) {
   return (

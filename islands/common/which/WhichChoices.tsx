@@ -1,12 +1,12 @@
 import { computed, Signal } from "@preact/signals";
 import { WhichChoice } from "./WhichChoice.tsx";
-import { Choice } from 'lib'
+import { Choice } from "lib/mod.ts";
 
 export function WhichChoices<T extends unknown>(
   { filter, choices, onPick, compareFn }: {
     filter: Signal<string>;
     choices: Signal<Choice<T>[]>;
-    onPick: (value:T) => unknown;
+    onPick: (value: T) => unknown;
     compareFn?: Parameters<Choice<T>[]["sort"]>[0];
   },
 ) {

@@ -1,15 +1,14 @@
-import { Signal, batch } from "@preact/signals";
+import { batch, Signal } from "@preact/signals";
 import { JSX } from "preact/jsx-runtime";
-import { dzkv } from "lib";
-import { Connector, ConnectorState } from "islands.common";
+import { dzkv } from "lib/mod.ts";
+import { Connector, ConnectorState } from "islands/common/mod.ts";
 
 export function WhichCancel() {
-
   function onClick() {
     batch(() => {
-      dzkv.get<Signal<null|JSX.Element>>(['which'])!.value = null
-      Connector.set(ConnectorState.READY)
-    })
+      dzkv.get<Signal<null | JSX.Element>>(["which"])!.value = null;
+      Connector.set(ConnectorState.READY);
+    });
   }
 
   return (
@@ -19,11 +18,11 @@ export function WhichCancel() {
         top-2 left-2
         absolute
         cursor-pointer
-        hover:scale-[105%] active:scale-[98%]`
-      }
+        hover:scale-[105%] active:scale-[98%]`}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
-      width="24" height="24"
+      width="24"
+      height="24"
       fill="none"
       viewBox="0 0 24 24"
       onClick={onClick}
@@ -36,5 +35,5 @@ export function WhichCancel() {
         d="M5 12h14M5 12l4-4m-4 4 4 4"
       />
     </svg>
-  )
+  );
 }

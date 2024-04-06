@@ -1,11 +1,11 @@
-import { ActiveForm, AppContainer, LegalsPopup } from "islands.bridge";
+import { ActiveForm, AppContainer, LegalsPopup } from "islands/bridge/mod.ts";
 import {
   Art,
   ArtContainer,
   Body,
   BodyContainer,
   BodyTitle,
-} from "components.common";
+} from "components/common/mod.ts";
 
 export default function Home() {
   return (
@@ -22,7 +22,7 @@ export default function Home() {
                 rotate="rotate-[45deg]"
               />
             </ArtContainer>
-            <ActiveForm/>
+            <ActiveForm />
           </Body>
         </BodyContainer>
       </AppContainer>

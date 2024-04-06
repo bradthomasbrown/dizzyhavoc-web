@@ -8,8 +8,7 @@ export function ArtContainer(props: JSX.HTMLAttributes<HTMLDivElement>) {
         z-[-1]
         w-full h-full
         absolute
-        flex justify-center items-center`
-      }
+        flex justify-center items-center`}
     >
       {props.children}
     </div>

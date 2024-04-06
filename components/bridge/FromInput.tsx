@@ -41,8 +41,8 @@
 
 // }
 
-import { Balance /*, Input, Dollars, Abrv, ChainPicker*/ } from "islands.bridge";
-import {/*Slip, Percents*/} from "components.bridge";
+import { Balance /*, Input, Dollars, Abrv, ChainPicker*/ } from "islands/bridge/mod.ts";
+import {/*Slip, Percents*/} from "components/bridge/mod.ts";
 
 export function FromInput() {
   return (
