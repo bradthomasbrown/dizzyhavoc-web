@@ -1,11 +1,12 @@
 import { computed, Signal } from "@preact/signals";
-import { Choice } from "./Choice.tsx";
+import { WhichChoice } from "./WhichChoice.tsx";
+import { Choice } from 'lib'
 
 export function WhichChoices<T extends unknown>(
   { filter, choices, onPick, compareFn }: {
     filter: Signal<string>;
     choices: Signal<Choice<T>[]>;
-    onPick: (choice: Choice<T>) => unknown;
+    onPick: (value:T) => unknown;
     compareFn?: Parameters<Choice<T>[]["sort"]>[0];
   },
 ) {
@@ -28,7 +29,7 @@ export function WhichChoices<T extends unknown>(
         overflow-auto`}
     >
       {fsChoices.value.map((choice) => (
-        <Choice onPick={() => onPick(choice)} {...choice} />
+        <WhichChoice onPick={() => onPick(choice.value)} {...choice} />
       ))}
     </div>
   );
