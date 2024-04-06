@@ -1,5 +1,5 @@
 import { ArtContainer } from "./ArtContainer.tsx";
-import { ActiveForm } from "../../islands/faucet/ActiveForm.tsx";
+// import { ActiveForm } from "../../islands/faucet/ActiveForm.tsx";
 
 /**
  * The Body of the app where art and interactables are usually located
@@ -21,7 +21,7 @@ export function Body() {
         min-h-[25rem] max-h-[500px] h-[500px]`}
     >
       <ArtContainer />
-      <ActiveForm />
+      {/* <ActiveForm /> */}
     </div>
   );
 }
