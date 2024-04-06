@@ -74,7 +74,7 @@ export function Footer() {
             />
           </a>
         </div>
-        <span class="flex dark:text-[#d2d2d2] justify-center text-[13px] sm:text-[17px] mt-0 sm:mt-4">
+        <span class="select-none flex dark:text-[#d2d2d2] justify-center text-[13px] sm:text-[17px] mt-0 sm:mt-4">
           Brad Brown LLC © {new Date().getFullYear()}
         </span>
       </div>
