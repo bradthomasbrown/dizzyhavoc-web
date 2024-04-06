@@ -9,7 +9,7 @@ const key = ["state"];
  * The idea is the "back" signal is used for progating throughout preact
  * And the "front" signal is what is displayed to the user
  */
-type A<T> = { b: Signal<T>; f: Signal<T> };
+export type A<T> = { b: Signal<T>; f: Signal<T> };
 
 /**
  * The S type
@@ -44,7 +44,7 @@ function ensure() {
 /**
  * ensures the state object is created, then returns it
  */
-export function get() {
+function get() {
   ensure();
   return dzkv.get<T>(key)!;
 }
@@ -55,6 +55,7 @@ export function get() {
  */
 export function invalidate(a: A<unknown>) {
   get().s.add(a);
+  console.log({ sSize: get().s.size, action: 'invalidate' })
 }
 
 /**
@@ -71,6 +72,7 @@ export function suggest<T>(a: A<T>, value: T) {
   const { m, s } = get();
   m.set(a, value);
   s.delete(a);
+  console.log({ sSize: s.size, action: 'suggest' })
   if (s.size == 0) {
     batch(() => {
       for (const [a, v] of m.entries()) a.f.value = v;
