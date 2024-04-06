@@ -6,25 +6,25 @@ import "lib/bridge/mod.ts";
 
 type T = { b: Signal<null | bigint>; f: Signal<null | bigint> };
 
-export function key(chain: Chain) {
+function key(chain: Chain) {
   return ["heights", chain];
 }
 
-export function ensure(chain: Chain) {
+function ensure(chain: Chain) {
   return dzkv.ensure<T>(key(chain), {
     b: new Signal(null),
     f: new Signal(null),
   });
 }
 
-export const get = (chain: Chain) => {
+function get(chain: Chain) {
   ensure(chain);
   return dzkv.get<T>(key(chain))!;
-};
+}
 
-export const set = (chain: Chain, height: bigint) => {
+function set(chain: Chain, height: bigint) {
   get(chain).b.value = height;
-};
+}
 
 type U = Signal<symbol>;
 
@@ -49,7 +49,6 @@ const sym = {
 
 [["from"], ["to"]].map((id) =>
   effect(async () => {
-
     // get dependencies
     const chain = state.chain.get(id).value;
     const url = chain?.rpc.at(0);
@@ -72,6 +71,5 @@ const sym = {
     if (prevHeight && height <= prevHeight) return;
     console.log({ prevHeight, height });
     set(chain, height);
-
   })
 );
