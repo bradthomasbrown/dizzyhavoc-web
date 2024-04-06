@@ -1,38 +1,37 @@
+import { Signal } from "@preact/signals";
 import { JSX } from "preact";
 
+type ButtonProps = {
+  disabled?:Signal<boolean>
+  textSize?:Signal<undefined|string>
+}
+
 export function Button(
-  props:
-    & { addClass?: string; rounding?: string; wiggle?: boolean }
-    & JSX.HTMLAttributes<HTMLDivElement>,
+  props:ButtonProps
+    & Omit<JSX.HTMLAttributes<HTMLDivElement>,'disabled'>,
 ) {
-  if (props.disabled) props.wiggle = false;
+  const { disabled, textSize, onClick } = props
   return (
     <div
-      {...props}
-      className={`
+      onClick={e => disabled?.value ? ()=>{} : onClick?.(e) }
+      class={`
+        w-40 h-10
         select-none
-        text-2xl
-        text-center
-        ${props.width ? props.width : "w-[160px]"}
-        shadow-lg
-        font-[Poppins]
-        ${props.rounding ?? "rounded-lg"}
-        ${props.wiggle ? "hover:scale-[102%]" : ""}
-        ${props.wiggle ? "active:scale-[98%]" : ""}
-        ${props.disabled ? "contrast-[75%]" : ""}
-        hover:brightness-95
-        active:brightness-110
-        dark:hover:brightness-105
-        dark:active:brightness-90
-        border
-        border-[#e9e9e9]
-        dark:border-[#ffffff1f]
-        ${props.disabled ? "cursor-not-allowed" : "cursor-pointer"}
-        dark:bg-[#191919]
-        bg-[#f1f1f1]
+        ${textSize?.value ?? 'text-2xl'}
+        flex items-center justify-center
         font-light
-        z-20
-        ${props.addClass}`}
-    />
+        shadow-lg rounded-lg
+        ${disabled?.value ? '' : 'hover:scale-[102%] active:scale-[98%]'}
+        ${disabled?.value
+          ? 'brightness-90'
+          : `hover:brightness-95 active:brightness-110
+            dark:hover:brightness-105 dark:active:brightness-90`}
+        border border-[#e9e9e9] dark:border-[#ffffff1f]
+        ${disabled?.value ? 'cursor-auto' : 'cursor-pointer'}
+        dark:bg-[#191919] bg-[#f1f1f1]
+      `}
+    >
+      {props.children}
+    </div>
   );
 }
