@@ -1,19 +1,9 @@
-import { Button } from "../../components/common/Button.tsx";
-import { bridge } from "../../lib/bridge/bridge.ts";
-import { Connector, status } from "../common/Connector.tsx";
+import { Signal } from "@preact/signals";
+import { Connector } from "islands.common";
+import { dzkv } from 'lib'
 
 export function ActionButton() {
-  if (status.value == "Connected") {
-    return (
-      <Button
-        addClass="text-[#3d3d3d] dark:text-[#ccb286] order-3"
-        disabled={false}
-        onClick={() => bridge()}
-        rounding="rounded-lg"
-        wiggle={false}
-      >
-        Bridge
-      </Button>
-    );
-  } else return <Connector addClass="order-3" />;
+  const key = ['p6963', 'addresses']
+  if (!dzkv.get<Signal<string[]>>(key)?.value?.length) return <Connector/>
+  else return <></>;
 }
