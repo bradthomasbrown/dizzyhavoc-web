@@ -7,7 +7,7 @@ import { Which } from "islands/common/mod.ts";
 import { Connector, ConnectorState } from "islands/common/mod.ts";
 import { query } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/mod.ts";
 import { Chain } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/types/chain.ts";
-import { state } from "lib/bridge/mod.ts";
+import { data } from "lib/bridge/mod.ts";
 
 declare global {
   interface WindowEventMap {
@@ -173,12 +173,10 @@ async function onPick(p6963: P6963) {
 }
 
 function onAccountsChanged(accounts: string[]) {
-  // update p6963.addresses, creating if needed
-  const key = ["addresses", "p6963"];
-  if (!dzkv.ensure<Signal<string[]>>(key, new Signal(accounts))) {
-    const signal = dzkv.get<Signal<string[]>>(key)!;
-    if (String(signal.value) !== String(accounts)) signal.value = accounts;
-  }
+  
+  // update addresses if different
+  const signal = data.addresses.get()
+  if (String(accounts) !== String(signal.value)) signal.value = accounts
 
   // if there are no addresses, set Connector back to ready
   Connector.set(ConnectorState.READY);
@@ -198,6 +196,6 @@ async function onChainChanged(chainId: number) {
   }
 
   const chain = chainmap.get(chainId)!;
-  state.chain.set(["p6963"], chain);
-  state.chain.set(["from"], chain);
+  data.chain.set(["p6963"], chain);
+  data.chain.set(["from"], chain);
 }
