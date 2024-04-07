@@ -175,8 +175,9 @@ async function onPick(p6963: P6963) {
 function onAccountsChanged(accounts: string[]) {
   
   // update addresses if different
-  const signal = data.addresses.get()
-  if (String(accounts) !== String(signal.value)) signal.value = accounts
+  if (String(accounts) !== String(data.addresses.get())) {
+    data.addresses.set(accounts)
+  }
 
   // if there are no addresses, set Connector back to ready
   Connector.set(ConnectorState.READY);
