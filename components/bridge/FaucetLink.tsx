@@ -3,7 +3,7 @@ export function FaucetLink() {
     <a
       class={`
         select-none
-        absolute bottom-0 right-2
+        absolute bottom-1 left-1
         pr-1
         bg-blur4 rounded-xl
         text-md
