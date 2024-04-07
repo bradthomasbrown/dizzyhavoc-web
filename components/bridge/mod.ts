@@ -1,3 +1,2 @@
-export * from "./Form.tsx";
-export * from "./FaucetLink.tsx";
-export * from "./FromInput.tsx";
+export * from "components/bridge/Form.tsx";
+export * from "components/bridge/FaucetLink.tsx";
