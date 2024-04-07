@@ -1,10 +1,10 @@
 import { effect, Signal } from "@preact/signals";
 import { Chain } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/types/chain.ts";
 import { dzkv, ejra } from "lib/mod.ts";
-import { state } from "lib/bridge/mod.ts";
-import "lib/bridge/mod.ts";
+import { state, data } from "lib/bridge/mod.ts";
+import { A } from 'lib/bridge/state.ts'
 
-type T = { b: Signal<null | bigint>; f: Signal<null | bigint> };
+type T = A<null|bigint>
 
 function key(chain: Chain) {
   return ["heights", chain];
@@ -17,13 +17,18 @@ function ensure(chain: Chain) {
   });
 }
 
-function get(chain: Chain) {
+export function get(chain: Chain) {
   ensure(chain);
   return dzkv.get<T>(key(chain))!;
 }
 
 function set(chain: Chain, height: bigint) {
   get(chain).b.value = height;
+  state.suggest(get(chain), height)
+}
+
+function invalidate(chain: Chain) {
+  state.invalidate(get(chain))
 }
 
 type U = Signal<symbol>;
@@ -49,8 +54,9 @@ const sym = {
 
 [["from"], ["to"]].map((id) =>
   effect(async () => {
+
     // get dependencies
-    const chain = state.chain.get(id).value;
+    const chain = data.chain.get(id).value;
     const url = chain?.rpc.at(0);
     if (!chain || !url) return;
 
@@ -66,10 +72,15 @@ const sym = {
       return;
     }
 
-    // update height if it's greater than the previous height
+    // check if the new height is > prevHeight (or prevHeight null)
     const prevHeight = get(chain).b.value;
     if (prevHeight && height <= prevHeight) return;
+
+
     console.log({ prevHeight, height });
+    invalidate(chain)
+    data.balance.invalidate(chain, ['dzhv'])
     set(chain, height);
+
   })
 );
