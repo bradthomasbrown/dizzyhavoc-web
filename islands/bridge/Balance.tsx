@@ -1,5 +1,7 @@
 import { effect, Signal } from "@preact/signals";
-import { state } from "lib/bridge/mod.ts";
+import { data } from "lib/bridge/mod.ts";
+
+
 
 const loading = new Signal("");
 
@@ -32,11 +34,19 @@ const dispBalance = new Signal("0");
 // })
 
 export function Balance() {
+  const chain = data.chain.get(['from']).value
+  const height = chain ? data.height.get(chain).f : new Signal('null')
+  const balance = chain ? data.balance.get(chain, ['dzhv']).f : new Signal('null')
   return (
     <div class="h-full p-2 flex items-center font-mono brightness-75">
       <div
         class={`flex border-2 border-transparent rounded-full px-2 ${loading.value}`}
       >
+        <div>
+          <div>TEST</div>
+          <div>{height}</div>
+          <div>{balance}</div>
+        </div>
         <div class="max-w-44 overflow-hidden overflow-ellipsis">
           {dispBalance}
         </div>
