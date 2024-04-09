@@ -12,10 +12,13 @@ import * as $bridge_ActionButton from "./islands/bridge/ActionButton.tsx";
 import * as $bridge_ActiveForm from "./islands/bridge/ActiveForm.tsx";
 import * as $bridge_AppContainer from "./islands/bridge/AppContainer.tsx";
 import * as $bridge_CurrencyAmount from "./islands/bridge/CurrencyAmount.tsx";
+import * as $bridge_Form from "./islands/bridge/Form.tsx";
 import * as $bridge_Height from "./islands/bridge/Height.tsx";
 import * as $bridge_LegalsPopup from "./islands/bridge/LegalsPopup.tsx";
 import * as $bridge_control_from_Balance from "./islands/bridge/control/from/Balance.tsx";
+import * as $bridge_control_from_Dollars from "./islands/bridge/control/from/Dollars.tsx";
 import * as $bridge_control_from_Input from "./islands/bridge/control/from/Input.tsx";
+import * as $bridge_control_from_Percents from "./islands/bridge/control/from/Percents.tsx";
 import * as $bridge_control_from_Slip from "./islands/bridge/control/from/Slip.tsx";
 import * as $bridge_control_from_mod from "./islands/bridge/control/from/mod.tsx";
 import * as $bridge_control_mod from "./islands/bridge/control/mod.ts";
@@ -55,10 +58,13 @@ const manifest = {
     "./islands/bridge/ActiveForm.tsx": $bridge_ActiveForm,
     "./islands/bridge/AppContainer.tsx": $bridge_AppContainer,
     "./islands/bridge/CurrencyAmount.tsx": $bridge_CurrencyAmount,
+    "./islands/bridge/Form.tsx": $bridge_Form,
     "./islands/bridge/Height.tsx": $bridge_Height,
     "./islands/bridge/LegalsPopup.tsx": $bridge_LegalsPopup,
     "./islands/bridge/control/from/Balance.tsx": $bridge_control_from_Balance,
+    "./islands/bridge/control/from/Dollars.tsx": $bridge_control_from_Dollars,
     "./islands/bridge/control/from/Input.tsx": $bridge_control_from_Input,
+    "./islands/bridge/control/from/Percents.tsx": $bridge_control_from_Percents,
     "./islands/bridge/control/from/Slip.tsx": $bridge_control_from_Slip,
     "./islands/bridge/control/from/mod.tsx": $bridge_control_from_mod,
     "./islands/bridge/control/mod.ts": $bridge_control_mod,
