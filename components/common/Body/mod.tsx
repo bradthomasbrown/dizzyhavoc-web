@@ -1,6 +1,6 @@
 import { JSX } from "preact/jsx-runtime";
-import { Container } from "components/common/Body/Container.tsx"
-import { Title } from "components/common/Body/Title.tsx"
+import { Container } from "components/common/Body/Container.tsx";
+import { Title } from "components/common/Body/Title.tsx";
 
 /**
  * The Body of the app where art and interactables are usually located
@@ -22,5 +22,5 @@ export const Body = Object.assign(
       </div>
     );
   },
-  { Container, Title }
-)
+  { Container, Title },
+);

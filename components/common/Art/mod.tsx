@@ -1,4 +1,4 @@
-import { Container } from "components/common/Art/Container.tsx"
+import { Container } from "components/common/Art/Container.tsx";
 
 type ArtProps = {
   src: string;
@@ -30,5 +30,5 @@ export const Art = Object.assign(
       />
     );
   },
-  { Container }
-)
+  { Container },
+);

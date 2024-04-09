@@ -14,8 +14,8 @@ export function ensure() {
 export function get() {
   ensure();
   return dzkv.get<T>(key())!;
-};
+}
 
-export function set(percent:number) {
+export function set(percent: number) {
   get().value = percent;
-};
+}
