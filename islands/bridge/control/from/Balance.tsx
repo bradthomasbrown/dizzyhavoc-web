@@ -1,44 +1,40 @@
-import { effect, Signal } from "@preact/signals";
-import { data, state, btos } from "lib/bridge/mod.ts";
+import { Signal } from "@preact/signals";
 
-const loading = new Signal("");
+type BalanceProps = { display: Signal<string>; loading: Signal<string> };
 
-const dispBalance = new Signal(btos(0n, 18))
-
-effect(() => {
-  const addresses = data.addresses.get().value
-  const address = addresses?.at(0)
-  const chain = data.chain.get(['from']).value
-  if (!chain || !address) return
-  const balance = data.balance.get(chain, address, ['dzhv']).f.value
-  if (balance === null) return
-  dispBalance.value = btos(balance, 18)
-})
-
-effect(() => {
-  const addresses = data.addresses.get().value
-  const address = addresses?.at(0)
-  const chain = data.chain.get(['from']).value
-  if (!chain || !address) return
-  const a = data.balance.get(chain, address, ['dzhv'])
-  loading.value = state.loading(a).value ? 'loading' : ''
-})
-
-export function Balance() {
-
+function _Balance({ display, loading }: BalanceProps) {
   return (
-    <div class={`
-      row-start-1 col-start-1 col-span-2 w-64 h-8
-      p-2
-      flex items-center
-      font-mono
-      brightness-75
-      rounded-full border border-transparent
-      ${loading.value}
-    `}>
-      <div class="inline-block mr-1 text-xs">Balance:</div>
-      <div class="inline-block overflow-hidden overflow-ellipsis">{dispBalance}</div>
-      <div class="inline-block ml-2 select-none text-xs">DZHV</div>
+    <div
+      class={`
+        row-start-1 col-start-1 col-span-2 w-48 h-6
+        flex items-center
+        font-mono
+        brightness-75
+      `}
+    >
+      <div
+        class={`
+        flex items-center
+        max-w-48
+        px-2
+        rounded-full border border-transparent
+        ${loading}
+      `}
+      >
+        <div class="mr-1 text-xs">Balance:</div>
+        <div class="overflow-hidden overflow-ellipsis">{display}</div>
+        <div class="ml-2 select-none text-xs">DZHV</div>
+      </div>
     </div>
   );
+}
+
+export function Balance() {
+  const display = new Signal("0");
+  const loading = new Signal("");
+  const signals = { display, loading };
+
+  const balance = <_Balance {...{ ...signals }} />;
+
+  return Object.assign(balance, signals);
 }

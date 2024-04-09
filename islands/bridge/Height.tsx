@@ -1,26 +1,11 @@
-import { Signal, effect } from "@preact/signals";
-import { data, state } from "lib/bridge/mod.ts";
+import { Signal } from "@preact/signals";
 
-const loading = new Signal("")
+type HeightProps = { display: Signal<string>; loading: Signal<string> };
 
-const dispHeight = new Signal("0")
+const dispHeight = new Signal("0");
+const loading = new Signal("");
 
-effect(() => {
-  const chain = data.chain.get(['from']).value
-  if (!chain) return
-  const height = data.height.get(chain).f.value
-  if (height === null) return
-  dispHeight.value = String(height)
-})
-
-effect(() => {
-  const chain = data.chain.get(['from']).value
-  if (!chain) return
-  const a = data.height.get(chain)
-  loading.value = state.loading(a).value ? 'loading' : ''
-})
-
-export function Height() {
+function _Height({ display, loading }: HeightProps) {
   return (
     <div
       class={`
@@ -31,10 +16,20 @@ export function Height() {
         rounded-xl
         text-sm
         font-mono
-        ${loading.value}
-      `} 
+        ${loading}
+      `}
     >
-      {dispHeight}
+      {display}
     </div>
-  )
+  );
+}
+
+export function Height() {
+  const display = new Signal("0");
+  const loading = new Signal("");
+  const signals = { display, loading };
+
+  const height = <_Height {...{ ...signals }} />;
+
+  return Object.assign(height, signals);
 }
