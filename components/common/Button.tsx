@@ -4,6 +4,10 @@ import { JSX } from "preact";
 type ButtonProps = {
   disabled?: Signal<boolean>;
   textSize?: Signal<undefined | string>;
+  weight?: string;
+  width?: string;
+  height?: string;
+  active?: Signal<boolean>;
 };
 
 export function Button(
@@ -11,23 +15,27 @@ export function Button(
     & ButtonProps
     & Omit<JSX.HTMLAttributes<HTMLDivElement>, "disabled">,
 ) {
-  const { disabled, textSize, onClick } = props;
+  const { active, weight, width, height, disabled, textSize, onClick } = props;
   return (
     <div
       onClick={(e) => disabled?.value ? () => {} : onClick?.(e)}
       class={`
-        w-40 h-10
+        ${width ?? "w-40"} ${height ?? "h-10"}
         select-none
         ${textSize?.value ?? "text-2xl"}
         flex items-center justify-center
-        font-light
+        ${weight ?? "font-light"}
         shadow-lg rounded-lg
-        ${disabled?.value ? "" : "hover:scale-[102%] active:scale-[98%]"}
         ${
-        disabled?.value
-          ? "brightness-90"
-          : `hover:brightness-95 active:brightness-110
-            dark:hover:brightness-105 dark:active:brightness-90`
+        active?.value
+          ? "scale-[98%] brightness-110 dark:brightness-90"
+          : `${disabled?.value ? "" : "hover:scale-[102%] active:scale-[98%]"}
+              ${
+            disabled?.value
+              ? "brightness-90"
+              : `hover:brightness-95 active:brightness-110
+                    dark:hover:brightness-105 dark:active:brightness-90`
+          }`
       }
         border border-[#e9e9e9] dark:border-[#ffffff1f]
         ${disabled?.value ? "cursor-auto" : "cursor-pointer"}
