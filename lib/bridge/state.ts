@@ -9,7 +9,7 @@ const key = ["state"];
  * The idea is the "back" signal is used for progating throughout preact
  * And the "front" signal is what is displayed to the user
  */
-export type A<T> = { b: Signal<T>; f: Signal<T> };
+export type A<T> = { b: Signal<T>; f: Signal<T>; l: Signal<string> };
 
 /**
  * The S type
@@ -27,28 +27,19 @@ type S = Set<A<unknown>>;
 type M = Map<A<unknown>, unknown>;
 
 /**
- * The L type
- * A map of the A type to a signal of a boolean value.
- * We use this to check if our A type is in either the M type map
- * or the S type set.
- * The idea is to use this as a lookup to check if something is "loading"
- */
-type L = Map<A<unknown>, Signal<boolean>>
-
-/**
  * The B type
  * A mapping of A types to abort controllers.
  * These controllers should be controlling the requests that the A types are
  * making in order to update.
  * invalidating an A type should call this controller if it exists
  */
-type B = Map<A<unknown>, AbortController>
+type B = Map<A<unknown>, AbortController>;
 
 /**
  * The C type
  * A set of callback functions to execute when the current S set empties.
  */
-type C = Set<(...a:unknown[])=>unknown>
+type C = Set<(...a: unknown[]) => unknown>;
 
 /**
  * The T type
@@ -56,7 +47,7 @@ type C = Set<(...a:unknown[])=>unknown>
  * This object can be used to batch update values while allowing
  * reactions to occur in real time while batches are being built
  */
-type T = { m: M; s: S, l: L, b: B, c: C };
+type T = { m: M; s: S; b: B; c: C };
 
 /**
  * ensure the state object is created
@@ -65,9 +56,8 @@ function ensure() {
   return dzkv.ensure<T>(key, {
     m: new Map(),
     s: new Set(),
-    l: new Map(),
     b: new Map(),
-    c: new Set()
+    c: new Set(),
   });
 }
 
@@ -84,11 +74,10 @@ export function get() {
  * this adds the A type to the S type set of our state
  */
 export function invalidate(a: A<unknown>) {
-  const { s, l, b } = get()
+  const { s, b } = get();
   s.add(a);
-  if (l.has(a)) l.get(a)!.value = true
-  else l.set(a, new Signal(true))
-  b.get(a)?.abort?.()
+  b.get(a)?.abort?.();
+  a.l.value = "loading";
 }
 
 /**
@@ -102,23 +91,18 @@ export function invalidate(a: A<unknown>) {
  * after all A types front signals are updated, we clear the M type map
  */
 export function suggest<T>(a: A<T>, value: T) {
-  const { m, s, l, c } = get();
+  const { m, s, c } = get();
   m.set(a, value);
   s.delete(a);
   if (s.size == 0) {
     batch(() => {
       for (const [a, v] of m.entries()) {
         a.f.value = v;
-        if (l.has(a)) l.get(a)!.value = false
+        a.l.value = "";
       }
     });
     m.clear();
-    for (const f of c.values()) f()
-    c.clear()
+    for (const f of c.values()) f();
+    c.clear();
   }
-}
-
-export function loading(a: A<unknown>) {
-  if (!get().l.has(a)) get().l.set(a, new Signal(false))
-  return get().l.get(a)! 
 }
