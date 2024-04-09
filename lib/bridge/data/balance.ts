@@ -1,107 +1,133 @@
-import { effect, Signal } from "@preact/signals";
-import { Chain } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/types/chain.ts";
+import { Signal } from "@preact/signals";
 import z from "https://deno.land/x/zod@v3.22.4/index.ts";
 import { dzkv, ejra } from "lib/mod.ts";
-import { state, data } from "lib/bridge/mod.ts";
-import { A } from 'lib/bridge/state.ts'
-import { Options } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/ejra@0.0.8-toad/types/Params.ts"
+import { data } from "lib/bridge/mod.ts";
+import { Options } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/ejra@0.0.10-toad/types/Params.ts";
+import { Chain } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/types/chain.ts";
 
-type T = A<null|bigint>
+export type SubKey = readonly [chainId: number, address: string, ...parts: unknown[]];
+type SubState = {
+  chainId: number;
+  address: string;
+  parts: unknown[];
+  height: bigint;
+};
+export type State = { subState: SubState; value: bigint };
+export type MaybeState = null | State;
+type StateSignal = Signal<MaybeState>;
 
-function key(chain: Chain, address:string, id:string[]=[]) {
-  return ["balances", chain, address, ...id];
+function key(subKey: SubKey) {
+  return ["balance", ...subKey];
 }
 
-function ensure(chain: Chain, address:string, id:string[]=[]) {
-  return dzkv.ensure<T>(key(chain, address, id), {
-    b: new Signal(null),
-    f: new Signal(null)
-  })
+function ensure(subKey: SubKey) {
+  return dzkv.ensure<StateSignal>(key(subKey), new Signal(null));
 }
 
-export function get(chain: Chain, address:string, id:string[]=[]) {
-  ensure(chain, address, id);
-  return dzkv.get<T>(key(chain, address, id))!;
+export function get(subKey: SubKey) {
+  ensure(subKey);
+  return dzkv.get<StateSignal>(key(subKey))!;
 }
 
-function set(chain: Chain, address:string, id: string[]=[], balance:bigint) {
-  get(chain, address, id).b.value = balance
-  setTimeout(() => state.suggest(get(chain, address, id), balance), 0)
-  console.log('suggest balance', balance)
+function set(subKey: SubKey, state: State) {
+  get(subKey).value = state;
 }
 
-export function invalidate(chain: Chain, address:string, id: string[]=[]) {
-  console.log('invalidate balance')
-  state.invalidate(get(chain, address, id))
-}
+type Nullable<T> = { [k in keyof T]: null | T[k] };
+type GetValueArgs = {
+  chain: Chain;
+  url: string;
+  address: string;
+  height: bigint;
+  controller: AbortController;
+};
+const getValueArgs: Nullable<GetValueArgs> & { controller: AbortController } = {
+  chain: null,
+  url: null,
+  address: null,
+  height: null,
+  controller: new AbortController(),
+};
+const heightWatchDisposer: { value: null | (() => void) } = { value: null };
 
-effect(async () => {
+async function getValue(args: GetValueArgs) {
+  const { chain, url, address, height, controller } = args;
+  const { chainId } = chain;
+  const parts = ["dzhv"];
+  const subKey: SubKey = [chainId, address, ...parts];
+  const subState: SubState = { chainId, address, height, parts };
 
-  // get dependencies
-  const addresses = data.addresses.get().value
-  const address = addresses?.at(0)
-  const chain = data.chain.get(['from']).value
-  const url = chain?.rpc.at(0)
-  if (!chain || !url || !address) return
-  const height = data.height.get(chain).b.value
-  if (height === null) return
+  if (height <= (get(subKey).value?.subState.height ?? -Infinity)) return;
+  if (controller.signal.aborted) return;
 
-  invalidate(chain, address, ['dzhv'])
-
-  // create and update controller for state B type
-  const controller = new AbortController()
-  const { signal } = controller
-  state.get().b.set(get(chain, address, ['dzhv']), controller)
-  const options = new Options({ signal })
-
-  // get the balance, returning if error
   const input = `0x70a08231${address.slice(2).padStart(64, "0")}`;
   const to = "0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe";
-  const balance = await ejra.call(url, { to, input }, height, options)
+  const tx = { to, input };
+  const options = new Options({ signal: controller.signal });
+  const value = await ejra.call(url, tx, height, options)
     .then(z.instanceof(Error).or(z.string().transform(BigInt)).parseAsync)
     .catch((reason: Error) => reason);
-  if (balance instanceof Error) return
 
-  set(chain, address, ['dzhv'], balance)
+  if (controller.signal.aborted) return;
+  if (value instanceof Error) return;
 
-})
+  const state: State = { subState, value };
+  set(subKey, state);
+}
 
-// const addressesKey = ["addresses", "p6963"];
-// const fromChainKey = ["chains", "from"];
+async function onHeightChange(state: data.height.MaybeState) {
+  if (state === null) return;
+  getValueArgs.height = state.value;
+  if (!Object.values(getValueArgs).includes(null)) {
+    await getValue(getValueArgs as NonNullable<GetValueArgs>);
+  }
+  data.height.symbol.value = Symbol();
+}
 
-// type AddressesSignal = Signal<string[]>;
-// type ChainSignal = Signal<null | Chain>;
-// type BigintSignal = Signal<null | bigint>;
+function onChainChange(state: data.chain.MaybeState) {
+  getValueArgs.controller.abort();
+  getValueArgs.controller = new AbortController();
+  heightWatchDisposer.value?.();
+  getValueArgs.height = null;
+  getValueArgs.chain = null;
+  getValueArgs.url = null;
+  if (!state) return;
+  const chain = state.value;
+  const { chainId } = chain;
+  getValueArgs.chain = state.value;
+  getValueArgs.height = data.height.get([chainId]).value?.value ?? null;
+  heightWatchDisposer.value = data.height.get([chainId]).subscribe(
+    onHeightChange,
+  );
+  const url = chain.rpc.at(0);
+  if (!url) return;
+  getValueArgs.url = url;
+  if (Object.values(getValueArgs).includes(null)) return;
+  getValue(getValueArgs as NonNullable<GetValueArgs>);
+}
 
-// dzkv.ensure<AddressesSignal>(addressesKey, new Signal([]));
-// dzkv.ensure<ChainSignal>(fromChainKey, new Signal(null));
+function onAddressesChange(state: data.addresses.MaybeState) {
+  getValueArgs.controller.abort();
+  getValueArgs.controller = new AbortController();
+  getValueArgs.address = null;
+  if (!state) return;
+  const addresses = state.value;
+  const address = addresses.at(0);
+  if (!address) return;
+  getValueArgs.address = address;
+  if (Object.values(getValueArgs).includes(null)) return;
+  getValue(getValueArgs as NonNullable<GetValueArgs>);
+}
 
-// effect(async () => {
-//   // get dependencies
-//   const chain = dzkv.get<ChainSignal>(fromChainKey)!.value;
-//   const url = chain?.rpc.at(0);
-//   const address = dzkv.get<AddressesSignal>(addressesKey)!.value.at(0);
-//   if (!chain || !url || !address) return;
-//   // create height key and ensure height signal exists for this chain
-//   const heightKey = ["heights", chain];
-//   dzkv.ensure<BigintSignal>(heightKey, new Signal(null));
-//   // get the height, logging error if it exists
-//   const height = dzkv.get<BigintSignal>(heightKey)!.value;
-//   if (!height) return;
+function onChainIdChange() {
+  getValueArgs.controller.abort();
+  getValueArgs.controller = new AbortController();
+  heightWatchDisposer.value?.();
+  getValueArgs.height = null;
+  getValueArgs.chain = null;
+  getValueArgs.url = null;
+}
 
-//   // get balance
-//   const input = `0x70a08231${address.slice(2).padStart(64, "0")}`;
-//   const to = "0x3419875b4d3bca7f3fdda2db7a476a79fd31b4fe";
-//   const balance = await ejra.call(url, { input, to }, height)
-//     .then(z.instanceof(Error).or(z.string().transform(BigInt)).parseAsync)
-//     .catch((reason: Error) => reason);
-//   if (balance instanceof Error) return;
-
-//   // update balance
-//   const balanceKey = ["balances", chain, "dzhv"];
-//   if (!dzkv.ensure<BigintSignal>(balanceKey, new Signal(balance))) {
-//     dzkv.get<BigintSignal>(balanceKey)!.value = balance;
-//   }
-
-//   console.log({ height, balanceKey, balance });
-// });
+data.chain.get(["from"]).subscribe(onChainChange);
+data.addresses.get().subscribe(onAddressesChange);
+data.chainId.get(["from"]).subscribe(onChainIdChange);

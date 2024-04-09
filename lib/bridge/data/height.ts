@@ -1,97 +1,94 @@
-import { effect, Signal } from "@preact/signals";
-import { Chain } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/types/chain.ts";
+import { Signal } from "@preact/signals";
 import { dzkv, ejra } from "lib/mod.ts";
-import { state, data } from "lib/bridge/mod.ts";
-import { A } from 'lib/bridge/state.ts'
-import { Options } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/ejra@0.0.8-toad/types/Params.ts";
+import { data } from "lib/bridge/mod.ts";
+import { Options } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/ejra@0.0.10-toad/types/Params.ts";
+import { Chain } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/types/chain.ts";
 
-type T = A<null|bigint>
+export type SubKey = readonly [chainId: number];
+type SubState = { chainId: number };
+export type State = { subState: SubState; value: bigint };
+export type MaybeState = null | State;
+type StateSignal = Signal<MaybeState>;
 
-function key(chain: Chain) {
-  return ["heights", chain];
+function key(subKey: SubKey) {
+  return ["height", ...subKey];
 }
 
-function ensure(chain: Chain) {
-  return dzkv.ensure<T>(key(chain), {
-    b: new Signal(null),
-    f: new Signal(null),
-  });
+function ensure(subKey: SubKey) {
+  return dzkv.ensure<StateSignal>(key(subKey), new Signal(null));
 }
 
-export function get(chain: Chain) {
-  ensure(chain);
-  return dzkv.get<T>(key(chain))!;
+export function get(subKey: SubKey) {
+  ensure(subKey);
+  return dzkv.get<StateSignal>(key(subKey))!;
 }
 
-function set(chain: Chain, height: bigint) {
-  get(chain).b.value = height;
-  setTimeout(() => state.suggest(get(chain), height), 0)
-  console.log('suggest height', height)
+function set(subKey: SubKey, state: State) {
+  get(subKey).value = state;
 }
 
-function invalidate(chain: Chain) {
-  console.log('invalidate height')
-  state.invalidate(get(chain))
-}
-
-type U = Signal<symbol>;
-
-const sym = {
-  key: function (chain: Chain) {
-    return [...key(chain), "symbol"];
-  },
-
-  ensure: function (chain: Chain) {
-    return dzkv.ensure<U>(this.key(chain), new Signal(Symbol()));
-  },
-
-  get: function (chain: Chain) {
-    this.ensure(chain);
-    return dzkv.get<U>(this.key(chain))!;
-  },
-
-  refresh: function (chain: Chain) {
-    setTimeout(() => this.get(chain).value = Symbol(), 0);
-  },
+type Nullable<T> = { [k in keyof T]: null | T[k] };
+type GetValueArgs = {
+  chain: Chain;
+  url: string;
+  controller: AbortController;
 };
+const getValueArgs: Nullable<GetValueArgs> & { controller: AbortController } = {
+  chain: null,
+  url: null,
+  controller: new AbortController(),
+};
+export const symbol = new Signal(Symbol());
+symbol.subscribe(onSymbolChange);
 
-[["from"], ["to"]].map((id) =>
-  effect(async () => {
+async function getValue(args: GetValueArgs) {
+  const { chain, url, controller } = args;
+  const { chainId } = chain;
+  const subKey: SubKey = [chainId];
+  const subState: SubState = { chainId };
 
-    // get dependencies
-    const chain = data.chain.get(id).value;
-    const url = chain?.rpc.at(0);
-    if (!chain || !url) return;
-    sym.get(chain).value;
+  if (controller.signal.aborted) return;
 
-    // create and update controller for state B type
-    const controller = new AbortController()
-    const { signal } = controller
-    state.get().b.set(get(chain), controller)
-    const options = new Options({ signal })
+  const options = new Options({ signal: controller.signal });
+  const value = await ejra.height(url, options)
+    .catch((reason: Error) => new Error(String(reason)));
 
-    // get height, returning if error
-    const height = await ejra.height(url, options)
-      .catch((reason:Error) => reason)
-    if (height instanceof Error) {
-      state.get().s.delete(get(chain))
-      sym.refresh(chain)
-      return 
-    }
+  if (controller.signal.aborted) return;
+  if (value instanceof Error) return symbol.value = Symbol();
+  if (value <= (get(subKey).value?.value ?? -Infinity)) {
+    return symbol.value = Symbol();
+  }
 
-    // check if the new height is > prevHeight (or prevHeight null)
-    const prevHeight = get(chain).b.value;
-    if (prevHeight && height <= prevHeight) {
-      state.get().s.delete(get(chain))
-      sym.refresh(chain);
-      return 
-    }
+  const state: State = { subState, value };
+  set(subKey, state);
+}
 
-    invalidate(chain)
+function onSymbolChange() {
+  if (Object.values(getValueArgs).includes(null)) return;
+  getValue(getValueArgs as NonNullable<GetValueArgs>);
+}
 
-    state.get().c.add(() => sym.refresh(chain));
+function onChainChange(state: data.chain.MaybeState) {
+  getValueArgs.controller.abort();
+  getValueArgs.controller = new AbortController();
+  getValueArgs.chain = null;
+  getValueArgs.url = null;
+  if (!state) return;
+  const chain = state.value;
+  getValueArgs.chain = chain;
+  const url = chain.rpc.at(0);
+  if (!url) return;
+  getValueArgs.url = url;
+  if (Object.values(getValueArgs).includes(null)) return;
+  getValue(getValueArgs as NonNullable<GetValueArgs>);
+}
 
-    set(chain, height);
+function onChainIdChange() {
+  getValueArgs.controller.abort();
+  getValueArgs.controller = new AbortController();
+  getValueArgs.chain = null;
+  getValueArgs.url = null;
+}
 
-  })
-);
+data.chain.get(["from"]).subscribe(onChainChange);
+data.chainId.get(["from"]).subscribe(onChainIdChange);

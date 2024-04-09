@@ -1,21 +1,23 @@
 import { Signal } from "@preact/signals";
 import { dzkv } from "lib/mod.ts";
 
-type T = Signal<string[]>;
+export type State = { value: string[] };
+export type MaybeState = null | State;
+type StateSignal = Signal<MaybeState>;
 
-export function key() {
+function key() {
   return ["addresses"];
 }
 
-export function ensure() {
-  dzkv.ensure<T>(key(), new Signal([]));
+function ensure() {
+  return dzkv.ensure<StateSignal>(key(), new Signal(null));
 }
 
 export function get() {
   ensure();
-  return dzkv.get<T>(key())!;
-};
+  return dzkv.get<StateSignal>(key())!;
+}
 
-export function set(addresses:string[]) {
-  get().value = addresses;
-};
+export function set(state: State) {
+  get().value = state;
+}
