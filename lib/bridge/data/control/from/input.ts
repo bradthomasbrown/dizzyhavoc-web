@@ -1,10 +1,10 @@
 import { Signal } from "@preact/signals";
 import { dzkv } from "lib/mod.ts";
 
-type T = Signal<null|string>;
+type T = Signal<null | bigint>;
 
 export function key() {
-  return ["number"];
+  return ["input"];
 }
 
 export function ensure() {
@@ -14,8 +14,8 @@ export function ensure() {
 export function get() {
   ensure();
   return dzkv.get<T>(key())!;
-};
+}
 
-export function set(number:string) {
-  get().value = number;
-};
+export function set(value: bigint) {
+  get().value = value;
+}
