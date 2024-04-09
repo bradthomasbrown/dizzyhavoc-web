@@ -1,6 +1,6 @@
 import z from "https://deno.land/x/zod@v3.22.4/index.ts";
 import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.1/mod.ts";
-import { Blockie, Choice, dzkv, randomUuid } from "lib/mod.ts";
+import { Blockie, Choice, dzkv, randomUuid, toad } from "lib/mod.ts";
 import { Signal } from "@preact/signals";
 import { JSX } from "preact/jsx-runtime";
 import { Which } from "islands/common/mod.ts";
@@ -8,6 +8,8 @@ import { Connector, ConnectorState } from "islands/common/mod.ts";
 import { query } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/mod.ts";
 import { Chain } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/types/chain.ts";
 import { data } from "lib/bridge/mod.ts";
+import { Lazy } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/lazy@0.0.0/mod.ts";
+import { Snail } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/snail@0.0.3/mod.ts";
 
 declare global {
   interface WindowEventMap {
@@ -60,10 +62,8 @@ function dummyInfo() {
   return { name: "Unknown", uuid: randomUuid(), icon: Blockie.randB64() };
 }
 
-dzkv.set<ProviderMap>(["providerMap"], new Map());
-
 export async function getProviders() {
-  const providers = dzkv.get<ProviderMap>(["providerMap"])!;
+  const providers: ProviderMap = new Map();
   const g = g1193();
 
   // check 5749
@@ -143,10 +143,6 @@ export async function getProviders() {
 }
 
 async function onPick(p6963: P6963) {
-  // update p6963, creating if needed
-  if (!dzkv.get(["p6963"])) dzkv.set(["p6963"], new Signal(p6963));
-  else dzkv.get<Signal<P6963>>(["p6963"])!.value = p6963;
-
   // set connector to loading, handle account changes, request accounts
   Connector.set(ConnectorState.LOADING);
   await p6963.provider.request({ method: "eth_requestAccounts", params: [] })
@@ -173,30 +169,18 @@ async function onPick(p6963: P6963) {
 }
 
 function onAccountsChanged(accounts: string[]) {
-  
-  // update addresses if different
-  if (String(accounts) !== String(data.addresses.get())) {
-    data.addresses.set(accounts)
-  }
-
-  // if there are no addresses, set Connector back to ready
-  Connector.set(ConnectorState.READY);
+  if (!accounts.length) Connector.set(ConnectorState.READY);
+  if (String(accounts) === String(data.addresses.get())) return;
+  const value = accounts;
+  const state: data.addresses.State = { value };
+  data.addresses.set(state);
 }
 
-async function onChainChanged(chainId: number) {
-  if (!dzkv.get(["chainmap"])) dzkv.set(["chainmap"], new Map());
-  const chainmap = dzkv.get<Map<number, Chain>>(["chainmap"])!;
-
-  if (!chainmap.has(chainId)) {
-    const chain = await query(chainId);
-    if (chain instanceof Error) {
-      console.error(chain);
-      return;
-    }
-    chainmap.set(chainId, chain);
-  }
-
-  const chain = chainmap.get(chainId)!;
-  data.chain.set(["p6963"], chain);
-  data.chain.set(["from"], chain);
+function onChainChanged(chainId: number) {
+  const parts = ["from"];
+  const subKey: data.chainId.SubKey = [...parts];
+  const subState: data.chainId.SubState = { parts };
+  const value = chainId;
+  const state: data.chainId.State = { subState, value };
+  data.chainId.set(subKey, state);
 }
