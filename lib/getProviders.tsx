@@ -5,11 +5,8 @@ import { Signal } from "@preact/signals";
 import { JSX } from "preact/jsx-runtime";
 import { Which } from "islands/common/mod.ts";
 import { Connector, ConnectorState } from "islands/common/mod.ts";
-import { query } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/mod.ts";
-import { Chain } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/chainlist@0.0.5/lib/types/chain.ts";
-import { data } from "lib/bridge/mod.ts";
-import { Lazy } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/lazy@0.0.0/mod.ts";
-import { Snail } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/snail@0.0.3/mod.ts";
+import { onAccountsChanged } from "lib/bridge/madness/eventHandlers/onAccountsChange.ts";
+import { onChainIdChanged } from "lib/bridge/madness/eventHandlers/onChainIdChange.ts";
 
 declare global {
   interface WindowEventMap {
@@ -155,7 +152,7 @@ async function onPick(p6963: P6963) {
     "chainChanged",
     (s) =>
       z.string().transform((s) => Number(BigInt(s))).parseAsync(s)
-        .then((chainId) => onChainChanged(chainId))
+        .then((chainId) => onChainIdChanged(chainId))
         .catch((reason: Error) => console.error(reason)),
   );
 
@@ -164,23 +161,6 @@ async function onPick(p6963: P6963) {
 
   p6963.provider.request({ method: "eth_chainId", params: [] })
     .then(z.string().transform((s) => Number(BigInt(s))).parseAsync)
-    .then((chainId) => onChainChanged(chainId))
+    .then((chainId) => onChainIdChanged(chainId))
     .catch((reason: Error) => console.error(reason));
-}
-
-function onAccountsChanged(accounts: string[]) {
-  if (!accounts.length) Connector.set(ConnectorState.READY);
-  if (String(accounts) === String(data.addresses.get())) return;
-  const value = accounts;
-  const state: data.addresses.State = { value };
-  data.addresses.set(state);
-}
-
-function onChainChanged(chainId: number) {
-  const parts = ["from"];
-  const subKey: data.chainId.SubKey = [...parts];
-  const subState: data.chainId.SubState = { parts };
-  const value = chainId;
-  const state: data.chainId.State = { subState, value };
-  data.chainId.set(subKey, state);
 }
