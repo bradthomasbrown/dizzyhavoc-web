@@ -1,4 +1,4 @@
 @keyframes loading {
-  0%{background-position:175% 0%}
-  100%{background-position:-75% 0%}
+  0%{background-position:left -30px bottom -30px}
+  100%{background-position:right -30px top -30px}
 }

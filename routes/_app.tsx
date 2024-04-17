@@ -1,6 +1,7 @@
 import { Footer } from "../components/common/Footer.tsx";
 import { NavBar } from "../islands/common/Navbar.tsx";
 import { type PageProps } from "$fresh/server.ts";
+;['loading-[#80ffff2b]', 'loading-[#0], unload-[]']
 export default function App({ Component }: PageProps) {
   return (
     <html>
