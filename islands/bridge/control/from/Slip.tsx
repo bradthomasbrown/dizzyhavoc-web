@@ -1,30 +1,20 @@
 import { batch, Signal } from "@preact/signals";
 import { JSX } from "preact/jsx-runtime";
-import { data } from "lib/bridge/mod.ts";
 import { useRef } from "preact/hooks";
-import * as percents from "islands/bridge/control/from/Percents.tsx";
+import { signals, deactivate } from "islands/bridge/control/from/Percents.tsx";
+import { dzkv } from "lib/dzkv.ts";
 
-const control = data.control.from;
 
-/**
- * how many mousemove events to skip before updating the percent
- */
-const skip = 10;
-/**
- * tracker that counts down on each mousemove event
- */
-let track = skip;
+let foo = 0
+const scale = 30
 
 function updatePosition(e: MouseEvent) {
   if (!e.movementX) return;
+  foo = Math.min(100 * scale, Math.max(0, foo + e.movementX))
   batch(() => {
-    track--;
-    if (track > 0) return;
-    track = skip;
-    const { get, set } = control.percent;
-    const percent = Math.min(100, Math.max(0, get().value + e.movementX));
+    const percent = Math.min(100, Math.max(0, Math.floor(foo / scale)));
     signal.value = percent;
-    set(percent);
+    dzkv.set<number>(['control', 'from', 'slipPercent'], percent);
   });
 }
 
@@ -33,13 +23,17 @@ function onPointerDown(
   active: Signal<boolean>,
 ) {
   if (navigator.maxTouchPoints > 0) return;
-  control.type.set("percent");
-  percents.deactivate();
+  dzkv.set<string>(['control', 'from', 'inputType'], 'percent');
   if (!active.value) {
+    deactivate();
     signal.value = 0;
-    control.percent.set(0);
+    dzkv.set<number>(['control', 'from', 'rangeInput'], 0);
+    active.value = true;
+  } else {
+    signals
+      .filter(signal => signal !== active)
+      .forEach(signal => signal.value = false)
   }
-  active.value = true;
   e.currentTarget.requestPointerLock();
   document.addEventListener("mousemove", updatePosition, false);
 }
@@ -65,13 +59,17 @@ export function Slip({ active }: { active: Signal<boolean> }) {
       e.target !== div.current &&
       e.target !== disp.current
     ) return;
-    control.type.set("percent");
-    percents.deactivate();
+    dzkv.set<string>(['control', 'from', 'inputType'], 'percent');
     if (!active.value) {
+      deactivate();
       signal.value = 0;
-      control.percent.set(0);
+      dzkv.set<number>(['control', 'from', 'rangeInput'], 0);
+      active.value = true;
+    } else {
+      signals
+        .filter(signal => signal !== active)
+        .forEach(signal => signal.value = false)
     }
-    active.value = true;
     trackedTouch.value = Object.values(e.targetTouches).at(0) ?? null;
     document.addEventListener("touchcancel", onTouchCancel);
     document.addEventListener("touchmove", onTouchMove);
@@ -87,7 +85,7 @@ export function Slip({ active }: { active: Signal<boolean> }) {
     const delta = t.screenX - tt.screenX;
     const percent = Math.floor(Math.min(100, Math.max(0, delta / 1.5)));
     signal.value = percent;
-    control.percent.set(percent);
+    dzkv.set<number>(['control', 'from', 'rangeInput'], percent);
   }
 
   function onTouchEnd(e: TouchEvent) {

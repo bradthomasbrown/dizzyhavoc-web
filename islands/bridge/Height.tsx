@@ -1,35 +1,19 @@
-import { Signal } from "@preact/signals";
+import { loading, state } from "lib/bridge/madness/dzkv.ts";
 
-type HeightProps = { display: Signal<string>; loading: Signal<string> };
-
-const dispHeight = new Signal("0");
-const loading = new Signal("");
-
-function _Height({ display, loading }: HeightProps) {
+export function Height() {
   return (
     <div
       class={`
         select-none
         absolute bottom-1 right-1
-        border border-transparent
         px-1
-        rounded-xl
+        rounded-full border
         text-sm
         font-mono
-        ${loading}
+        ${loading('height')!.value}
       `}
     >
-      {display}
+      {state<bigint>('height')!.value}
     </div>
   );
-}
-
-export function Height() {
-  const display = new Signal("0");
-  const loading = new Signal("");
-  const signals = { display, loading };
-
-  const height = <_Height {...{ ...signals }} />;
-
-  return Object.assign(height, signals);
 }

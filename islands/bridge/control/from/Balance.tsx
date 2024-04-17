@@ -1,8 +1,6 @@
-import { Signal } from "@preact/signals";
+import { loading, state } from "lib/bridge/madness/dzkv.ts";
 
-type BalanceProps = { display: Signal<string>; loading: Signal<string> };
-
-function _Balance({ display, loading }: BalanceProps) {
+export function Balance() {
   return (
     <div
       class={`
@@ -17,24 +15,16 @@ function _Balance({ display, loading }: BalanceProps) {
         flex items-center
         max-w-48
         px-2
-        rounded-full border border-transparent
-        ${loading}
+        rounded-full border
+        ${loading('dzhvBalance')!.value}
       `}
       >
         <div class="mr-1 text-xs">Balance:</div>
-        <div class="overflow-hidden overflow-ellipsis">{display}</div>
+        <div class="overflow-hidden overflow-ellipsis">
+          {state<bigint>('dzhvBalance')!.value ?? 0}
+        </div>
         <div class="ml-2 select-none text-xs">DZHV</div>
       </div>
     </div>
   );
-}
-
-export function Balance() {
-  const display = new Signal("0");
-  const loading = new Signal("");
-  const signals = { display, loading };
-
-  const balance = <_Balance {...{ ...signals }} />;
-
-  return Object.assign(balance, signals);
 }

@@ -40,27 +40,25 @@ function onKeyDown(e: JSX.TargetedKeyboardEvent<HTMLInputElement>) {
   if (e.code == "KeyE") e.preventDefault();
 }
 
-const display = new Signal("");
-export const Input = Object.assign(
-  function () {
-    return (
-      <input
-        type="number"
-        class={`
-          row-start-2 col-start-1 col-span-1
-          w-32 h-10
-          px-2
-          [&::-webkit-outer-spin-button]:appearance-none
-          [&::-webkit-inner-spin-button]:appearance-none
-          text-xl
-          font-mono
-          bg-transparent
-        `}
-        placeholder="0"
-        value={display}
-        onKeyDown={onKeyDown}
-        onInput={onInput}
-      />
-    );
-  },
-);
+
+export function Input() {
+  return (
+    <input
+      type="number"
+      class={`
+        row-start-2 col-start-1 col-span-1
+        w-32 h-10
+        px-2
+        [&::-webkit-outer-spin-button]:appearance-none
+        [&::-webkit-inner-spin-button]:appearance-none
+        text-xl
+        font-mono
+        bg-transparent
+      `}
+      placeholder="0"
+      value={undefined}
+      onKeyDown={onKeyDown}
+      onInput={onInput}
+    />
+  );
+}

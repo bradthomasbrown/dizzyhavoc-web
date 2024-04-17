@@ -4,25 +4,15 @@ import { Percents } from "islands/bridge/control/from/Percents.tsx";
 import { Dollars } from "islands/bridge/control/from/Dollars.tsx";
 
 export function From() {
-  const balance = Balance();
-
-  const from = (
+  return (
     <div class="grid grid-rows-[auto,1fr] grid-cols-[auto,1fr]">
-      {balance}
-      {
-        /* <Input/>
+      <Balance/>
+      <Input/>
       <Dollars/>
-      <Percents/> */
-      }
-      {
-        /*
+      <Percents/>
       <div class="row-start-3 col-start-3 row-span-2 w-16 h-16">
-        <ChainPicker/>
+        {/* <ChainPicker/> */}
       </div>
-      */
-      }
     </div>
   );
-
-  return Object.assign(from, { balance });
 }

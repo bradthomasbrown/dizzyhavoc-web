@@ -2,9 +2,7 @@ import { Button } from "components/common/mod.ts";
 import { Signal } from "@preact/signals";
 import { Slip } from "islands/bridge/control/from/Slip.tsx";
 import * as slip from "islands/bridge/control/from/Slip.tsx";
-import { data } from "lib/bridge/mod.ts";
-
-const control = data.control.from;
+import { dzkv } from "lib/dzkv.ts";
 
 function PercentButton(props: { percent: number; active: Signal<boolean> }) {
   const { percent, active } = props;
@@ -17,8 +15,8 @@ function PercentButton(props: { percent: number; active: Signal<boolean> }) {
       weight="font-extralight"
       onClick={() => {
         slip.signal.value = 0;
-        control.type.set("percent");
-        control.percent.set(percent);
+        dzkv.set<string>(['control', 'from', 'inputType'], 'percent')
+        dzkv.set<number>(['control', 'from', 'rangeInput'], percent)
         deactivate();
         active.value = true;
       }}
@@ -28,7 +26,7 @@ function PercentButton(props: { percent: number; active: Signal<boolean> }) {
   );
 }
 
-const signals = Array(5).fill(0).map(() => new Signal(false));
+export const signals = Array(5).fill(0).map(() => new Signal(false));
 
 export function deactivate() {
   for (const signal of signals) signal.value = false;
