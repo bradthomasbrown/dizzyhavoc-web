@@ -3,6 +3,7 @@ import { dzkv } from "lib/dzkv.ts";
 import { state, loading } from "lib/bridge/madness/dzkv.ts";
 import { ejra } from "lib/bridge/madness/ejra/ejra.ts";
 import { robinController, goNext, repeat } from "lib/bridge/madness/robin.ts";
+import { codeMap } from "lib/bridge/madness/getters/getDzhvCode.ts"
 
 dzkv.set(['loading', 'height'], new Signal('unload-[]'))
 dzkv.set(['state', 'height'], new Signal())
@@ -23,9 +24,7 @@ export async function getHeight() {
   await snail.born
   loading('height')!.value = 'loading-[#80ffff2b]'
   const height = await snail.died.catch((r:Error) => r)
-  loading('height')!.value = signal.aborted
-    ? 'loading-[#ffbf0060]'
-    : 'unload-[]'
+  if (!signal.aborted) loading('height')!.value = 'unload-[]'
   
   // handle result
   if (signal.aborted) return
@@ -35,17 +34,25 @@ export async function getHeight() {
   if (
     (heightMap.get(rpc) ?? -Infinity) >= height
     && !(
-      loading('balance')!.value != 'unload-[]'
+      loading('dzhvBalance')!.value != 'unload-[]'
       || loading('dzhvCode')!.value != 'unload-[]'
     )
-  ) return repeat()
+  ) {
+    console.log('height repeat')
+    return repeat()
+  }
 
+  // set height in heightMap so we can know if height is new
   heightMap.set(rpc, height)
 
-  loading('dzhvCode')!.value = 'loading-[#ffbf0060]'
-  if (state<string>('account')!.value)
-    loading('balance')!.value = 'loading-[#ffbf0060]'
+  // if we don't have code, amberload code
+  if (!codeMap.get(rpc)) loading('dzhvCode')!.value = 'loading-[#ffbf0060]'
 
+  // if we have an account, amberload dzhv balance
+  if (state<string>('account')!.value)
+    loading('dzhvBalance')!.value = 'loading-[#ffbf0060]'
+
+  // update state and goNext
   state<bigint>('height')!.value = height
   return goNext()
 

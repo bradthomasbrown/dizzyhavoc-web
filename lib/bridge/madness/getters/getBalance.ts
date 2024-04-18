@@ -24,9 +24,7 @@ export async function getBalance() {
   await snail.born
   loading('balance')!.value = 'loading-[#80ffff2b]'
   const balance = await snail.died.catch((r:Error) => r)
-  loading('balance')!.value = signal.aborted
-    ? 'loading-[#ffbf0060]'
-    : 'unload-[]'
+  if (!signal.aborted) loading('balance')!.value = 'unload-[]'
 
   // handle result
   if (signal.aborted) return

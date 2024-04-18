@@ -17,7 +17,6 @@ export async function onChainIdChanged(chainId:number) {
   loading('height')!.value = 'loading-[#ffbf0060]'
   loading('dzhvCode')!.value = 'loading-[#ffbf0060]'
   if (state<string>('account')!.value) {
-    loading('balance')!.value = 'loading-[#ffbf0060]'
     loading('dzhvBalance')!.value = 'loading-[#ffbf0060]'
   }
 

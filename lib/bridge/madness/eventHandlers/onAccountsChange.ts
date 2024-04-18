@@ -16,7 +16,7 @@ export function onAccountsChanged(accounts:string[]) {
     state<string>('rpc')!.value
     && state<bigint>('height')!.value !== undefined
   )
-    loading('balance')!.value = 'loading-[#ffbf0060]'
+    loading('dzhvBalance')!.value = 'loading-[#ffbf0060]'
 
   // abort the robin controller
   try { robinController.value.abort() } catch (_) {0}

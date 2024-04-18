@@ -35,9 +35,7 @@ export async function getDzhvBalance() {
   await snail.born
   loading('dzhvBalance')!.value = 'loading-[#80ffff2b]'
   const balance = await snail.died.then(BigInt).catch((r:Error) => r)
-  loading('dzhvBalance')!.value = signal.aborted
-    ? 'loading-[#ffbf0060]'
-    : 'unload-[]'
+  if (!signal.aborted) loading('dzhvBalance')!.value = 'unload-[]'
 
   // handle result
   if (signal.aborted) return

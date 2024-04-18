@@ -29,9 +29,7 @@ export async function getChain() {
     chain = await snail.died
     chainMap.set(chainId, chain)
   } else chain = chainMap.get(chainId)!
-  loading('chain')!.value = signal.aborted
-    ? 'loading-[#ffbf0060]'
-    : 'unload-[]'
+  if (!signal.aborted) loading('chain')!.value = 'unload-[]'
 
   // update state, get url
   state<Chain>('chain')!.value = chain
