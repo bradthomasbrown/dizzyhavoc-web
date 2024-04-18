@@ -37,10 +37,7 @@ export async function getHeight() {
       loading('dzhvBalance')!.value != 'unload-[]'
       || loading('dzhvCode')!.value != 'unload-[]'
     )
-  ) {
-    console.log('height repeat')
-    return repeat()
-  }
+  ) return repeat()
 
   // set height in heightMap so we can know if height is new
   heightMap.set(rpc, height)

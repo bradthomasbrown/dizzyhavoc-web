@@ -20,6 +20,7 @@ export async function getDzhvCode() {
   const height = state<bigint>('height')!.value
   if (!rpc || height === undefined) return goNext()
 
+  // if we have code already, go next
   if (codeMap.get(rpc)) return goNext()
 
   // 🐌
@@ -31,7 +32,6 @@ export async function getDzhvCode() {
 
   // handle result
   if (signal.aborted) return
-  console.log('code goNext')
   if (code instanceof Error) return goNext()
   if (code && code != '0x') codeMap.set(rpc, true)
   state<string>('dzhvCode')!.value = code
