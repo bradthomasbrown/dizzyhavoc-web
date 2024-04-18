@@ -4,6 +4,11 @@ import { useRef } from "preact/hooks";
 import { signals, deactivate } from "islands/bridge/control/from/Percents.tsx";
 import { dzkv } from "lib/dzkv.ts";
 
+if(!dzkv.get<Signal<number>>(['control', 'from', 'percentValue']))
+  dzkv.set(['control', 'from', 'percentValue'], new Signal(0))
+
+if (!dzkv.get<Signal<string>>(['control', 'from', 'inputType']))
+  dzkv.set(['control', 'from', 'inputType'], new Signal('number'))
 
 let foo = 0
 const scale = 30
@@ -14,7 +19,7 @@ function updatePosition(e: MouseEvent) {
   batch(() => {
     const percent = Math.min(100, Math.max(0, Math.floor(foo / scale)));
     signal.value = percent;
-    dzkv.set<number>(['control', 'from', 'slipPercent'], percent);
+    dzkv.get<Signal<number>>(['control', 'from', 'percentValue'])!.value = percent;
   });
 }
 
@@ -23,11 +28,11 @@ function onPointerDown(
   active: Signal<boolean>,
 ) {
   if (navigator.maxTouchPoints > 0) return;
-  dzkv.set<string>(['control', 'from', 'inputType'], 'percent');
+  dzkv.get<Signal<string>>(['control', 'from', 'inputType'])!.value = 'percent';
   if (!active.value) {
     deactivate();
     signal.value = 0;
-    dzkv.set<number>(['control', 'from', 'rangeInput'], 0);
+    dzkv.get<Signal<number>>(['control', 'from', 'percentValue'])!.value = 0;
     active.value = true;
   } else {
     signals
@@ -59,11 +64,11 @@ export function Slip({ active }: { active: Signal<boolean> }) {
       e.target !== div.current &&
       e.target !== disp.current
     ) return;
-    dzkv.set<string>(['control', 'from', 'inputType'], 'percent');
+    dzkv.get<Signal<string>>(['control', 'from', 'inputType'])!.value = 'percent';
     if (!active.value) {
       deactivate();
       signal.value = 0;
-      dzkv.set<number>(['control', 'from', 'rangeInput'], 0);
+      dzkv.get<Signal<number>>(['control', 'from', 'percentValue'])!.value = 0;
       active.value = true;
     } else {
       signals

@@ -4,6 +4,12 @@ import { Slip } from "islands/bridge/control/from/Slip.tsx";
 import * as slip from "islands/bridge/control/from/Slip.tsx";
 import { dzkv } from "lib/dzkv.ts";
 
+if(!dzkv.get<Signal<number>>(['control', 'from', 'percentValue']))
+  dzkv.set(['control', 'from', 'percentValue'], new Signal(0))
+
+if (!dzkv.get<Signal<string>>(['control', 'from', 'inputType']))
+  dzkv.set(['control', 'from', 'inputType'], new Signal('number'))
+
 function PercentButton(props: { percent: number; active: Signal<boolean> }) {
   const { percent, active } = props;
   return (
@@ -15,8 +21,8 @@ function PercentButton(props: { percent: number; active: Signal<boolean> }) {
       weight="font-extralight"
       onClick={() => {
         slip.signal.value = 0;
-        dzkv.set<string>(['control', 'from', 'inputType'], 'percent')
-        dzkv.set<number>(['control', 'from', 'rangeInput'], percent)
+        dzkv.get<Signal<string>>(['control', 'from', 'inputType'])!.value = 'percent';
+        dzkv.get<Signal<number>>(['control', 'from', 'percentValue'])!.value = percent;
         deactivate();
         active.value = true;
       }}
@@ -44,6 +50,7 @@ export function Percents() {
       row-start-4 col-start-1 col-span-2
       w-48 h-8
       pt-1
+      px-1
       grid grid-cols-5 gap-1
       items-center
     `}
