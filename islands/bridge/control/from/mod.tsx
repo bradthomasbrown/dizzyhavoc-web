@@ -5,12 +5,12 @@ import { Dollars } from "islands/bridge/control/from/Dollars.tsx";
 
 export function From() {
   return (
-    <div class="grid grid-rows-[auto,1fr] grid-cols-[auto,1fr]">
+    <div class="grid grid-rows-[24px,40px,28px,36px] grid-cols-[192px,64px]">
       <Balance/>
       <Input/>
       <Dollars/>
       <Percents/>
-      <div class="row-start-3 col-start-3 row-span-2 w-16 h-16">
+      <div class="row-start-3 col-start-2 row-span-2 w-16 h-16">
         {/* <ChainPicker/> */}
       </div>
     </div>

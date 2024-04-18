@@ -2,7 +2,7 @@ export function Dollars() {
   return (
     <div
       class={`
-      row-start-3 col-start-1 col-span-1
+      row-start-3 col-start-1 col-span-2
       w-32 h-6
       px-2
       flex items-center
