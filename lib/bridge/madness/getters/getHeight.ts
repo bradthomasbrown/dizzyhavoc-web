@@ -2,8 +2,9 @@ import { Signal } from "@preact/signals-core";
 import { dzkv } from "lib/dzkv.ts";
 import { state, loading } from "lib/bridge/madness/dzkv.ts";
 import { ejra } from "lib/bridge/madness/ejra/ejra.ts";
-import { robinController, goNext, repeat } from "lib/bridge/madness/robin.ts";
+import { robinController, goNext, restart } from "lib/bridge/madness/robin.ts";
 import { codeMap } from "lib/bridge/madness/getters/getDzhvCode.ts"
+import { rpcMap } from "lib/bridge/madness/getters/getRpc.ts";
 
 dzkv.set(['loading', 'height'], new Signal('unload-[]'))
 dzkv.set(['state', 'height'], new Signal())
@@ -28,22 +29,22 @@ export async function getHeight() {
   
   // handle result
   if (signal.aborted) return
-  if (height instanceof Error) return repeat()
+  if (height instanceof Error) return restart()
 
-  // if known block, repeat, unless a height-dependent is loading
+  // if known block, restart, unless a height-dependent is loading
   if (
     (heightMap.get(rpc) ?? -Infinity) >= height
     && !(
       loading('dzhvBalance')!.value != 'unload-[]'
       || loading('dzhvCode')!.value != 'unload-[]'
     )
-  ) return repeat()
+  ) return restart()
 
   // set height in heightMap so we can know if height is new
   heightMap.set(rpc, height)
 
   // if we don't have code, amberload code
-  if (!codeMap.get(rpc)) loading('dzhvCode')!.value = 'loading-[#ffbf0060]'
+  if (!codeMap.get(rpcMap.get(rpc)!)) loading('dzhvCode')!.value = 'loading-[#ffbf0060]'
 
   // if we have an account, amberload dzhv balance
   if (state<string>('account')!.value)
