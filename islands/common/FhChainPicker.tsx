@@ -75,7 +75,6 @@ function onClick(title:string) {
   controller.value = new AbortController()
   getActiveChains()
   const choices = computed(() => [...activeChains.value].map(chainToChoice))
-  console.log(choices)
   const which = <Which {...{ title, choices, onPick, onCancel }} />
   dzkv.get<Signal<null | JSX.Element>>(["which"])!.value = which;
 }
