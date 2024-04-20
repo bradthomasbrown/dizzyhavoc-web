@@ -3,12 +3,13 @@ import { JSX } from "preact/jsx-runtime";
 import { dzkv } from "lib/mod.ts";
 import { Connector, ConnectorState } from "islands/common/mod.ts";
 
-export function WhichCancel() {
+export function WhichCancel({ onCancel }:{ onCancel: () => void; }) {
   function onClick() {
     batch(() => {
       dzkv.get<Signal<null | JSX.Element>>(["which"])!.value = null;
       Connector.set(ConnectorState.READY);
     });
+    onCancel()
   }
 
   return (
