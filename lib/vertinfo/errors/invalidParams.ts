@@ -1,8 +1,7 @@
-import * as jsonRpc from "../jsonRpc/mod.ts";
-import { JsonRpcId } from "../types/mod.ts";
+import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.3/mod.ts'
 
-export function invalidParams(id: JsonRpcId) {
-  return jsonRpc.error({
+export function invalidParams(id?: number|string|null) {
+  return jra.error({
     code: -32602,
     message: "Invalid params.",
     status: 500,

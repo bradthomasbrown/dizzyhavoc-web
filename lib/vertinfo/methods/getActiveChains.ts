@@ -1,8 +1,7 @@
-import * as jsonRpc from "../jsonRpc/mod.ts";
-import { JsonRpcRequest } from "../types/mod.ts";
-import { kv } from "../kv.ts";
+import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.2/mod.ts'
+import { kv } from "lib/vertinfo/kv.ts";
 
-export async function getActiveChains({ id }: Pick<JsonRpcRequest, "id">) {
+export async function getActiveChains({ id }: Pick<jra.types.RequestO, "id">) {
   const kvem = await kv.get<number[]>(["activeChains"]);
-  return jsonRpc.response({ result: kvem.value, id });
+  return jra.respond({ result: kvem.value, id });
 }

@@ -1,11 +1,11 @@
-import * as jsonRpc from "../jsonRpc/mod.ts";
-import { EconConf, JsonRpcRequest } from "../types/mod.ts";
-import { kv } from "../kv.ts";
-import * as error from "../errors/mod.ts";
-import * as schemas from "../schemas/mod.ts";
+import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.2/mod.ts'
+import { EconConf } from "lib/vertinfo/types/mod.ts";
+import { kv } from "lib/vertinfo/kv.ts";
+import * as error from "lib/vertinfo/errors/mod.ts";
+import * as schemas from "lib/vertinfo/schemas/mod.ts";
 
 export async function getBurnStatus(
-  { id, params }: Pick<JsonRpcRequest, "id" | "params">,
+  { id, params }: Pick<jra.types.RequestO, "id" | "params">,
 ) {
   const paramsParseResult = await schemas.api.getBurnStatusParam.parseAsync(
     params,
@@ -14,5 +14,5 @@ export async function getBurnStatus(
   const { hash } = paramsParseResult;
 
   const kvem = await kv.get<EconConf>(["status", hash]);
-  return jsonRpc.response({ result: kvem.value, id });
+  return jra.respond({ result: kvem.value, id });
 }

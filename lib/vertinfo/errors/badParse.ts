@@ -1,5 +1,5 @@
-import * as jsonRpc from "../jsonRpc/mod.ts";
+import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.3/mod.ts'
 
 export function badParse() {
-  return jsonRpc.error({ code: -32700, message: "Parse error.", status: 500 });
+  return jra.error({ code: -32700, message: "Parse error.", status: 500 });
 }
