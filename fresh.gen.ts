@@ -9,8 +9,10 @@ import * as $bridge from "./routes/bridge.tsx";
 import * as $faucet from "./routes/faucet.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $bridge_ActionButton from "./islands/bridge/ActionButton.tsx";
+import * as $bridge_Active from "./islands/bridge/Active.tsx";
 import * as $bridge_ActiveForm from "./islands/bridge/ActiveForm.tsx";
 import * as $bridge_AppContainer from "./islands/bridge/AppContainer.tsx";
+import * as $bridge_Code from "./islands/bridge/Code.tsx";
 import * as $bridge_CurrencyAmount from "./islands/bridge/CurrencyAmount.tsx";
 import * as $bridge_Form from "./islands/bridge/Form.tsx";
 import * as $bridge_Height from "./islands/bridge/Height.tsx";
@@ -55,8 +57,10 @@ const manifest = {
   },
   islands: {
     "./islands/bridge/ActionButton.tsx": $bridge_ActionButton,
+    "./islands/bridge/Active.tsx": $bridge_Active,
     "./islands/bridge/ActiveForm.tsx": $bridge_ActiveForm,
     "./islands/bridge/AppContainer.tsx": $bridge_AppContainer,
+    "./islands/bridge/Code.tsx": $bridge_Code,
     "./islands/bridge/CurrencyAmount.tsx": $bridge_CurrencyAmount,
     "./islands/bridge/Form.tsx": $bridge_Form,
     "./islands/bridge/Height.tsx": $bridge_Height,
