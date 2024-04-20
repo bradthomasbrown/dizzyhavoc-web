@@ -7,6 +7,8 @@ import { heightMap } from "lib/bridge/madness/getters/getHeight.ts"
 dzkv.set(['loading', 'rpc'], new Signal('unload-[]'))
 dzkv.set(['state', 'rpc'], new Signal())
 
+export const rpcMap = new Map<string,number>()
+
 export function getRpc() {
 
   // reset height in height map of rpc we are leaving
@@ -23,6 +25,7 @@ export function getRpc() {
 
   // throw if no rpc
   if (!rpc) throw new Error('no rpc')
+  rpcMap.set(rpc, chain.chainId)
   state<string>('rpc')!.value = rpc
 
 }
