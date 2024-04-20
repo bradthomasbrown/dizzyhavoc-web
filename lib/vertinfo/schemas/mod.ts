@@ -1,2 +1,1 @@
-export * from "./api.ts";
-// export * from "./jsonRpc.ts";
+export * from "lib/vertinfo/schemas/api.ts";
