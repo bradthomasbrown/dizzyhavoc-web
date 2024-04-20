@@ -1,5 +1,5 @@
 import { FaucetLink } from "components/bridge/mod.ts";
-import { ActionButton, Control, Height } from "islands/bridge/mod.ts";
+import { ActionButton, Control, Height, Active, Code } from "islands/bridge/mod.ts";
 
 export function Form() {
   return (
@@ -7,6 +7,10 @@ export function Form() {
       <Control.From />
       <ActionButton />
       <Height />
+      <div class="absolute top-1 right-1 flex flex-col text-sm font-mono w-full gap-2">
+        <Active />
+        <Code />
+      </div>
       <FaucetLink />
     </div>
   );
