@@ -1,9 +1,9 @@
 import { lastRequestTimeMap, rateLimit } from "lib/vertinfo/rateLimit.ts";
 import * as errors from "lib/vertinfo/errors/mod.ts";
-import * as schemas from "lib/vertinfo/schemas/mod.ts";
+import * as schemas from "../../lib/vertinfo/schema/mod.ts";
 import * as methods from "lib/vertinfo/methods/mod.ts";
 import { Handlers } from "$fresh/server.ts";
-import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.0/mod.ts'
+import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.6/mod.ts'
 
 export const handler: Handlers<unknown> = {
   GET() {
@@ -21,7 +21,7 @@ export const handler: Handlers<unknown> = {
     } catch (_) {
       return errors.badParse();
     }
-    const requestParseResult = await jra.objectRequest.parseAsync(
+    const requestParseResult = await jra.schema.requestO.parseAsync(
       JSON.parse(body),
     ).catch((_) => new Error());
     if (requestParseResult instanceof Error) return errors.badParse();
