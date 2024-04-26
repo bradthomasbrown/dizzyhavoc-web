@@ -1,14 +1,7 @@
-import { batch, Signal } from "@preact/signals";
+import { batch, computed, Signal } from "@preact/signals";
 import { JSX } from "preact/jsx-runtime";
 import { useRef } from "preact/hooks";
-import { signals, deactivate } from "islands/bridge/control/from/Percents.tsx";
-import { dzkv } from "lib/dzkv.ts";
-
-if(!dzkv.get<Signal<number>>(['control', 'from', 'percentValue']))
-  dzkv.set(['control', 'from', 'percentValue'], new Signal(0))
-
-if (!dzkv.get<Signal<string>>(['control', 'from', 'inputType']))
-  dzkv.set(['control', 'from', 'inputType'], new Signal('number'))
+import { state } from "lib/state.ts";
 
 let foo = 0
 const scale = 30
@@ -18,27 +11,15 @@ function updatePosition(e: MouseEvent) {
   foo = Math.min(100 * scale, Math.max(0, foo + e.movementX))
   batch(() => {
     const percent = Math.min(100, Math.max(0, Math.floor(foo / scale)));
-    signal.value = percent;
-    dzkv.get<Signal<number>>(['control', 'from', 'percentValue'])!.value = percent;
+    state.from.input.percent.value = percent
   });
 }
 
-function onPointerDown(
-  e: JSX.TargetedEvent<HTMLCanvasElement>,
-  active: Signal<boolean>,
-) {
+function onPointerDown(e: JSX.TargetedEvent<HTMLCanvasElement>) {
   if (navigator.maxTouchPoints > 0) return;
-  dzkv.get<Signal<string>>(['control', 'from', 'inputType'])!.value = 'percent';
-  if (!active.value) {
-    deactivate();
-    signal.value = 0;
-    dzkv.get<Signal<number>>(['control', 'from', 'percentValue'])!.value = 0;
-    active.value = true;
-  } else {
-    signals
-      .filter(signal => signal !== active)
-      .forEach(signal => signal.value = false)
-  }
+  if (state.from.input.type.value != 'slip')
+    state.from.input.percent.value = 0
+  state.from.input.type.value = 'slip'
   e.currentTarget.requestPointerLock();
   document.addEventListener("mousemove", updatePosition, false);
 }
@@ -49,11 +30,9 @@ function onPointerUp() {
   document.removeEventListener("mousemove", updatePosition, false);
 }
 
-export const signal = new Signal(0);
-
 const trackedTouch: { value: null | Touch } = { value: null };
 
-export function Slip({ active }: { active: Signal<boolean> }) {
+export function Slip() {
   const canvas = useRef<HTMLCanvasElement | null>(null);
   const div = useRef<HTMLDivElement | null>(null);
   const disp = useRef<HTMLDivElement | null>(null);
@@ -64,17 +43,9 @@ export function Slip({ active }: { active: Signal<boolean> }) {
       e.target !== div.current &&
       e.target !== disp.current
     ) return;
-    dzkv.get<Signal<string>>(['control', 'from', 'inputType'])!.value = 'percent';
-    if (!active.value) {
-      deactivate();
-      signal.value = 0;
-      dzkv.get<Signal<number>>(['control', 'from', 'percentValue'])!.value = 0;
-      active.value = true;
-    } else {
-      signals
-        .filter(signal => signal !== active)
-        .forEach(signal => signal.value = false)
-    }
+    if (state.from.input.type.value != 'slip')
+      state.from.input.percent.value = 0
+    state.from.input.type.value = 'slip'
     trackedTouch.value = Object.values(e.targetTouches).at(0) ?? null;
     document.addEventListener("touchcancel", onTouchCancel);
     document.addEventListener("touchmove", onTouchMove);
@@ -89,8 +60,7 @@ export function Slip({ active }: { active: Signal<boolean> }) {
     if (!t) return;
     const delta = t.screenX - tt.screenX;
     const percent = Math.floor(Math.min(100, Math.max(0, delta / 1.5)));
-    signal.value = percent;
-    dzkv.set<number>(['control', 'from', 'rangeInput'], percent);
+    state.from.input.percent.value = percent
   }
 
   function onTouchEnd(e: TouchEvent) {
@@ -117,6 +87,8 @@ export function Slip({ active }: { active: Signal<boolean> }) {
     document.removeEventListener("touchend", onTouchEnd);
   }
 
+  const active = computed(() => state.from.input.type.value == 'slip')
+
   return (
     <div
       ref={div}
@@ -137,19 +109,19 @@ export function Slip({ active }: { active: Signal<boolean> }) {
           shadow-lg rounded-lg
           cursor-pointer
           ${
-          active.value
-            ? "brightness-110 dark:brightness-90 scale-[98%]"
-            : `hover:brightness-95 active:brightness-110
-              dark:hover:brightness-105 dark:active:brightness-90
-              hover:scale-[102%] active:scale-[98%]`
-        }
+            state.from.input.type.value == 'slip'
+              ? "brightness-110 dark:brightness-90 scale-[98%]"
+              : `hover:brightness-95 active:brightness-110
+                dark:hover:brightness-105 dark:active:brightness-90
+                hover:scale-[102%] active:scale-[98%]`
+          }
         `}
-        onPointerDown={(e) => onPointerDown(e, active)}
+        onPointerDown={(e) => onPointerDown(e)}
         onPointerUp={onPointerUp}
       >
       </canvas>
       <div ref={disp} class="absolute pointer-events-none text-xs">
-        {signal.value ? `${signal.value}%` : "🧙"}
+        {active.value ? `${state.from.input.percent.value}%` : "🧙"}
       </div>
     </div>
   );
