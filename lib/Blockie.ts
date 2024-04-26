@@ -151,8 +151,6 @@ export class Blockie {
       }
     }
 
-    // console.log(scaledIndexStream)
-
     const codeTable = new Map<string, string>([
       ["0", "0"], // bg
       ["1", "1"], // primary
@@ -261,7 +259,3 @@ export class Blockie {
     }).base64();
   }
 }
-
-// const blockie = new Blockie({ scale: 16, seed: '0x4bbeEB066eD09B7AEd07bF39EEe0460DFa261520' })
-
-// console.log(blockie.base64())

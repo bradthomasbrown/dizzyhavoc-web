@@ -77,14 +77,3 @@ const w3LabelConv = (opts: W3LabelConvOpts) => {
 };
 
 export { w3LabelConv };
-
-// // test
-// const dec = 18
-// const sym = 'DZHV'
-// const tarLen = 12
-// const maxExt = Infinity
-// console.log({ sym, dec, tarLen, maxExt })
-// for (let i = 0; i < 10; i++) {
-//     const big = BigInt(Array(Math.floor(Math.random() * 32) + 1).fill(0).map(() => ''+Math.floor(Math.random() * 10)).join(''))
-//     console.log(`${w3LabelConv({ big, dec, sym, tarLen, maxExt })} <- ${big}`)
-// }
