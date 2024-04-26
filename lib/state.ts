@@ -3,8 +3,10 @@ import { Chain } from "lib/bridge/madness/query/types/Chain.ts";
 import { DexscreenerData } from "lib/bridge/madness/getters/getDexscreener.ts";
 import { JSX } from "preact/jsx-runtime";
 import { EconConf } from "lib/vertinfo/types/mod.ts";
+import { P6963 } from "lib/getProviders.tsx";
 
 export const state = {
+  p6963: new Signal<undefined|P6963>(),
   which: new Signal<null|JSX.Element>(null),
   chainMap: new Map<number,Chain>(),
   codeMap: new Map<number,boolean>(),
