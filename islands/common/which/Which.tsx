@@ -17,7 +17,7 @@ export function Which<T extends unknown>(
     title: string;
     choices: Signal<Choice<T>[]>;
     onPick: (value: T) => unknown;
-    onCancel: () => void;
+    onCancel?: () => void;
     compareFn?: Parameters<Choice<T>[]["sort"]>[0];
   },
 ) {
