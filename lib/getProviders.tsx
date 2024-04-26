@@ -140,6 +140,9 @@ export async function getProviders() {
 
 async function onPick(p6963: P6963) {
   // set connector to loading, handle account changes, request accounts
+
+  state.p6963.value = p6963
+
   Connector.set(ConnectorState.LOADING);
   await p6963.provider.request({ method: "eth_requestAccounts", params: [] })
     .then(z.string().array().parseAsync)
