@@ -1,7 +1,7 @@
 import * as robin from "lib/bridge/madness/robin.ts"
 import { getAccount } from "lib/bridge/madness/getters/getAccount.ts"
 import { state } from "lib/state.ts";
-
+import { Connector, ConnectorState } from "islands/common/Connector.tsx";
 
 export function onAccountsChanged(accounts:string[]) {
 
@@ -23,6 +23,8 @@ export function onAccountsChanged(accounts:string[]) {
 
   // try to get the account
   getAccount()
+
+  Connector.set(ConnectorState.READY)
   
   robin.restart()
 
