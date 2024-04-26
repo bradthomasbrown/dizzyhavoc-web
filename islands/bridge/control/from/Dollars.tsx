@@ -1,9 +1,21 @@
+import { effect } from "@preact/signals";
+import { state } from "lib/state.ts"
+import { getPrice } from "lib/bridge/madness/getters/getDexscreener.ts";
+
+effect(() => {
+  const chainId = state.from.chainId.value
+  const amount = state.from.input.string.value
+  if (!chainId || amount === undefined) return
+  const dollars = (getPrice(chainId) * Number(amount))
+    .toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+  state.from.dollars.value = dollars
+})
+
 export function Dollars() {
   return (
     <div
       class={`
-      row-start-3 col-start-1 col-span-2
-      w-32 h-6
+      row-start-3 col-start-1 col-span-1
       px-2
       flex items-center
       font-mono
@@ -13,11 +25,12 @@ export function Dollars() {
     >
       <div
         class={`
-          rounded-full border unload-[]
-          ${'foo'}
+          border ${state.loading.dexscreener.value}
+          px-1
+          rounded-full
         `}
       >
-        {'$0.00'}
+        {state.from.dollars.value ?? '$0.00'}
       </div>
     </div>
   );
