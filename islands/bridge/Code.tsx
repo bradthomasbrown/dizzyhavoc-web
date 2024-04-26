@@ -1,4 +1,4 @@
-import { loading } from "lib/bridge/madness/dzkv.ts";
+import { state } from "lib/state.ts"
 
 export function Code() {
   return (
@@ -16,7 +16,7 @@ export function Code() {
           src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA"
           class={`
             aspect-square h-full
-            border ${loading('dzhvCode')!.value}
+            border ${state.loading.from.dzhvCode.value}
             rounded-full
           `}
         />

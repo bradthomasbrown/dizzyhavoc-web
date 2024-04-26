@@ -3,6 +3,7 @@ import { Input } from "islands/bridge/control/from/Input.tsx";
 import { Percents } from "islands/bridge/control/from/Percents.tsx";
 import { Dollars } from "islands/bridge/control/from/Dollars.tsx";
 import { FhChainPicker } from 'islands/common/FhChainPicker.tsx'
+import { state } from "lib/state.ts";
 
 export function From() {
   return (
@@ -12,7 +13,7 @@ export function From() {
       <Dollars/>
       <Percents/>
       <div class="row-start-3 col-start-2 row-span-2">
-        <FhChainPicker dzkvKey={['control', 'from', 'chain']} title={'From'} />
+        <FhChainPicker chainIdSignal={state.from.chainId} title={'From'} />
       </div>
     </div>
   );

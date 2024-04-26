@@ -1,11 +1,10 @@
 import { Form } from "components/bridge/mod.ts";
-import { dzkv } from "lib/mod.ts";
-import { Signal } from "@preact/signals";
-import { JSX } from "preact/jsx-runtime";
+import { IS_BROWSER } from "$fresh/runtime.ts";
+import * as robin from 'lib/bridge/madness/robin.ts'
+import { state } from "lib/state.ts";
 
-dzkv.set<Signal<null | JSX.Element>>(["which"], new Signal(null));
+if (IS_BROWSER) robin.start()
 
 export function ActiveForm() {
-  return dzkv.get<Signal<null | JSX.Element>>(["which"])!.value ??
-    <Form />;
+  return state.which.value ?? <Form />;
 }

@@ -1,12 +1,12 @@
 import z from "https://deno.land/x/zod@v3.22.4/index.ts";
 import { Gate } from "https://cdn.jsdelivr.net/gh/bradbrown-llc/gate@0.0.1/mod.ts";
-import { Blockie, Choice, dzkv, randomUuid, toad } from "lib/mod.ts";
+import { Blockie, Choice, randomUuid } from "lib/mod.ts";
 import { Signal } from "@preact/signals";
-import { JSX } from "preact/jsx-runtime";
 import { Which } from "islands/common/mod.ts";
 import { Connector, ConnectorState } from "islands/common/mod.ts";
-import { onAccountsChanged } from "lib/bridge/madness/eventHandlers/onAccountsChange.ts";
-import { onChainIdChanged } from "lib/bridge/madness/eventHandlers/onChainIdChange.ts";
+import { onAccountsChanged } from "./bridge/madness/eventHandlers/onAccountsChanged.ts";
+import { onChainIdFromChanged } from "lib/bridge/madness/eventHandlers/mod.ts";
+import { state } from "lib/state.ts";
 
 declare global {
   interface WindowEventMap {
@@ -135,8 +135,7 @@ export async function getProviders() {
   const title = "pick a provider";
   const choices = new Signal([...providers.values()].map(providerToChoice));
 
-  const which = <Which {...{ title, choices, onPick }} />;
-  dzkv.get<Signal<null | JSX.Element>>(["which"])!.value = which;
+  state.which.value = <Which {...{ title, choices, onPick }}/>
 }
 
 async function onPick(p6963: P6963) {
@@ -152,15 +151,16 @@ async function onPick(p6963: P6963) {
     "chainChanged",
     (s) =>
       z.string().transform((s) => Number(BigInt(s))).parseAsync(s)
-        .then((chainId) => onChainIdChanged(chainId))
+        .then((chainId) => onChainIdFromChanged(chainId))
         .catch((reason: Error) => console.error(reason)),
   );
 
   // clear which
-  dzkv.get<Signal<null | JSX.Element>>(["which"])!.value = null;
+  state.which.value = null
 
+  if (state.from.chain.value) return
   p6963.provider.request({ method: "eth_chainId", params: [] })
     .then(z.string().transform((s) => Number(BigInt(s))).parseAsync)
-    .then((chainId) => onChainIdChanged(chainId))
+    .then((chainId) => onChainIdFromChanged(chainId))
     .catch((reason: Error) => console.error(reason));
 }

@@ -1,5 +1,4 @@
-import { loading } from "lib/bridge/madness/dzkv.ts";
-import "lib/dzkvInit.ts"
+import { state } from "lib/state.ts"
 
 export function Active() {
   return (
@@ -17,7 +16,7 @@ export function Active() {
           src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA"
           class={`
             aspect-square h-full
-            border ${loading('active')!.value}
+            border ${state.loading.active.value}
             rounded-full
           `}
         />

@@ -3,10 +3,14 @@ import { toad } from "lib/bridge/madness/ejra/ejra.ts";
 import { Snail } from "lib/mod.ts";
 import { robinController, goNext } from "lib/bridge/madness/robin.ts";
 import { state } from "lib/state.ts";
+import * as vi from 'lib/vertinfo/mod.ts'
 
 const lastGot = { value: -Infinity }
 
-export async function getActive() {
+export async function getEconConf() {
+
+  const chainId = state.to.chainId.value
+  if (chainId === undefined) return goNext()
 
   // get signal, if aborted return
   const { signal } = robinController.value
@@ -21,8 +25,8 @@ export async function getActive() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       jsonrpc: '2.0',
-      method: 'get_activeChains',
-      params: {},
+      method: 'get_econConf',
+      params: { chainId },
       id: 0
     } satisfies jra.types.RequestO),
     signal
@@ -31,23 +35,24 @@ export async function getActive() {
   toad.feed(snail).catch(() => {})
   await snail.born
   if (signal.aborted) return
-  state.loading.active.value = 'loading-[#80ffff2b]'
+  state.loading.econConf.value = 'loading-[#80ffff2b]'
   const response = await snail.died.catch((e:Error) => e)
   if (signal.aborted) return
   if (response instanceof Error) return goNext()
-  const active = await response
+  const econConf = await response
     .json()
     .then(jra.schema.response.parse)
     .then(response => response.result)
-    .catch((e:Error) => e) as Error|number[]
+    .then(vi.schema.econConf.parse)
+    .catch((e:Error) => e)
   if (signal.aborted) return
-  state.loading.active.value = 'unload-[]'
+  state.loading.econConf.value = 'unload-[]'
 
   // update state if not error and there is a difference
-  if (!(active instanceof Error)) {
+  if (!(econConf instanceof Error)) {
     lastGot.value = Date.now()
-    if (String(state.active.value) != String(active))
-      state.active.value = active
+    if (String(state.active.value) != String(econConf))
+      state.econConf.value = econConf
   }
 
   // goNext

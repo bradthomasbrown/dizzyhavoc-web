@@ -1,15 +1,14 @@
-import { batch, Signal } from "@preact/signals";
-import { JSX } from "preact/jsx-runtime";
-import { dzkv } from "lib/mod.ts";
+import { batch } from "@preact/signals";
 import { Connector, ConnectorState } from "islands/common/mod.ts";
+import { state } from "lib/state.ts";
 
-export function WhichCancel({ onCancel }:{ onCancel: () => void; }) {
+export function WhichCancel({ onCancel }:{ onCancel?: () => void; }) {
   function onClick() {
     batch(() => {
-      dzkv.get<Signal<null | JSX.Element>>(["which"])!.value = null;
+      state.which.value = null
       Connector.set(ConnectorState.READY);
     });
-    onCancel()
+    onCancel?.()
   }
 
   return (

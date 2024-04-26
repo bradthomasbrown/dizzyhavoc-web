@@ -1,4 +1,4 @@
-import { loading, state } from "lib/bridge/madness/dzkv.ts";
+import { state } from "lib/state.ts"
 import { btos } from "lib/bridge/btos.ts";
 
 export function Balance() {
@@ -17,12 +17,12 @@ export function Balance() {
           flex items-center
           px-2
           rounded-full border
-          ${loading('dzhvBalance')!.value}
+          ${state.loading.from.dzhvBalance.value}
         `}
       >
         <div class="mr-1 text-xs">Balance:</div>
         <div class="overflow-hidden overflow-ellipsis">
-          {btos(state<bigint>('dzhvBalance')!.value ?? 0n, 18)}
+          {btos(state.from.dzhvBalance.value ?? 0n, 18)}
         </div>
         <div class="ml-2 select-none text-xs">DZHV</div>
       </div>

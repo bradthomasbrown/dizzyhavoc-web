@@ -1,7 +1,8 @@
-import { loading, state } from "lib/bridge/madness/dzkv.ts";
+import { state } from "lib/state.ts"
 
 export function Height() {
-  return state<bigint>('height')?.value !== undefined
+  const height = state.from.height.value
+  return height !== undefined
     ? (
       <div
         class={`
@@ -10,11 +11,11 @@ export function Height() {
           px-1
           text-sm
           font-mono
-          border ${loading('height')!.value}
+          border ${state.loading.from.height.value}
           rounded-full
         `}
       >
-        {state<bigint>('height')!.value}
+        {height}
       </div>
     )
     : (
@@ -33,7 +34,7 @@ export function Height() {
               src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA"
               class={`
                 aspect-square h-full
-                border ${loading('height')!.value}
+                border ${state.loading.from.height.value}
                 rounded-full
               `}
             />

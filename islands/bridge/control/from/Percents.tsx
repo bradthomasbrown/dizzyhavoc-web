@@ -1,17 +1,14 @@
 import { Button } from "components/common/mod.ts";
-import { Signal } from "@preact/signals";
+import { Signal, computed } from "@preact/signals";
 import { Slip } from "islands/bridge/control/from/Slip.tsx";
-import * as slip from "islands/bridge/control/from/Slip.tsx";
-import { dzkv } from "lib/dzkv.ts";
+import { state } from "lib/state.ts";
 
-if(!dzkv.get<Signal<number>>(['control', 'from', 'percentValue']))
-  dzkv.set(['control', 'from', 'percentValue'], new Signal(0))
-
-if (!dzkv.get<Signal<string>>(['control', 'from', 'inputType']))
-  dzkv.set(['control', 'from', 'inputType'], new Signal('number'))
-
-function PercentButton(props: { percent: number; active: Signal<boolean> }) {
-  const { percent, active } = props;
+function PercentButton(props: { percent: number }) {
+  const { percent } = props;
+  const active = computed(() =>
+    state.from.input.type.value == 'percent'
+    && state.from.input.percent.value == percent
+  )
   return (
     <Button
       active={active}
@@ -20,11 +17,8 @@ function PercentButton(props: { percent: number; active: Signal<boolean> }) {
       textSize={new Signal("text-xs")}
       weight="font-extralight"
       onClick={() => {
-        slip.signal.value = 0;
-        dzkv.get<Signal<string>>(['control', 'from', 'inputType'])!.value = 'percent';
-        dzkv.get<Signal<number>>(['control', 'from', 'percentValue'])!.value = percent;
-        deactivate();
-        active.value = true;
+        state.from.input.type.value = 'percent'
+        state.from.input.percent.value = percent
       }}
     >
       {percent}%
@@ -32,16 +26,10 @@ function PercentButton(props: { percent: number; active: Signal<boolean> }) {
   );
 }
 
-export const signals = Array(5).fill(0).map(() => new Signal(false));
-
-export function deactivate() {
-  for (const signal of signals) signal.value = false;
-}
-
 const buttons = [25, 50, 75, 100].map((percent, i) => {
-  return <PercentButton percent={percent} active={signals[i]} />;
+  return <PercentButton percent={percent} />;
 });
-buttons.unshift(<Slip active={signals[4]} />);
+buttons.unshift(<Slip/>);
 
 export function Percents() {
   return (

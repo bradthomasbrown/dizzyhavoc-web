@@ -1,14 +1,6 @@
-import { Signal } from "@preact/signals-core";
-import { dzkv } from "lib/dzkv.ts";
-import { state, loading } from "lib/bridge/madness/dzkv.ts";
 import { ejra } from "lib/bridge/madness/ejra/ejra.ts";
 import { robinController, goNext, restart } from "lib/bridge/madness/robin.ts";
-import { codeMap } from "lib/bridge/madness/getters/getDzhvCode.ts"
-import { rpcMap } from "lib/bridge/madness/getters/getRpc.ts";
-
-dzkv.set(['loading', 'height'], new Signal('unload-[]'))
-dzkv.set(['state', 'height'], new Signal())
-export const heightMap = new Map<string,bigint>()
+import { state } from "lib/state.ts";
 
 export async function getHeight() {
 
@@ -17,41 +9,43 @@ export async function getHeight() {
   if (signal.aborted) return
 
   // get requirement, if missing, go next
-  const rpc = state<string>('rpc')!.value
+  const rpc = state.from.rpc.value
   if (!rpc) return goNext()
 
   // 🐌
   const snail = ejra.height(rpc, signal)
   await snail.born
-  loading('height')!.value = 'loading-[#80ffff2b]'
+  if (signal.aborted) return
+  state.loading.from.height.value = 'loading-[#80ffff2b]'
   const height = await snail.died.catch((r:Error) => r)
-  if (!signal.aborted) loading('height')!.value = 'unload-[]'
+  if (signal.aborted) return
+  if (!signal.aborted) state.loading.from.height.value = 'unload-[]'
   
   // handle result
-  if (signal.aborted) return
   if (height instanceof Error) return restart()
+
+  if ((state.from.lastHeight.value ?? -Infinity) > height) return restart()
 
   // if known block, restart, unless a height-dependent is loading
   if (
-    (heightMap.get(rpc) ?? -Infinity) >= height
-    && !(
-      loading('dzhvBalance')!.value != 'unload-[]'
-      || loading('dzhvCode')!.value != 'unload-[]'
-    )
+    (state.from.lastHeight.value ?? -Infinity) >= height
+    && state.loading.from.dzhvBalance.value == 'unload-[]'
+    && state.loading.from.dzhvCode.value == 'unload-[]'
   ) return restart()
 
   // set height in heightMap so we can know if height is new
-  heightMap.set(rpc, height)
+  state.from.lastHeight.value = height
 
   // if we don't have code, amberload code
-  if (!codeMap.get(rpcMap.get(rpc)!)) loading('dzhvCode')!.value = 'loading-[#ffbf0060]'
+  if (!state.codeMap.get(state.from.chainId.value!))
+    state.loading.from.dzhvCode.value = 'loading-[#ffbf0060]'
 
   // if we have an account, amberload dzhv balance
-  if (state<string>('account')!.value)
-    loading('dzhvBalance')!.value = 'loading-[#ffbf0060]'
+  if (state.account.value)
+    state.loading.from.dzhvBalance.value = 'loading-[#ffbf0060]'
 
   // update state and goNext
-  state<bigint>('height')!.value = height
+  state.from.height.value = height
   return goNext()
 
 }
