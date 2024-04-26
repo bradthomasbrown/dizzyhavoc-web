@@ -12,8 +12,8 @@ import * as $bridge_ActionButton from "./islands/bridge/ActionButton.tsx";
 import * as $bridge_Active from "./islands/bridge/Active.tsx";
 import * as $bridge_ActiveForm from "./islands/bridge/ActiveForm.tsx";
 import * as $bridge_AppContainer from "./islands/bridge/AppContainer.tsx";
+import * as $bridge_BridgeButton from "./islands/bridge/BridgeButton.tsx";
 import * as $bridge_Code from "./islands/bridge/Code.tsx";
-import * as $bridge_CurrencyAmount from "./islands/bridge/CurrencyAmount.tsx";
 import * as $bridge_Form from "./islands/bridge/Form.tsx";
 import * as $bridge_Height from "./islands/bridge/Height.tsx";
 import * as $bridge_LegalsPopup from "./islands/bridge/LegalsPopup.tsx";
@@ -24,6 +24,9 @@ import * as $bridge_control_from_Percents from "./islands/bridge/control/from/Pe
 import * as $bridge_control_from_Slip from "./islands/bridge/control/from/Slip.tsx";
 import * as $bridge_control_from_mod from "./islands/bridge/control/from/mod.tsx";
 import * as $bridge_control_mod from "./islands/bridge/control/mod.ts";
+import * as $bridge_control_to_Dollars from "./islands/bridge/control/to/Dollars.tsx";
+import * as $bridge_control_to_Input from "./islands/bridge/control/to/Input.tsx";
+import * as $bridge_control_to_mod from "./islands/bridge/control/to/mod.tsx";
 import * as $bridge_mod from "./islands/bridge/mod.ts";
 import * as $common_Balance from "./islands/common/Balance.tsx";
 import * as $common_ConnectionInfo from "./islands/common/ConnectionInfo.tsx";
@@ -33,7 +36,6 @@ import * as $common_ListInput from "./islands/common/ListInput.tsx";
 import * as $common_Navbar from "./islands/common/Navbar.tsx";
 import * as $common_Receiver from "./islands/common/Receiver.tsx";
 import * as $common_TestIsland from "./islands/common/TestIsland.tsx";
-import * as $common_Web3Input_Web3Input from "./islands/common/Web3Input/Web3Input.tsx";
 import * as $common_menuButton from "./islands/common/menuButton.tsx";
 import * as $common_mod from "./islands/common/mod.ts";
 import * as $common_which_Which from "./islands/common/which/Which.tsx";
@@ -60,8 +62,8 @@ const manifest = {
     "./islands/bridge/Active.tsx": $bridge_Active,
     "./islands/bridge/ActiveForm.tsx": $bridge_ActiveForm,
     "./islands/bridge/AppContainer.tsx": $bridge_AppContainer,
+    "./islands/bridge/BridgeButton.tsx": $bridge_BridgeButton,
     "./islands/bridge/Code.tsx": $bridge_Code,
-    "./islands/bridge/CurrencyAmount.tsx": $bridge_CurrencyAmount,
     "./islands/bridge/Form.tsx": $bridge_Form,
     "./islands/bridge/Height.tsx": $bridge_Height,
     "./islands/bridge/LegalsPopup.tsx": $bridge_LegalsPopup,
@@ -72,6 +74,9 @@ const manifest = {
     "./islands/bridge/control/from/Slip.tsx": $bridge_control_from_Slip,
     "./islands/bridge/control/from/mod.tsx": $bridge_control_from_mod,
     "./islands/bridge/control/mod.ts": $bridge_control_mod,
+    "./islands/bridge/control/to/Dollars.tsx": $bridge_control_to_Dollars,
+    "./islands/bridge/control/to/Input.tsx": $bridge_control_to_Input,
+    "./islands/bridge/control/to/mod.tsx": $bridge_control_to_mod,
     "./islands/bridge/mod.ts": $bridge_mod,
     "./islands/common/Balance.tsx": $common_Balance,
     "./islands/common/ConnectionInfo.tsx": $common_ConnectionInfo,
@@ -81,7 +86,6 @@ const manifest = {
     "./islands/common/Navbar.tsx": $common_Navbar,
     "./islands/common/Receiver.tsx": $common_Receiver,
     "./islands/common/TestIsland.tsx": $common_TestIsland,
-    "./islands/common/Web3Input/Web3Input.tsx": $common_Web3Input_Web3Input,
     "./islands/common/menuButton.tsx": $common_menuButton,
     "./islands/common/mod.ts": $common_mod,
     "./islands/common/which/Which.tsx": $common_which_Which,
