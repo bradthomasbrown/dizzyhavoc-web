@@ -1,4 +1,4 @@
-import { effect, Signal } from "@preact/signals";
+import { effect } from "@preact/signals";
 import { btos, stob } from "lib/bridge/mod.ts";
 import { JSX } from "preact/jsx-runtime";
 import { state } from "lib/state.ts"
