@@ -1,4 +1,4 @@
-import { state } from "lib/state.ts"
+import { state } from "lib/state.ts";
 
 export function Code() {
   return (
@@ -12,7 +12,7 @@ export function Code() {
     >
       ​
       <div class="w-full flex flex-row-reverse">
-        <img 
+        <img
           src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA"
           class={`
             aspect-square h-full
@@ -22,5 +22,5 @@ export function Code() {
         />
       </div>
     </div>
-  )
+  );
 }

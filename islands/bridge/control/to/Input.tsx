@@ -3,14 +3,14 @@ import { state } from "lib/state.ts";
 import { btos } from "lib/bridge/btos.ts";
 
 effect(() => {
-  const econConf = state.econConf.value
-  const fromVal = state.from.input.bigint.value
-  if (!econConf || fromVal === undefined) return undefined
-  let toVal = fromVal - econConf.baseFee
-  if (toVal < 0n) toVal = 0n
-  state.to.input.bigint.value = toVal
-  state.to.input.string.value = btos(toVal, 18)
-})
+  const econConf = state.econConf.value;
+  const fromVal = state.from.input.bigint.value;
+  if (!econConf || fromVal === undefined) return undefined;
+  let toVal = fromVal - econConf.baseFee;
+  if (toVal < 0n) toVal = 0n;
+  state.to.input.bigint.value = toVal;
+  state.to.input.string.value = btos(toVal, 18);
+});
 
 export function Input() {
   return (
@@ -37,7 +37,7 @@ export function Input() {
           font-mono
         `}
       >
-        {state.to.input.string.value ?? '0'}
+        {state.to.input.string.value ?? "0"}
       </div>
     </div>
   );

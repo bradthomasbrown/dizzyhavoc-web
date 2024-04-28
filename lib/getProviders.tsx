@@ -135,13 +135,13 @@ export async function getProviders() {
   const title = "pick a provider";
   const choices = new Signal([...providers.values()].map(providerToChoice));
 
-  state.which.value = <Which {...{ title, choices, onPick }}/>
+  state.which.value = <Which {...{ title, choices, onPick }} />;
 }
 
 async function onPick(p6963: P6963) {
   // set connector to loading, handle account changes, request accounts
 
-  state.p6963.value = p6963
+  state.p6963.value = p6963;
 
   Connector.set(ConnectorState.LOADING);
   await p6963.provider.request({ method: "eth_requestAccounts", params: [] })
@@ -159,9 +159,9 @@ async function onPick(p6963: P6963) {
   );
 
   // clear which
-  state.which.value = null
+  state.which.value = null;
 
-  if (state.from.chain.value) return
+  if (state.from.chain.value) return;
   p6963.provider.request({ method: "eth_chainId", params: [] })
     .then(z.string().transform((s) => Number(BigInt(s))).parseAsync)
     .then((chainId) => onChainIdFromChanged(chainId))

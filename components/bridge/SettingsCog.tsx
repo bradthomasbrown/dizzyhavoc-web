@@ -1,8 +1,8 @@
-import { SettingsMenu, hidden } from "components/bridge/SettingsMenu.tsx"
+import { hidden, SettingsMenu } from "components/bridge/SettingsMenu.tsx";
 import { state } from "lib/state.ts";
 
 function onClick() {
-  hidden.value = !hidden.value
+  hidden.value = !hidden.value;
 }
 
 export function SettingsCog() {
@@ -32,7 +32,7 @@ export function SettingsCog() {
       >
         {state.slippage.value}% slippage
       </div>
-      <SettingsMenu/>
+      <SettingsMenu />
     </div>
   );
 }

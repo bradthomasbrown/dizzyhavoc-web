@@ -1,15 +1,15 @@
 import { state } from "lib/state.ts";
 import {
   onChainIdFromChanged,
-  onChainIdToChanged
+  onChainIdToChanged,
 } from "lib/bridge/madness/eventHandlers/mod.ts";
 
 function flip() {
-  const from = state.from.chainId.value
-  const to = state.to.chainId.value
-  if (from === to || from === undefined || to === undefined) return
-  onChainIdToChanged(from)
-  onChainIdFromChanged(to)
+  const from = state.from.chainId.value;
+  const to = state.to.chainId.value;
+  if (from === to || from === undefined || to === undefined) return;
+  onChainIdToChanged(from);
+  onChainIdFromChanged(to);
 }
 
 export function Flipper() {

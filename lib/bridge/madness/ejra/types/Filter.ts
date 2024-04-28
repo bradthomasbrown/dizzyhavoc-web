@@ -1,8 +1,8 @@
-import { Tag } from './Tag.ts'
+import { Tag } from "./Tag.ts";
 
 export type Filter = {
-    fromBlock:Tag
-    toBlock:Tag
-    address?:string
-    topics?:(string|string[])[]
-}
+  fromBlock: Tag;
+  toBlock: Tag;
+  address?: string;
+  topics?: (string | string[])[];
+};

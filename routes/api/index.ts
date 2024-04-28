@@ -3,7 +3,7 @@ import * as errors from "lib/vertinfo/errors/mod.ts";
 import * as schemas from "../../lib/vertinfo/schema/mod.ts";
 import * as methods from "lib/vertinfo/methods/mod.ts";
 import { Handlers } from "$fresh/server.ts";
-import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.6/mod.ts'
+import * as jra from "https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.6/mod.ts";
 
 export const handler: Handlers<unknown> = {
   GET() {

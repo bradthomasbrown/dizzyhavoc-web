@@ -1,5 +1,12 @@
 import { FaucetLink } from "components/bridge/mod.ts";
-import { ActionButton, Control, Height, Active, Code, SettingsCog } from "islands/bridge/mod.ts";
+import {
+  ActionButton,
+  Active,
+  Code,
+  Control,
+  Height,
+  SettingsCog,
+} from "islands/bridge/mod.ts";
 import { Flipper } from "components/bridge/Flipper.tsx";
 import { Recipient } from "islands/bridge/Recipient.tsx";
 import { hidden } from "islands/bridge/BridgeButton.tsx";
@@ -9,7 +16,7 @@ export function Form() {
     <>
       <div
         class={`
-          ${hidden.value ? 'hidden' : ''}
+          ${hidden.value ? "hidden" : ""}
           absolute
           grow
           w-full h-full

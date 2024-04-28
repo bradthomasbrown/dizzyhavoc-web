@@ -1,4 +1,4 @@
-import { state } from "lib/state.ts"
+import { state } from "lib/state.ts";
 import { btos } from "lib/bridge/btos.ts";
 
 export function Balance() {

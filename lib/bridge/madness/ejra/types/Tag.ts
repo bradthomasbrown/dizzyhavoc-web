@@ -1,1 +1,1 @@
-export type Tag = 'latest'|'earliest'|'pending'|bigint
+export type Tag = "latest" | "earliest" | "pending" | bigint;

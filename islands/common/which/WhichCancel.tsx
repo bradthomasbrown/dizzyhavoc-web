@@ -2,13 +2,13 @@ import { batch } from "@preact/signals";
 import { Connector, ConnectorState } from "islands/common/mod.ts";
 import { state } from "lib/state.ts";
 
-export function WhichCancel({ onCancel }:{ onCancel?: () => void; }) {
+export function WhichCancel({ onCancel }: { onCancel?: () => void }) {
   function onClick() {
     batch(() => {
-      state.which.value = null
+      state.which.value = null;
       Connector.set(ConnectorState.READY);
     });
-    onCancel?.()
+    onCancel?.();
   }
 
   return (

@@ -1,4 +1,4 @@
-import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.6/mod.ts'
+import * as jra from "https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.6/mod.ts";
 import { EconConf } from "lib/vertinfo/types/mod.ts";
 import { kv } from "lib/vertinfo/kv.ts";
 import * as error from "lib/vertinfo/errors/mod.ts";

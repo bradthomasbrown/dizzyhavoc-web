@@ -1,14 +1,14 @@
 import { Button } from "components/common/mod.ts";
-import { Signal, computed } from "@preact/signals";
+import { computed, Signal } from "@preact/signals";
 import { Slip } from "islands/bridge/control/from/Slip.tsx";
 import { state } from "lib/state.ts";
 
 function PercentButton(props: { percent: number }) {
   const { percent } = props;
   const active = computed(() =>
-    state.from.input.type.value == 'percent'
-    && state.from.input.percent.value == percent
-  )
+    state.from.input.type.value == "percent" &&
+    state.from.input.percent.value == percent
+  );
   return (
     <Button
       active={active}
@@ -17,8 +17,8 @@ function PercentButton(props: { percent: number }) {
       textSize={new Signal("text-xs")}
       weight="font-extralight"
       onClick={() => {
-        state.from.input.type.value = 'percent'
-        state.from.input.percent.value = percent
+        state.from.input.type.value = "percent";
+        state.from.input.percent.value = percent;
       }}
     >
       {percent}%
@@ -29,7 +29,7 @@ function PercentButton(props: { percent: number }) {
 const buttons = [25, 50, 75, 100].map((percent, i) => {
   return <PercentButton percent={percent} />;
 });
-buttons.unshift(<Slip/>);
+buttons.unshift(<Slip />);
 
 export function Percents() {
   return (

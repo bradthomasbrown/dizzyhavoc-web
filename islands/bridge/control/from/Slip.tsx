@@ -3,23 +3,24 @@ import { JSX } from "preact/jsx-runtime";
 import { useRef } from "preact/hooks";
 import { state } from "lib/state.ts";
 
-let foo = 0
-const scale = 30
+let foo = 0;
+const scale = 30;
 
 function updatePosition(e: MouseEvent) {
   if (!e.movementX) return;
-  foo = Math.min(100 * scale, Math.max(0, foo + e.movementX))
+  foo = Math.min(100 * scale, Math.max(0, foo + e.movementX));
   batch(() => {
     const percent = Math.min(100, Math.max(0, Math.floor(foo / scale)));
-    state.from.input.percent.value = percent
+    state.from.input.percent.value = percent;
   });
 }
 
 function onPointerDown(e: JSX.TargetedEvent<HTMLCanvasElement>) {
   if (navigator.maxTouchPoints > 0) return;
-  if (state.from.input.type.value != 'slip')
-    state.from.input.percent.value = 0
-  state.from.input.type.value = 'slip'
+  if (state.from.input.type.value != "slip") {
+    state.from.input.percent.value = 0;
+  }
+  state.from.input.type.value = "slip";
   e.currentTarget.requestPointerLock();
   document.addEventListener("mousemove", updatePosition, false);
 }
@@ -43,9 +44,10 @@ export function Slip() {
       e.target !== div.current &&
       e.target !== disp.current
     ) return;
-    if (state.from.input.type.value != 'slip')
-      state.from.input.percent.value = 0
-    state.from.input.type.value = 'slip'
+    if (state.from.input.type.value != "slip") {
+      state.from.input.percent.value = 0;
+    }
+    state.from.input.type.value = "slip";
     trackedTouch.value = Object.values(e.targetTouches).at(0) ?? null;
     document.addEventListener("touchcancel", onTouchCancel);
     document.addEventListener("touchmove", onTouchMove);
@@ -60,7 +62,7 @@ export function Slip() {
     if (!t) return;
     const delta = t.screenX - tt.screenX;
     const percent = Math.floor(Math.min(100, Math.max(0, delta / 1.5)));
-    state.from.input.percent.value = percent
+    state.from.input.percent.value = percent;
   }
 
   function onTouchEnd(e: TouchEvent) {
@@ -87,7 +89,7 @@ export function Slip() {
     document.removeEventListener("touchend", onTouchEnd);
   }
 
-  const active = computed(() => state.from.input.type.value == 'slip')
+  const active = computed(() => state.from.input.type.value == "slip");
 
   return (
     <div
@@ -109,12 +111,12 @@ export function Slip() {
           shadow-lg rounded-lg
           cursor-pointer
           ${
-            state.from.input.type.value == 'slip'
-              ? "brightness-110 dark:brightness-90 scale-[98%]"
-              : `hover:brightness-95 active:brightness-110
+          state.from.input.type.value == "slip"
+            ? "brightness-110 dark:brightness-90 scale-[98%]"
+            : `hover:brightness-95 active:brightness-110
                 dark:hover:brightness-105 dark:active:brightness-90
                 hover:scale-[102%] active:scale-[98%]`
-          }
+        }
         `}
         onPointerDown={(e) => onPointerDown(e)}
         onPointerUp={onPointerUp}

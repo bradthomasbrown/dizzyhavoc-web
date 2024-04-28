@@ -1,7 +1,7 @@
-import { state } from "lib/state.ts"
+import { state } from "lib/state.ts";
 
 export function Height() {
-  const height = state.from.height.value
+  const height = state.from.height.value;
   return height !== undefined
     ? (
       <div
@@ -19,26 +19,26 @@ export function Height() {
       </div>
     )
     : (
-        <div
-          class={`
+      <div
+        class={`
             absolute bottom-1 right-1
             text-sm font-mono
             flex
             w-full
             border border-transparent
           `}
-        >
-          ​
-          <div class="w-full flex flex-row-reverse">
-            <img 
-              src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA"
-              class={`
+      >
+        ​
+        <div class="w-full flex flex-row-reverse">
+          <img
+            src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAA"
+            class={`
                 aspect-square h-full
                 border ${state.loading.from.height.value}
                 rounded-full
               `}
-            />
-          </div>
+          />
         </div>
+      </div>
     );
 }

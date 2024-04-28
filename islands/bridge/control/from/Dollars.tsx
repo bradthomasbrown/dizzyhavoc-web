@@ -1,15 +1,15 @@
 import { effect } from "@preact/signals";
-import { state } from "lib/state.ts"
+import { state } from "lib/state.ts";
 import { getPrice } from "lib/bridge/madness/getters/getDexscreener.ts";
 
 effect(() => {
-  const chainId = state.from.chainId.value
-  const amount = state.from.input.string.value
-  if (!chainId || amount === undefined) return
+  const chainId = state.from.chainId.value;
+  const amount = state.from.input.string.value;
+  if (!chainId || amount === undefined) return;
   const dollars = (getPrice(chainId) * Number(amount))
-    .toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-  state.from.dollars.value = dollars
-})
+    .toLocaleString("en-US", { style: "currency", currency: "USD" });
+  state.from.dollars.value = dollars;
+});
 
 export function Dollars() {
   return (
@@ -30,7 +30,7 @@ export function Dollars() {
           rounded-full
         `}
       >
-        {state.from.dollars.value ?? '$0.00'}
+        {state.from.dollars.value ?? "$0.00"}
       </div>
     </div>
   );
