@@ -17,6 +17,7 @@ import * as $bridge_Code from "./islands/bridge/Code.tsx";
 import * as $bridge_Form from "./islands/bridge/Form.tsx";
 import * as $bridge_Height from "./islands/bridge/Height.tsx";
 import * as $bridge_LegalsPopup from "./islands/bridge/LegalsPopup.tsx";
+import * as $bridge_Recipient from "./islands/bridge/Recipient.tsx";
 import * as $bridge_control_from_Balance from "./islands/bridge/control/from/Balance.tsx";
 import * as $bridge_control_from_Dollars from "./islands/bridge/control/from/Dollars.tsx";
 import * as $bridge_control_from_Input from "./islands/bridge/control/from/Input.tsx";
@@ -67,6 +68,7 @@ const manifest = {
     "./islands/bridge/Form.tsx": $bridge_Form,
     "./islands/bridge/Height.tsx": $bridge_Height,
     "./islands/bridge/LegalsPopup.tsx": $bridge_LegalsPopup,
+    "./islands/bridge/Recipient.tsx": $bridge_Recipient,
     "./islands/bridge/control/from/Balance.tsx": $bridge_control_from_Balance,
     "./islands/bridge/control/from/Dollars.tsx": $bridge_control_from_Dollars,
     "./islands/bridge/control/from/Input.tsx": $bridge_control_from_Input,
