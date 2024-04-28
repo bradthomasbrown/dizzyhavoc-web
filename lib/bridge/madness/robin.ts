@@ -1,12 +1,13 @@
 import {
-  getHeight, getDzhvCode, getActive, getDzhvBalance, getDexscreener
+  getHeight, getDzhvCode, getDzhvBalance, getDexscreener
 } from "lib/bridge/madness/getters/mod.ts"
-import { getEconConf } from "lib/bridge/madness/getters/getEconConf.ts";
+import * as viRobin from "lib/bridge/madness/viRobin.ts"
 
 export const robinController = { value: new AbortController() }
 robinController.value.abort()
-export const robinFns = [getActive, getEconConf, getDexscreener, getHeight, getDzhvCode, getDzhvBalance]
+export const robinFns = [viRobin.run, getDexscreener, getHeight, getDzhvCode, getDzhvBalance]
 export const robinIndex = { value: 0 }
+let timeout:undefined|number = undefined
 
 export function start() {
   if (robinController.value.signal.aborted)
@@ -16,11 +17,12 @@ export function start() {
 
 export function abort() {
   try { robinController.value.abort() } catch (_) {_}
+  clearTimeout(timeout)
 }
 
 function run() {
   // console.log(robinFns[robinIndex.value])
-  setTimeout(robinFns[robinIndex.value])
+  timeout = setTimeout(robinFns[robinIndex.value])
 }
 
 export function restart() {
