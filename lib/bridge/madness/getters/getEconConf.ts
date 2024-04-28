@@ -2,10 +2,9 @@ import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.0.6/mod.ts
 import { toad } from "lib/bridge/madness/ejra/ejra.ts";
 import { Snail } from "lib/mod.ts";
 import { robinController, goNext } from "lib/bridge/madness/robin.ts";
+import { increment } from "lib/bridge/madness/viRobin.ts";
 import { state } from "lib/state.ts";
 import * as vi from 'lib/vertinfo/mod.ts'
-
-const lastGot = { value: -Infinity }
 
 export async function getEconConf() {
 
@@ -16,8 +15,8 @@ export async function getEconConf() {
   const { signal } = robinController.value
   if (signal.aborted) return
 
-  // wait 0.5s between gets for api data
-  if (Date.now() - lastGot.value < 1000) return goNext()
+  // wait between gets for api data
+  if (Date.now() - state.lastViGet < 1000) return goNext()
 
   // 🐌
   const lazy = () => fetch('/api', {
@@ -50,7 +49,8 @@ export async function getEconConf() {
 
   // update state if not error and there is a difference
   if (!(econConf instanceof Error)) {
-    lastGot.value = Date.now()
+    increment()
+    state.lastViGet = Date.now()
     if (String(state.active.value) != String(econConf))
       state.econConf.value = econConf
   }
