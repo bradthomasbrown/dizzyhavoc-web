@@ -6,3 +6,4 @@ export * from "islands/bridge/LegalsPopup.tsx";
 export * as Control from "islands/bridge/control/mod.ts";
 export * from 'islands/bridge/Active.tsx'
 export * from 'islands/bridge/Code.tsx'
+export * from '../../components/bridge/SettingsCog.tsx'
