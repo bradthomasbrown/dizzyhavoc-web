@@ -6,6 +6,9 @@ import { EconConf } from "lib/vertinfo/types/mod.ts";
 import { P6963 } from "lib/getProviders.tsx";
 
 export const state = {
+  slippage: new Signal<number>(5),
+  slippage64: new Signal<bigint>(BigInt(Math.floor((2 ** 64 - 1) * 5))),
+  lastViGet: -Infinity,
   p6963: new Signal<undefined|P6963>(),
   which: new Signal<null|JSX.Element>(null),
   chainMap: new Map<number,Chain>(),
