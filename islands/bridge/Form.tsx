@@ -10,6 +10,7 @@ import {
 import { Flipper } from "components/bridge/Flipper.tsx";
 import { Recipient } from "islands/bridge/Recipient.tsx";
 import { hidden } from "islands/bridge/BridgeButton.tsx";
+import { ConnectionInfo } from "islands/common/ConnectionInfo.tsx";
 
 export function Form() {
   return (
@@ -24,6 +25,7 @@ export function Form() {
           z-20
         `}
       />
+      <ConnectionInfo />
       <div class="select-none flex flex-col items-center gap-2">
         <SettingsCog />
         <Control.From />
