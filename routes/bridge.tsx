@@ -7,7 +7,7 @@ export default function Home() {
       <LegalsPopup />
       <AppContainer>
         <Body.Container>
-          <Body.Title text="γ-vertigo" />
+          <Body.Title text="β-vertigo" />
           <Body>
             <Art.Container>
               <Art
