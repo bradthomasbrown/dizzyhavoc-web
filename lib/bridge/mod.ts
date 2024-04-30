@@ -1,2 +1,2 @@
-export * from "lib/bridge/btos.ts";
-export * from "lib/bridge/stob.ts";
+export * from "../btos.ts";
+export * from "../stob.ts";
