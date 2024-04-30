@@ -1,6 +1,6 @@
 import { batch, Signal } from "@preact/signals";
 import { Button } from "../../components/common/Button.tsx";
-import { getProviders } from "lib/mod.ts";
+import { getProviders } from "lib/getProviders.tsx";
 
 const text = new Signal<string>("Connect");
 const textSize = new Signal<undefined | string>(undefined);

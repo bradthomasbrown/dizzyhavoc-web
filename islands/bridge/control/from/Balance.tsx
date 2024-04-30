@@ -1,5 +1,5 @@
 import { state } from "lib/state.ts";
-import { btos } from "lib/bridge/btos.ts";
+import { btos } from "../../../../lib/btos.ts";
 
 export function Balance() {
   return (

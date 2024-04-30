@@ -1,6 +1,6 @@
 import { effect } from "@preact/signals";
 import { state } from "lib/state.ts";
-import { btos } from "lib/bridge/btos.ts";
+import { btos } from "../../../../lib/btos.ts";
 
 effect(() => {
   const econConf = state.econConf.value;
