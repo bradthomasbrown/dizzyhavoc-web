@@ -47,6 +47,15 @@ import * as $common_which_WhichSearch from "./islands/common/which/WhichSearch.t
 import * as $common_which_WhichTitle from "./islands/common/which/WhichTitle.tsx";
 import * as $faucet_ActionButton from "./islands/faucet/ActionButton.tsx";
 import * as $faucet_ActiveForm from "./islands/faucet/ActiveForm.tsx";
+import * as $faucet_AppContainer from "./islands/faucet/AppContainer.tsx";
+import * as $faucet_Balance from "./islands/faucet/Balance.tsx";
+import * as $faucet_Code from "./islands/faucet/Code.tsx";
+import * as $faucet_ConnectionInfo from "./islands/faucet/ConnectionInfo.tsx";
+import * as $faucet_Connector from "./islands/faucet/Connector.tsx";
+import * as $faucet_FaucetButton from "./islands/faucet/FaucetButton.tsx";
+import * as $faucet_Form from "./islands/faucet/Form.tsx";
+import * as $faucet_Height from "./islands/faucet/Height.tsx";
+import * as $faucet_mod from "./islands/faucet/mod.ts";
 import { type Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -98,6 +107,15 @@ const manifest = {
     "./islands/common/which/WhichTitle.tsx": $common_which_WhichTitle,
     "./islands/faucet/ActionButton.tsx": $faucet_ActionButton,
     "./islands/faucet/ActiveForm.tsx": $faucet_ActiveForm,
+    "./islands/faucet/AppContainer.tsx": $faucet_AppContainer,
+    "./islands/faucet/Balance.tsx": $faucet_Balance,
+    "./islands/faucet/Code.tsx": $faucet_Code,
+    "./islands/faucet/ConnectionInfo.tsx": $faucet_ConnectionInfo,
+    "./islands/faucet/Connector.tsx": $faucet_Connector,
+    "./islands/faucet/FaucetButton.tsx": $faucet_FaucetButton,
+    "./islands/faucet/Form.tsx": $faucet_Form,
+    "./islands/faucet/Height.tsx": $faucet_Height,
+    "./islands/faucet/mod.ts": $faucet_mod,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

@@ -1,8 +1,5 @@
 import { JSX } from "preact/jsx-runtime";
-import { dzkv } from "lib/mod.ts";
 import { createRef } from "preact";
-import { Signal } from "@preact/signals";
-import { Connector, ConnectorState } from "islands/common/mod.ts";
 
 /**
  * The container for everything between the navbar and the footer
