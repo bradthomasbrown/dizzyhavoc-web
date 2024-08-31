@@ -1,3 +1,5 @@
+# ⚠️ This repo is continued as the `web/` directory of the [dizzyhavoc](https://github.com/bradthomasbrown/dizzyhavoc) repo. This repo is archived and may eventually be moved to the `vault`. ⚠️
+
 # Website for DizzyHavoc. 
 
 # Table of Contents
