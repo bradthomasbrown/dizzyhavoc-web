@@ -58,6 +58,7 @@ export function Summary() {
       bscprice = 0,
       baseprice = 0,
       avaxprice = 0;
+    const data = await Dex();
     const result = await data;
     let totalprice = 0;
     let totalliq = 0;
